@@ -1,0 +1,34 @@
+
+Bal/Balance - Gives You Your Blance
+
+Bank - Shows You The Money In Your Bank
+
+Beg - Beg A Celebrity For Some Money
+
+Buy - Buy Something From The Shop
+
+Daily - Collect Your Daily Reward Of Cash
+
+Deposit/Dep - Deposit Money Into Your Bank
+
+Glb (Global Leader Board) - Shows The Global Leader Board Of Richest Users
+
+Info - Get Info On An Item From The Shop
+
+Inventory - View The Items In Your Inventory
+
+Lb (Leader Board) - Shows The Server Leader Board Of Richest Users
+
+Pay - Pay A Fellow User Some Money
+
+Rob - Try Robbing Someone, But Be Carefull Not To Get Caught
+
+Sell - Sell An Item You Have In Your Inventory
+
+Shop - View The Items You Can Buy
+
+Use - Use An Item You Have In Your Inventory
+
+Weekly - Collect Your Weekly Reward Of Cash
+
+Withdraw - Withdraw Some Money From The Bank

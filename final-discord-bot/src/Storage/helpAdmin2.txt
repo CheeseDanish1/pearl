@@ -1,0 +1,38 @@
+
+Kick - Kicks a member from the server
+
+Lock - Locks a Channel And Prevents Anyone From Sending Messages
+
+MakeEmoji - Creates an emoji
+
+Massnick - Nicknames everyone in the server
+
+Mute - Mutes Person- Example >Mute @Cheese Danish#0159 Too Many Warnings
+
+Profanities - Enable or Disable Swearing Detection
+
+ResetWarnings - Resets Someones Warnings - Usage >ResetWarnings <Person>
+
+Role Create - Create's A Role - Usage >Role Create <Role Hex Code> <Role Name>
+
+Role Delete - Delete's A Role - Usage >Role Delete <Role Name Or Id>
+
+Role Give - Give's Someone A Role - Usage >Role Give <@User> <@Role>
+
+Role Remove - Remove's Someone From A Role - Usage >Role Remove <@User> <@Role>
+
+SetPrefix - Set's The Server's Prefix (By Default It Is `>`) - Example >SetPrefix ?
+
+SlowMode - Set's The Slowmode Of The Channel To The Designated Number - Example >Slowmode 30m
+
+Ticket Make - Makes A Message That Someone Can React To To Open A Message
+
+TempMute - Mutes User For Designated Amount Of Time - Example Mute @Cheese Danish#0159 5m
+
+Unban - Unbans a Baned Member
+
+Unlock - Unlocks A Locked Channel
+
+Unmute - Unmutes a Muted Person
+
+Warn - Give Someone a Warnings - Usage >Warn <Person> <Reason>

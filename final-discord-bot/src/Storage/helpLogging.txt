@@ -1,0 +1,10 @@
+
+Disable - Disable Some Of The Logging Features - Usage >Disable <Number>
+
+Enable - Enable Some Of The Logging Features -  Usage >Enable <Number>
+
+LoggingHelp - Gives The Current Logging Information Of Your Server
+
+Reset - Reset All The Logging Commands
+
+SetChannel - Set's Your Server's Logging Channel

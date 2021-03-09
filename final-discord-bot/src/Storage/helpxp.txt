@@ -1,0 +1,13 @@
+
+Remember, Only Get Xp Once A Minute, And The Xp Gained Is Between 15-25
+
+
+UserStats - Gives You Your User Stats
+
+Xp - Gives You A Graphic With You Local(Server) Xp Stats
+
+XpG - Gives You A Graphic With You Global Xp Stats
+
+XpGlb - Shows You The Global Xp Leader Board
+
+XpLb - Shows You The Local(Server) Xp Leader Board

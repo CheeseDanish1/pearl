@@ -1,0 +1,33 @@
+.dash-container {
+  min-height: 100%;
+}
+
+.dash-box {
+  height: 100vh;
+  max-width: 100%;
+}
+
+.dash-work1 {
+  display: flex;
+  flex-direction: row-reverse;
+  height: 100%;
+}
+
+.dash-idk1 {
+  width: calc(100% - 250px);
+}
+
+.dash-work2 {
+  display: flex;
+  flex-direction: column-reverse;
+  width: 100%;
+  height: 100%;
+}
+
+.dash-idk2 {
+  height: calc(100% - 62px);
+  height: 100%;
+  width: 100%;
+  background-color: #34373d;
+}
+

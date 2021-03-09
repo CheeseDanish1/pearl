@@ -1,0 +1,33 @@
+
+You can put a number after the command to choose how many scrambles you want it to give you 
+Example - >3x3 5
+
+1x1 - Gives You A 1x1 Scramble
+
+2x2 - Gives You A 2x2 Scramble
+
+3x3 - Gives You A 3x3 Scramble
+
+4x4 - Gives You A 4x4 Scramble
+
+5x5 - Gives You A 5x5 Scramble
+
+6x6 - Gives You A 6x6 Scramble
+
+7x7 - Gives You A 7x7 Scramble
+
+CubingInfo - Gives You All the Scramble Information
+
+Square 1 (Sq1, Square-1, Squan) - Gives You A Square 1 Scramble
+
+Skewb - Gives You A Skewb Scramble
+
+Pyraminx - Gives You A Pyraminx Scramble
+
+Megaminx - Gives You A Megaminx Scramble
+
+Mini - Gives Scrambles For Mini Guilford
+
+Redi - Gives You A Redicube Scramble
+
+Clock - Gives You A Clock Scramble

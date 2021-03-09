@@ -1,17 +1,17 @@
-module.exports.run = (client, message, args, db) => {
+module.exports.run = async (client, message, args, {UserConfig}, real) => {
+  if (!real) return message.channel.send(`Command doesn't exist.`);
+  let randomAmount = getRndInteger(1, 10000);
 
-    if (!db.get) return message.channel.send(`Command doesn't exist.`)
+  if (randomAmount <= 9999)
+    return message.channel.send(
+      'Sorry, but you lost the lottery, better luck next time'
+    );
 
-    let randomAmount = getRndInteger(1, 10000)
-
-    if (randomAmount <= 9999) {
-        return message.channel.send("Sorry, but you lost the lottery, better luck next time")
-    }
-
-    db.add('money_' + message.author.id, 10000)
-    return message.channel.send("You won 10000$ in the lottery. Congrats!")
-}
+  // db.add('money_' + message.author.id, 10000)
+  message.channel.send('You won 10000$ in the lottery. Congrats!');
+  await UserConfig.updateOne({$inc: {'economy.balance': 10000}});
+};
 
 function getRndInteger(min, max) {
-    return Math.floor(Math.random() * (max - min + 1)) + min;
+  return Math.floor(Math.random() * (max - min + 1)) + min;
 }

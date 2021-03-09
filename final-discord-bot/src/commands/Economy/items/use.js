@@ -12,7 +12,8 @@ const MessageEmbed = require('discord.js').MessageEmbed;
  * @param {string[]} args
  */
 
-module.exports.run = async (botClient, message, args, {prefix, UserConfig}) => {
+module.exports.run = async (botClient, message, args, ops) => {
+  const {prefix, UserConfig} = ops;
   const what = args.join(' ');
   if (!what) return message.channel.send('What would you like to use?');
   const inventory = UserConfig.economy.inventory;
@@ -27,12 +28,7 @@ module.exports.run = async (botClient, message, args, {prefix, UserConfig}) => {
   if (!item) return message.channel.send('You do not have that item');
 
   const whatHappensWhenYouRunTheItem = require(`../../items/${item.name.toLowerCase()}`);
-  whatHappensWhenYouRunTheItem.run(
-    botClient,
-    message,
-    args,
-    require('quick.db')
-  );
+  whatHappensWhenYouRunTheItem.run(botClient, message, args, ops, 'd');
 
   if (item.amount <= 1) {
     return await UserConfig.updateOne(

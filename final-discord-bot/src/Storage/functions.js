@@ -8,7 +8,7 @@ module.exports = {
 
     const vars = help.onMesVars(GuildMember);
     const xp = vars.RandomXp;
-    
+
     help.addXp(GuildMember, vars.timeout, vars.xpTimout, xp);
     help.addXpg(User, vars.timeout, vars.xpTimout, xp);
 
@@ -37,48 +37,5 @@ module.exports = {
       return colours[colour.toLowerCase()];
 
     return false;
-  },
-  closeTicket: async function (guild, channel) {
-    let closedTicketCategory = guild.channels.cache.find(
-      c => c.name.toLowerCase() == 'closed tickets'
-    );
-
-    if (!closedTicketCategory) {
-      let roles = guild.roles.cache.filter(x =>
-        x.permissions.has('MANAGE_CHANNELS')
-      );
-      let perms = [];
-
-      roles.forEach(role => {
-        perms.push({
-          id: role.id,
-        });
-      });
-
-      closedTicketCategory = await guild.channels.create('Closed Tickets', {
-        type: 'category',
-        permissionOverwrites: [
-          {
-            id: guild.id,
-            deny: ['VIEW_CHANNEL'],
-          },
-        ],
-      });
-
-      perms.forEach(p =>
-        closedTicketCategory.createOverwrite(p.id, {
-          VIEW_CHANNEL: true,
-        })
-      );
-    }
-
-    channel.setParent(closedTicketCategory.id);
-
-    channel.setName(`[CLOSED]-${channel.name}`);
-    const _ = new MessageEmbed()
-      .setTitle('Ticket closed')
-      .setDescription('This ticket has been closed')
-      .setColor('RANDOM');
-    channel.send(_);
   },
 };

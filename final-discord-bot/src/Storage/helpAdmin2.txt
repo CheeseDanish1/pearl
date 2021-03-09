@@ -25,8 +25,6 @@ SetPrefix - Set's The Server's Prefix (By Default It Is `>`) - Example >SetPrefi
 
 SlowMode - Set's The Slowmode Of The Channel To The Designated Number - Example >Slowmode 30m
 
-Ticket Make - Makes A Message That Someone Can React To To Open A Message
-
 TempMute - Mutes User For Designated Amount Of Time - Example Mute @Cheese Danish#0159 5m
 
 Unban - Unbans a Baned Member

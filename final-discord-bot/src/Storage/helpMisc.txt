@@ -31,10 +31,6 @@ Snipe - Gives The Most Recentlly Deleted Message In A Server
 
 Support - Provides A Link To Pearl Official Support Server
 
-Ticket Create - Creates A Ticket - Usage >Ticket Create [Reason]
-
-Ticket Delete - Deletes A Ticket
-
 Uptime- Gives You The Bots Uptime
 
 UserInfo - Gives You Your UserInfo

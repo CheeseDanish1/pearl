@@ -1,7 +1,10 @@
 const mongoose = require('mongoose');
 
-let {String: MongString, Array: MongArray, Boolean: MongBool} = mongoose.SchemaTypes
-
+let {
+  String: MongString,
+  Array: MongArray,
+  Boolean: MongBool,
+} = mongoose.SchemaTypes;
 
 const GuildConfig = new mongoose.Schema(
   {
@@ -52,6 +55,13 @@ const GuildConfig = new mongoose.Schema(
         MessageId: MongString,
         Reaction: MongString,
         Role: MongString,
+      },
+    ],
+    snipe: [
+      {
+        id: MongString,
+        content: MongString,
+        author: MongString,
       },
     ],
     disabledCategories: [],

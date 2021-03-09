@@ -34,6 +34,9 @@ module.exports = async (client, message) => {
     (await UserConfig.findOne({id: message.author.id})) ||
     (await UserConfig.create({id: message.author.id}));
 
+  if (!Guild || !User || !GuildMember)
+    return message.channel.send('Unknown error');
+
   //Get's the prefix the user set.
   let prefix = Guild.prefix || '>';
 

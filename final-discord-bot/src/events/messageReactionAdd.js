@@ -50,9 +50,10 @@ module.exports = async (bot, reaction, user) => {
 
   async function rr() {
     const Guild = await GuildConfig.findOne({id: guild.id});
-    const obj = Guild.reactionRoles.find(r => r.MessageId == message.id);
+    const obj = Guild.reactionRoles.find(
+      r => r.MessageId == message.id && r.Reaction == reaction.emoji.name
+    );
     if (!obj) return;
-    if (reaction.emoji.name != obj.Reaction) return;
     const role = guild.roles.cache.get(obj.Role);
     if (!role) return;
     const mem = guild.members.cache.get(user.id);

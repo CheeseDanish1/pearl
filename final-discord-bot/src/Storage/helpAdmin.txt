@@ -5,6 +5,10 @@ Autorole - Set A Role For The Bot To Automaticlly Give Anyone Who Joins The Serv
 
 Ban - Bans A User - Example >Ban @Cheese Danish#0159
 
+Banword - Bans A Certain Word From Being Used In Your Server
+
+Cc - Set A Custom Command - Usage - >Cc [Command] [Content]
+
 Clear - Clears Messages - Example >Clear 50
 
 GiveAway - Starts A Giveaway - Usage <Prefix> <Time> <Channel> <Prize> - Example >Giveaway 1d #Giveaway's 5$ Paypal Gift Card

@@ -9,6 +9,8 @@ Massnick - Nicknames everyone in the server
 
 Mute - Mutes Person- Example >Mute @Cheese Danish#0159 Too Many Warnings
 
+Poll - Create A Poll For People To Vote With - Usage >Poll [channel] [poll]
+
 Profanities - Enable or Disable Swearing Detection
 
 ResetWarnings - Resets Someones Warnings - Usage >ResetWarnings <Person>
@@ -34,3 +36,7 @@ Unlock - Unlocks A Locked Channel
 Unmute - Unmutes a Muted Person
 
 Warn - Give Someone a Warnings - Usage >Warn <Person> <Reason>
+
+Warnings - View A Users Warnings
+
+Zalgo - Trigger Zalgo Detection For The Server

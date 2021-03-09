@@ -19,8 +19,6 @@ Oldest - See The Oldest Server Member
 
 Ping - Gives You The Bot's Ping
 
-Prefix - Shows You The Servers Prefix
-
 Remind - Nead A Reminder To Do Something? - Usage >Remind <Time> <Messaage> - Example >Remind 1h Add More Music Commands
 
 Roles - Shows You The Servers Roles
@@ -34,7 +32,5 @@ Support - Provides A Link To Pearl Official Support Server
 Uptime- Gives You The Bots Uptime
 
 UserInfo - Gives You Your UserInfo
-
-Warnings - See A Users Warnings
 
 Youngest - See The Youngest Server Member

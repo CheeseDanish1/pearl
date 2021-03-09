@@ -38,7 +38,7 @@ module.exports = async (client, message) => {
 
     let embed = new MessageEmbed()
       .setColor('RANDOM')
-      .setAuthor(m2, message.guild.iconURL())
+      .setAuthor(m2, message.author.avatarURL())
       .addField('User', m2)
       .addField('Message', m3)
       .addField('Channel', m4)

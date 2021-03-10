@@ -3,6 +3,7 @@ import {getGuildsWithPerms} from '../../utils/api';
 import Header from '../../components/Header';
 import GuildComp from '../../components/GuildComp';
 import GuildCompSkeleton from '../../components/GuildCompSkeleton';
+import Br from '../../components/Br';
 
 let howManySkeletonsToLoad = 5;
 let arr = Array.from(Array(howManySkeletonsToLoad).keys());
@@ -38,9 +39,9 @@ const Menu = ({history}) => {
         <div className="box" style={{height: '100vh', maxWidth: '100%'}}>
           <Header isLoggedIn={!!guilds} loading={loading} />
           <center>
+            {/* <br />
             <br />
-            <br />
-            <br />
+            <br /> */}
             <div className="text">
               <p
                 style={{

@@ -2,11 +2,12 @@ import React, {useState} from 'react';
 import {isLoggedIn} from '../../utils/api';
 import {Button} from 'antd';
 import Header from '../../components/Header';
-import Loading from '../../components/Loading';
+// import Loading from '../../components/Loading';
 import './Landing.css';
+import {Link} from 'react-router-dom';
 
 const Landing = () => {
-  const [loggedIn, setLoggedIn] = useState(false);
+  const [loggedIn, setLoggedIn] = useState(null);
 
   React.useEffect(() => {
     isLoggedIn()
@@ -44,18 +45,7 @@ const Landing = () => {
               </div>
               <div className="landing-buttons">
                 <div className="landing-contain">
-                  <Button
-                    type="primary"
-                    onClick={() => {
-                      if (loggedIn === true)
-                        window.location.href = 'http://localhost:3000/menu';
-                      else
-                        window.location.href =
-                          'http://localhost:3001/auth/discord';
-                    }}
-                  >
-                    <div>Manage Servers</div>
-                  </Button>
+                  {abcdefg()}
                   <Button
                     className="landing-button-secondary"
                     onClick={() =>
@@ -74,6 +64,28 @@ const Landing = () => {
       </div>
     </div>
   );
+
+  function abcdefg() {
+    if (loggedIn || loggedIn === null)
+      return (
+        <Button type="primary">
+          <Link to="/menu">
+            <div>Manage Servers</div>
+          </Link>
+        </Button>
+      );
+
+    return (
+      <Button
+        type="primary"
+        onClick={() =>
+          (window.location.href = 'http://localhost:3001/auth/discord')
+        }
+      >
+        <div>Manage Servers</div>
+      </Button>
+    );
+  }
 };
 
 export default Landing;

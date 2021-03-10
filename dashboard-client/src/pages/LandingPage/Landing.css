@@ -36,7 +36,7 @@ center {
   justify-content: center;
   margin-bottom: 20px;
   align-items: center;
-  margin-top: 160px;
+  margin-top: 60px;
 }
 
 .landing-img img {
@@ -61,7 +61,7 @@ center {
   margin-bottom: -20px;
   margin-left: 10px;
 }
-                          
+
 .landing-info h4 {
   color: #f3f3f3;
   font-size: 48px;
@@ -93,7 +93,7 @@ center {
 
 .landing-contain button:last-child {
   color: #2c2f33;
-  border: none; 
+  border: none;
   background-color: #f3f3f3;
 }
 

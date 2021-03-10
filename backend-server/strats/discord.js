@@ -15,7 +15,7 @@ passport.deserializeUser(async (discordId, done) => {
   try {
     const user = await User.findOne({discordId});
     return user ? done(null, user) : done(null, null);
-  } catch (err) { 
+  } catch (err) {
     console.log(err);
     return done(err, null);
   }
@@ -27,7 +27,7 @@ passport.use(
       clientID: process.env.CLIENT_ID,
       clientSecret: process.env.CLIENT_SECRET,
       callbackURL: process.env.CLIENT_REDIRECT,
-      scope: ['identify', 'guilds', 'guilds.join'],
+      scope: ['identify', 'guilds'],
     },
     async (accessToken, refreshToken, profile, done) => {
       console.log(accessToken);

@@ -1,12 +1,18 @@
 /* #2f3135 */
 
+.sidebar-full {
+  height: 100vh !important;
+}
+
 .nav-menu {
+  transition: height 0.3s;
   background-color: #2f3135;
   width: 250px;
   /* height: 100vh; */
-  height: calc(100% - 62px);
+  height: calc(100% - 64px);
   z-index: 1;
   position: fixed;
+  /* z-index: 0; */
   bottom: 0;
   box-shadow: rgba(0, 0, 0, 0.15) 2px 2px 4px;
 }

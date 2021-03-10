@@ -1,5 +1,4 @@
 import React from 'react';
-import {Link} from 'react-router-dom';
 import {SidebarData} from './SidebarData';
 import './Sidebar.css';
 import {IconContext} from 'react-icons';
@@ -24,7 +23,7 @@ function Navbar({loading, guild}) {
             <hr />
             <br />
             {SidebarData.map((item, index) => (
-              <SidebarComp item={item} index={index} />
+              <SidebarComp key={index} item={item} index={index} />
             ))}
           </ul>
         </div>

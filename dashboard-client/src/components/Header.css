@@ -1,11 +1,11 @@
 .header-header {
-  position: fixed;
+  /* position: fixed; */
   /* position: absolute; */
   z-index: 20;
   width: 100%;
-  top: 0;
+  /* top: 0; */
   background-color: #202225 !important;
-  height: 64px !important; 
+  height: 64px !important;
 }
 
 .header-w-100 {
@@ -20,4 +20,3 @@
   justify-content: space-evenly;
   width: 550px;
 }
-

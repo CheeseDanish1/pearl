@@ -19,7 +19,9 @@ module.exports = async (bot, reaction, user) => {
 
   logging();
   async function logging() {
-    const Guild = await GuildConfig.findOne({id: guild.id});
+    const Guild =
+      (await GuildConfig.findOne({id: guild.id})) ||
+      (await GuildConfig.create({id: guild.id}));
     const loggingChannelId = Guild.logging.channel;
     if (!loggingChannelId) return;
     const loggingChannel = guild.channels.cache.get(loggingChannelId);

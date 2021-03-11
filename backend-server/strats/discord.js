@@ -5,15 +5,15 @@ const c = require('crypto-js');
 const {encrypt, decrypt} = require('../utils/utils');
 const passport = require('passport');
 const DiscordStrategy = require('passport-discord');
-const User = require('../database/models/User');
+const UserConfig = require('../database/models/UserConfig');
 
 passport.serializeUser((user, done) => {
-  done(null, user.discordId);
+  done(null, user.id);
 });
 
-passport.deserializeUser(async (discordId, done) => {
+passport.deserializeUser(async (id, done) => {
   try {
-    const user = await User.findOne({discordId});
+    const user = await UserConfig.findOne({id});
     return user ? done(null, user) : done(null, null);
   } catch (err) {
     console.log(err);
@@ -37,12 +37,11 @@ passport.use(
       const encryptedRefreshToken = encrypt(refreshToken).toString();
 
       try {
-        const findUser = await User.findOneAndUpdate(
-          {discordId: id},
+        const findUser = await UserConfig.findOneAndUpdate(
+          {id},
           {
-            discordTag: `${username}#${discriminator}`,
+            name: `${username}#${discriminator}`,
             avatar,
-            guilds,
           },
           {new: true}
         );
@@ -67,10 +66,9 @@ passport.use(
           return done(null, findUser);
         } else {
           const newUser = await User.create({
-            discordId: id,
-            discordTag: `${username}#${discriminator}`,
+            id: id,
+            name: `${username}#${discriminator}`,
             avatar: avatar,
-            guilds,
           });
           return done(null, newUser);
         }

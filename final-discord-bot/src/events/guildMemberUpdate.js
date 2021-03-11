@@ -12,8 +12,9 @@ const GuildConfig = require('../database/models/GuildConfig');
  */
 
 module.exports = async (client, oldMember, newMember) => {
-  const Guild = await GuildConfig.findOne({id: oldMember.guild.id});
-  if (!Guild) return;
+  const Guild =
+    (await GuildConfig.findOne({id: oldMember.guild.id})) ||
+    (await GuildConfig.create({id: oldMember.guild.id}));
   let x = Guild.logging.channel;
   x = oldMember.guild.channels.cache.get(x);
   if (!x) return;

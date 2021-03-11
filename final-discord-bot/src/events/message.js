@@ -30,9 +30,19 @@ module.exports = async (client, message) => {
       guild: message.guild.id,
     }));
 
+  let name = `${message.author.username}#${message.author.discriminator}`;
+
   let User =
-    (await UserConfig.findOne({id: message.author.id})) ||
-    (await UserConfig.create({id: message.author.id}));
+    (await UserConfig.findOneAndUpdate(
+      {id: message.author.id},
+      {name, avatar: message.author.avatar},
+      {new: true}
+    )) ||
+    (await UserConfig.create({
+      id: message.author.id,
+      name,
+      avatar: message.author.avatar,
+    }));
 
   if (!Guild || !User || !GuildMember)
     return message.channel.send('Unknown error');

@@ -5,8 +5,6 @@ const {MessageEmbed} = require('discord.js');
 module.exports.run = async (bot, message, args, ops) => {
   const {GuildConfig: Guild} = ops;
 
-  console.log(Guild.update)
-
   if (!message.member.permissions.has('ADMINISTRATOR'))
     return message.channel.send(`You do not have permissions!`);
   if (!args[0])
@@ -45,7 +43,7 @@ module.exports.run = async (bot, message, args, ops) => {
 
     // newData.save()
     await Guild.update({
-      "$push": {
+      $push: {
         reactionRoles: newData,
       },
     });
@@ -73,7 +71,7 @@ module.exports.run = async (bot, message, args, ops) => {
     };
 
     await Guild.update({
-      "$push": {
+      $push: {
         reactionRoles: newData,
       },
     });

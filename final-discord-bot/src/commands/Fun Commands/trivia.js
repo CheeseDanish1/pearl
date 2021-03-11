@@ -1,7 +1,39 @@
 const Discord = require('discord.js');
 const ms = require('pretty-ms');
 const parse = require('parse-ms');
-const questions = require('../../Storage/trivia');
+const fetch = require('got');
+
+async function getQuestion(d) {
+  if (d != 'easy' && d != 'medium' && d != 'hard') d = null;
+  let url = `https://opentdb.com/api.php?amount=1&type=multiple&encode=url3986${
+    d ? `&difficulty=${d}` : ''
+  }`;
+  const body = JSON.parse((await fetch(url)).body);
+  const results = body.results[0];
+  const {question, correct_answer, incorrect_answers, difficulty} = results;
+  const choices = [...incorrect_answers, correct_answer];
+  const shuffledChoices = shuffleArray(choices.map(c => decodeURIComponent(c)));
+  const timeDifficulty = {easy: 10000, medium: 15000, hard: 20000};
+
+  return {
+    title: decodeURIComponent(question),
+    options: shuffledChoices,
+    // category,
+    difficulty,
+    time: timeDifficulty[difficulty],
+    correct: shuffledChoices.indexOf(decodeURIComponent(correct_answer)) + 1,
+  };
+}
+
+function shuffleArray(array) {
+  for (var i = array.length - 1; i > 0; i--) {
+    var j = Math.floor(Math.random() * (i + 1));
+    var temp = array[i];
+    array[i] = array[j];
+    array[j] = temp;
+  }
+  return array;
+}
 
 module.exports.run = async (bot, message, args, {UserConfig}) => {
   let timeout = 10000;
@@ -17,7 +49,8 @@ module.exports.run = async (bot, message, args, {UserConfig}) => {
   await UserConfig.updateOne({$set: {'timout.trivia': Date.now()}});
 
   //Get the questions
-  let q = questions[Math.floor(Math.random() * questions.length)];
+  let difficulty = args[0] ? args[0].toLowerCase() : null;
+  let q = await getQuestion(difficulty);
   let i = 0;
 
   //Get the time
@@ -36,7 +69,7 @@ module.exports.run = async (bot, message, args, {UserConfig}) => {
     )
     .setColor(`GREEN`)
     .setFooter(
-      `Reply to this message with the correct question number! You have ${prettyTime}.`
+      `Reply to this message with the correct question number! You have ${prettyTime}.\nDifficulty: ${q.difficulty}`
     );
 
   message.channel.send(Embed);
@@ -59,7 +92,11 @@ module.exports.run = async (bot, message, args, {UserConfig}) => {
       await UserConfig.updateOne({$inc: {'economy.balance': 15}});
       return;
     } else {
-      message.channel.send(`You got it incorrect. Minus 5$`);
+      message.channel.send(
+        `Incorrect! The correct answer was \`${
+          q.options[q.correct - 1]
+        }\`. Minus 5$`
+      );
       await UserConfig.updateOne({$inc: {'economy.balance': -5}});
       return;
     }

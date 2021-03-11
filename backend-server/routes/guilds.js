@@ -8,29 +8,27 @@ const {
   getUserGuilds,
   getGuildMembers,
 } = require('../utils/api');
-const User = require('../database/models/User');
+const UserConfig = require('../database/models/UserConfig');
 const {getMutualGuilds, idk} = require('../utils/utils');
 const GuildConfig = require('../database/models/GuildConfig');
 
 router.get('/', async (req, res) => {
   if (!req.user) return res.status(401).send({msg: 'Unauthorized'});
 
-  const user = await User.findOne({discordId: req.user.discordId});
+  const user = await UserConfig.findOne({id: req.user.id});
   if (user) {
-    // res.send(await getUserGuilds(req.user.discordId))
     res.send(await guilds());
   } else {
-    res.send(400)
+    res.send(400);
   }
 });
 
 router.get('/me', async (req, res) => {
   if (!req.user) return res.status(401).send({msg: 'Unauthorized'});
 
-  // const user = await User.findOne({discordId: req.user.discordId});
   // if (user) {
-  res.send(await getUserGuilds(req.user.discordId));
-    // res.send(await guilds());
+  res.send(await getUserGuilds(req.user.id));
+  // res.send(await guilds());
   // }
 });
 
@@ -116,10 +114,10 @@ router.put(`/id/:guildId/prefix`, async (req, res) => {
 
 router.get('/mutual', async (req, res) => {
   if (!req.user) return res.status(401).send({msg: 'Unauthorized'});
-  const user = await User.findOne({discordId: req.user.discordId});
+  const user = await UserConfig.findOne({id: req.user.id});
   if (user) {
     const botGuilds = await guilds();
-    let userGuilds = user.get('guilds');
+    // let userGuilds = user.get('guilds');
     res.send(getMutualGuilds(userGuilds, botGuilds));
   }
 });
@@ -127,12 +125,10 @@ router.get('/mutual', async (req, res) => {
 router.get('/perms', async (req, res) => {
   if (!req.user) return res.status(401).send({msg: 'Unauthorized'});
   console.log('Call to fetch');
-  // const user = await User.findOne({discordId: req.user.discordId});
-  // if (user) {
-    const botGuilds = await guilds();
-    let userGuilds = await getUserGuilds(req.user.discordId)
-    res.send(idk(userGuilds, botGuilds));
-  // }
+
+  const botGuilds = await guilds();
+  let userGuilds = await getUserGuilds(req.user.id);
+  res.send(idk(userGuilds, botGuilds));
 });
 
 module.exports = router;

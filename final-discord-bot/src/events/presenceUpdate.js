@@ -1,28 +1,30 @@
-const GuildConfig = require('../database/models/GuildConfig')
-const Discord = require('discord.js')
+const GuildConfig = require('../database/models/GuildConfig');
+const Discord = require('discord.js');
 
 module.exports = async (client, oldPresence, newPresence) => {
+  let embed = new Discord.MessageEmbed();
+  let who = newPresence.guild.members.cache.get(newPresence.userID);
+  if (!who) return;
+  const Guild =
+    (await GuildConfig.findOne({id: newPresence.guild.id})) ||
+    (await GuildConfig.create({id: newPresence.guild.id}));
 
-    let embed = new Discord.MessageEmbed;
-    let who = newPresence.guild.members.cache.get(newPresence.userID)
-    if (!who) return;
-    const Guild = await GuildConfig.findOne({id: newPresence.guild.id})
-    let x = Guild.logging.channel
-    x = newPresence.guild.channels.cache.get(x)
-    if (!x) return;
-    let y = Guild.logging.events.includes("Status changes")
-    if (!y) return;
-    const change = {
-        other: 0,
-        status: 1,
-        activity: 2,
-    }
+  let x = Guild.logging.channel;
+  x = newPresence.guild.channels.cache.get(x);
+  if (!x) return;
+  let y = Guild.logging.events.includes('Status changes');
+  if (!y) return;
+  const change = {
+    other: 0,
+    status: 1,
+    activity: 2,
+  };
 
-    if (!oldPresence || !newPresence) return;
+  if (!oldPresence || !newPresence) return;
 
-    if (!oldPresence.status || !newPresence.status) return;
+  if (!oldPresence.status || !newPresence.status) return;
 
-    /*let actOld = oldPresence.activities[0]
+  /*let actOld = oldPresence.activities[0]
     let actNew = newPresence.activities[0]
 
     let newActName, oldActName, newActType, oldActType, newActDet, oldActDet, newActState, oldActState
@@ -73,7 +75,7 @@ module.exports = async (client, oldPresence, newPresence) => {
         newActState = actNew.state;
         oldActState = actOld.state;
     }*/
-    /*if (!newActName) newActName = "None Set"
+  /*if (!newActName) newActName = "None Set"
     if (!oldActName) oldActName = "None Set"
     if (!newActType) newActType = "None"
     if (!oldActType) oldActType ="None"
@@ -82,12 +84,12 @@ module.exports = async (client, oldPresence, newPresence) => {
     if (!newActState) newActState = "None"
     if (!oldActState) oldActState = "None"*/
 
-    let changes = change.other
-    if (oldPresence.status != newPresence.status) {
-        changes = change.status
-    }
+  let changes = change.other;
+  if (oldPresence.status != newPresence.status) {
+    changes = change.status;
+  }
 
-    /*if (actOld != actNew) {
+  /*if (actOld != actNew) {
         changes = change.activity
         embed.setTitle("Activity Changed")
             .setDescription(`**${newPresence.user.username}** Changed Their Activity`)
@@ -109,21 +111,23 @@ module.exports = async (client, oldPresence, newPresence) => {
         }
     }*/
 
-    switch (changes) {
-        case 1:
-            embed
-                .setTitle("User Status Changed")
-                .setDescription(`**${newPresence.user.username}** changed status from **${oldPresence.status}** to **${newPresence.status}**`)
-                .setFooter(`User Id ${newPresence.userID}`)
-                .setTimestamp()
-                .setColor("GREEN")
-            x.send(embed)
-            break;
-        case 2:
-            x.send(embed)
-            break;
+  switch (changes) {
+    case 1:
+      embed
+        .setTitle('User Status Changed')
+        .setDescription(
+          `**${newPresence.user.username}** changed status from **${oldPresence.status}** to **${newPresence.status}**`
+        )
+        .setFooter(`User Id ${newPresence.userID}`)
+        .setTimestamp()
+        .setColor('GREEN');
+      x.send(embed);
+      break;
+    case 2:
+      x.send(embed);
+      break;
 
-        default:
-            break;
-    }
-}
+    default:
+      break;
+  }
+};

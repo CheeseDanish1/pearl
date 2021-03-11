@@ -20,8 +20,39 @@ const idk = (active, name) => (
 const enter = e => (e.target.style.color = '#5BC0EB');
 const exit = e => (e.target.style.color = '#d3d3d3');
 
-const Choice = ({name, page}) => {
+const Choice = ({name, page, type}) => {
   let active = page === window.location.pathname;
+
+  if (type === 'mobile') {
+    if (!page.includes('http'))
+      return (
+        <Link to={page} style={{color: 'inherit'}}>
+          <div
+            className={`menu-mobile-list-element ${
+              active ? 'list-active' : ''
+            }`}
+          >
+            {name}
+            {/* {name} */}
+          </div>
+        </Link>
+      );
+
+    return (
+      <a
+        href={page}
+        rel="noreferrer"
+        style={{color: 'inherit'}}
+        target="_blank"
+      >
+        <div
+          className={`menu-mobile-list-element ${active ? 'list-active' : ''}`}
+        >
+          {name}
+        </div>
+      </a>
+    );
+  }
 
   if (!page.includes('http'))
     return (

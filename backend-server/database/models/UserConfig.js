@@ -3,6 +3,8 @@ const mongoose = require('mongoose');
 const UserConfig = new mongoose.Schema(
   {
     id: String,
+    name: String,
+    avatar: String,
     xpg: Number,
     messages: Number,
     economy: {
@@ -16,6 +18,8 @@ const UserConfig = new mongoose.Schema(
           description: String,
           sellPrice: Number,
           emoji: String,
+          amount: Number,
+          emojiId: String,
         },
       ],
     },

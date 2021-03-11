@@ -23,6 +23,6 @@ Pupper - Shows An Image From r/RarePuppers
 
 Say - I Say What You Tell Me To Say
 
-Trivia - Test Your Knowledge In Trivia
+Trivia - Test Your Knowledge In Trivia - Usage >Trivia {Difficulty}
 
-ttt (All lower case, no prefix) - Play a tic-tac-toe against a friend by @ them, or against an ai! - Example `ttt` - `ttt @Friend#1234`
+TicTacToe(ttt) -  Play a tic-tac-toe against a friend, or against an ai!

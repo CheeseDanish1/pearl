@@ -6,7 +6,6 @@ let {
   Boolean: MongBool,
 } = mongoose.SchemaTypes;
 
-
 const GuildConfig = new mongoose.Schema(
   {
     id: {
@@ -56,6 +55,13 @@ const GuildConfig = new mongoose.Schema(
         MessageId: MongString,
         Reaction: MongString,
         Role: MongString,
+      },
+    ],
+    snipe: [
+      {
+        id: MongString,
+        content: MongString,
+        author: MongString,
       },
     ],
     disabledCategories: [],

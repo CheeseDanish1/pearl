@@ -1,4 +1,3 @@
-const db = require('quick.db');
 const {Message, Client, MessageEmbed} = require('discord.js');
 const GuildConfig = require('../database/models/GuildConfig');
 
@@ -11,7 +10,9 @@ const GuildConfig = require('../database/models/GuildConfig');
 module.exports = async (client, message) => {
   if (!message.author || !message.guild || message.author.bot) return;
 
-  const Guild = await GuildConfig.findOne({id: message.guild.id});
+  const Guild =
+    (await GuildConfig.findOne({id: message.guild.id})) ||
+    (await GuildConfig.create({id: message.guild.id}));
 
   logging();
   snipe();
@@ -53,8 +54,6 @@ module.exports = async (client, message) => {
       author: `${message.author.username}#${message.author.discriminator}`,
       id: message.channel.id,
     };
-
-    console.log(snipe);
 
     if (Guild.snipe.find(c => c.id == message.channel.id)) {
       return await Guild.updateOne(

@@ -24,7 +24,11 @@ module.exports.run = async (client, message, args, {prefix, UserConfig}) => {
     message.channel.send(
       `You have no items in your inventory.\nYou can buy some from the shop with the ${prefix}Shop command.`
     );
-    return await UserConfig.create({id: who.id});
+    return await UserConfig.create({
+      id: who.id,
+      name: `${message.author.username}#${message.author.discriminator}`,
+      avatar: message.author.avatar,
+    });
   }
   const items = config.economy.inventory;
   if (!items || items.length <= 0) {
@@ -51,4 +55,4 @@ module.exports.run = async (client, message, args, {prefix, UserConfig}) => {
     );
   });
   return message.channel.send(embed);
-};;
+};

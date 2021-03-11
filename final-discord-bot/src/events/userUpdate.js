@@ -1,7 +1,6 @@
 const GuildConfig = require('../database/models/GuildConfig');
 const {User, Client, MessageEmbed} = require('discord.js');
 
-
 /**
  *
  * @param {Client} client
@@ -14,11 +13,13 @@ module.exports = async (client, oldUser, newUser) => {
     let who = g.members.cache.get(newUser.id);
     if (!who) return;
 
-    const Guild = await GuildConfig.findOne({id: who.guild.id})
+    const Guild =
+      (await GuildConfig.findOne({id: who.guild.id})) ||
+      (await GuildConfig.create({id: who.guild.id}));
 
-    let x = Guild.logging.channel
+    let x = Guild.logging.channel;
     x = who.guild.channels.cache.get(x);
-    let y = Guild.logging.events.includes("User changes")
+    let y = Guild.logging.events.includes('User changes');
     if (!x || !y) return;
 
     let changes = {

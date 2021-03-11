@@ -62,12 +62,7 @@ module.exports.run = (
       member.user.avatarURL(),
       member.user.avatarURL()
     )
-    .addField(
-      'Warnings',
-      Math.max(...clientGuildMemberConfig.warnings.info.map(r => r.warnings)) ||
-        0,
-      true
-    )
+    .addField('Warnings', GuildMemberConfig.warnings.amount || 0, true)
     .addField('Xp', GuildMemberConfig.xp || 0, true)
     .addField('Money', UserConfig.economy.balance || 0, true)
     //.addField("Id", member.user.id, true)

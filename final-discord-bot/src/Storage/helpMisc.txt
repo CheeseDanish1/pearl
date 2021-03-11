@@ -3,6 +3,8 @@ Avatar - See A Persons Avatar (With a URL)
 
 BotInfo - Shows You The Bots Info
 
+Db - View **ALL** The Info That Pearl Has Stored On You In The Database
+
 DM - DM A Server Member Something - Usage >DM <User Id Or Mention User> <What You Want To Dm Them>
 
 Emojis - Gives All Of The Servers Emojis

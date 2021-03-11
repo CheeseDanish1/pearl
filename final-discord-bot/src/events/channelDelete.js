@@ -8,7 +8,9 @@ module.exports = async (client, channel) => {
   if (!channel.guild) return;
 
   // Get the server configuration from the database
-  const Guild = await GuildConfig.findOne({id: channel.guild.id});
+  const Guild =
+    (await GuildConfig.findOne({id: channel.guild.id})) ||
+    (await GuildConfig.create({id: channel.guild.id}));
 
   // If they dont have a logging channel exit
   if (!Guild.logging.channel) return;
@@ -17,7 +19,9 @@ module.exports = async (client, channel) => {
   if (!Guild.logging.events.find(e => e == 'Channel deletion')) return;
 
   // Get the channel from the channel id
-  const loggingChannel = channel.guild.channels.cache.get(Guild.logging.channel);
+  const loggingChannel = channel.guild.channels.cache.get(
+    Guild.logging.channel
+  );
 
   // Make sure the channel is their and has not been deleted
   if (!loggingChannel) return;

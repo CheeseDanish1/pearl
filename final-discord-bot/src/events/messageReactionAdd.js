@@ -1,27 +1,13 @@
-const {
-  MessageEmbed,
-  ReactionCollector,
-  User,
-  MessageReaction,
-  Client,
-} = require('discord.js');
-const GuildConfig = require('../database/models/GuildConfig');
-
-/**
- * @param {Client} bot
- * @param {MessageReaction} reaction
- * @param {User} user
- */
+const {MessageEmbed} = require('discord.js');
+const {getGuild} = require('../Storage/database');
 
 module.exports = async (bot, reaction, user) => {
   const message = reaction.message;
   const guild = message.guild;
+  const Guild = await getGuild(guild.id);
 
   logging();
   async function logging() {
-    const Guild =
-      (await GuildConfig.findOne({id: guild.id})) ||
-      (await GuildConfig.create({id: guild.id}));
     const loggingChannelId = Guild.logging.channel;
     if (!loggingChannelId) return;
     const loggingChannel = guild.channels.cache.get(loggingChannelId);
@@ -51,7 +37,6 @@ module.exports = async (bot, reaction, user) => {
   rr().catch(console.dir);
 
   async function rr() {
-    const Guild = await GuildConfig.findOne({id: guild.id});
     const obj = Guild.reactionRoles.find(
       r => r.MessageId == message.id && r.Reaction == reaction.emoji.name
     );

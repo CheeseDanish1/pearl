@@ -1,5 +1,6 @@
 const Discord = require('discord.js');
 const ms = require('parse-ms');
+const {addMoney, addBank} = require('../../../Storage/database');
 
 module.exports.run = async (client, message, args, {UserConfig}) => {
   const amount = args[0];
@@ -24,25 +25,8 @@ module.exports.run = async (client, message, args, {UserConfig}) => {
   if (isNaN(amount))
     return message.channel.send('The amount you withdraw must be a number');
 
-  //   db.subtract(`bank_${message.author.id}`, amount);
-  //   db.add(`money_${message.author.id}`, amount);
-  await UserConfig.updateOne({
-    $inc: {
-      'economy.bank': -parseInt(amount),
-      'economy.balance': parseInt(amount),
-    },
-  });
+  let mes = `You withdrawed **${amount}** from your bank`;
+  message.channel.send(mes);
 
-  let embed = new Discord.MessageEmbed()
-    .setTitle(`Withdraw`)
-    .setColor('RANDOM')
-    .addFields(
-      {name: `Amount Withdrawed`, value: `${amount}$`},
-      {
-        name: `Current Money`,
-        value: `${parseInt(senderMoney) + parseInt(amount)}$`,
-      },
-      {name: `Bank Money`, value: `${senderBankMoney - amount}$`}
-    );
-  message.channel.send(embed);
+  Promise.all(addMoney(amount, sender.id), addBank(-amount, sender.id));
 };

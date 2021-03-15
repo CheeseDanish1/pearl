@@ -1,11 +1,9 @@
 const Discord = require('discord.js');
-const GuildConfig = require('../database/models/GuildConfig');
+const {getGuild} = require('../Storage/database');
 
 module.exports = async (client, guild, user) => {
   if (!guild) return;
-  const Guild =
-    (await GuildConfig.findOne({id: guild.id})) ||
-    (await GuildConfig.create({id: guild.id}));
+  const Guild = await getGuild(guild.id);
   if (!Guild.logging.channel) return;
   if (!Guild.logging.events.find(e => e == 'Member banned')) return;
   const loggingChannel = guild.channels.cache.get(Guild.logging.channel);

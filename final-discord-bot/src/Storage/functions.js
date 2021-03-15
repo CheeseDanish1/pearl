@@ -1,18 +1,13 @@
 const colours = require('./colors');
 const help = require('./onMesInfo');
-const {MessageEmbed} = require('discord.js');
 
 module.exports = {
-  onMes: async function ({GuildMember, User}) {
-    // help.updateBotInfo(message, db, prefix);
-
+  onMes: async function (GuildMember) {
     const vars = help.onMesVars(GuildMember);
-    const xp = vars.RandomXp;
-
-    help.addXp(GuildMember, vars.timeout, vars.xpTimout, xp);
-    help.addXpg(User, vars.timeout, vars.xpTimout, xp);
-
-    help.mes(GuildMember, User);
+    const {id, guild} = GuildMember;
+    help.addXp(id, guild, vars.timeout, vars.xpTimout, vars.randomXp);
+    help.addXpg(id, guild, vars.timeout, vars.xpTimout, vars.randomXp);
+    help.mes(id, guild);
   },
 
   level: function (xp) {

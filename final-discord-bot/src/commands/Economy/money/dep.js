@@ -1,4 +1,5 @@
 const Discord = require('discord.js');
+const {removeMoney, addBank} = require('../../../Storage/database');
 
 module.exports.run = async (client, message, args, {UserConfig}) => {
   let amount = args[0];
@@ -31,8 +32,8 @@ module.exports.run = async (client, message, args, {UserConfig}) => {
   if (senderBankMoney + amount > UserConfig.xpg)
     return message.channel.send("Your bank can't hold that much money");
 
-  await UserConfig.updateOne({$inc: {'economy.bank': amount}});
-  await UserConfig.updateOne({$inc: {'economy.balance': -amount}});
+  removeMoney(amount, message.author.id);
+  addBank(amount, message.author.id);
 
   let embed = new Discord.MessageEmbed()
     .setTitle(`Deposit`)
@@ -45,7 +46,7 @@ module.exports.run = async (client, message, args, {UserConfig}) => {
       },
       {
         name: `Bank Money`,
-        value: `${parseInt(UserConfig.economy.bank) + amount}$`,
+        value: `${(UserConfig.economy.bank || 0) + amount}$`,
       }
     );
   message.channel.send(embed);

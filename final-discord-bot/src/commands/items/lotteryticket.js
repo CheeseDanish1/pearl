@@ -1,4 +1,6 @@
-module.exports.run = async (client, message, args, {UserConfig}, real) => {
+const {addMoney} = require('../../Storage/database');
+
+module.exports.run = async (client, message, args, ops, real) => {
   if (!real) return message.channel.send(`Command doesn't exist.`);
   let randomAmount = getRndInteger(1, 10000);
 
@@ -7,9 +9,8 @@ module.exports.run = async (client, message, args, {UserConfig}, real) => {
       'Sorry, but you lost the lottery, better luck next time'
     );
 
-  // db.add('money_' + message.author.id, 10000)
   message.channel.send('You won 10000$ in the lottery. Congrats!');
-  await UserConfig.updateOne({$inc: {'economy.balance': 10000}});
+  addMoney(10000, message.author.id);
 };
 
 function getRndInteger(min, max) {

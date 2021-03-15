@@ -1,14 +1,12 @@
 const Discord = require('discord.js');
-const GuildConfig = require('../database/models/GuildConfig');
+const {getGuild} = require('../Storage/database');
 
 module.exports = async (client, channel) => {
   // Make sure where in a server
   if (!channel.guild) return;
 
   // Get the server configuration from the database
-  const Guild =
-    (await GuildConfig.findOne({id: channel.guild.id})) ||
-    (await GuildConfig.create({id: channel.guild.id}));
+  const Guild = await getGuild(channel.guild.id);
 
   // If they dont have a logging channel exit
   if (!Guild.logging.channel) return;

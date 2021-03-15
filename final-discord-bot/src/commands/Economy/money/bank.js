@@ -1,5 +1,5 @@
-const UserModelConfig = require('../../../database/models/UserConfig');
 const Discord = require('discord.js');
+const {getUser} = require('../../../Storage/database');
 
 module.exports.run = async (client, message, args, {UserConfig}) => {
   let user = message.mentions.members.first() || message.author;
@@ -7,9 +7,7 @@ module.exports.run = async (client, message, args, {UserConfig}) => {
   let config;
   user == message.author
     ? (config = UserConfig)
-    : (config =
-        (await UserModelConfig.findOne({id: user.id})) ||
-        (await UserModelConfig.create({id: user.id})));
+    : (config = await getUser(user));
 
   const bankAmount = config.economy.bank || 0;
   const bankLimit = config.xpg;

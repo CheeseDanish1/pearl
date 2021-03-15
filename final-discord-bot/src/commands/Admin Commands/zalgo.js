@@ -1,26 +1,12 @@
-const GuildConfig = require('../../database/models/GuildConfig');
-const {Message} = require('discord.js');
+const {editOps} = require('../../Storage/database');
 
-/**
- *
- * @param {Message} message
- */
-
-module.exports.run = async (client, message, args) => {
+module.exports.run = async (client, message, args, {GuildConfig}) => {
   if (!message.member.hasPermission('MANAGE_GUILD'))
     return message.channel.send('You dont have permission to use this command');
 
-  const Guild = await GuildConfig.findOne({id: message.guild.id})
-
-  let zal = Guild.ops.zalgo
-
-  if (zal) {
-    // db.set(`zal_${message.guild.id}`, false)
-    await Guild.updateOne({"ops.zalgo": false})
-    return message.channel.send('Turned zalgo detection off for this guild');
-  } else {
-    // db.set(`zal_${message.guild.id}`, true)
-    await Guild.updateOne({"ops.zalgo": true})
-    return message.channel.send('Turned zalgo detection on for this guild');
-  }
+  let zal = GuildConfig.ops.zalgo;
+  message.channel.send(
+    `${zal ? 'Disabled' : 'Enabled'} zalgo detection for this server`
+  );
+  editOps(message.guild.id, 'zalgo', !zal);
 };

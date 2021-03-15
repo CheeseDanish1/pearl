@@ -67,6 +67,18 @@ const GuildConfig = new mongoose.Schema(
     disabledCategories: [],
     disabledCommands: [],
     enabledCommands: [],
+    giveaways: [
+      {
+        prize: MongString,
+        ends: Date,
+        channel: MongString,
+        mes: MongString,
+        interval: MongString,
+        length: MongString,
+        guild: MongString,
+        ended: MongBool,
+      },
+    ],
   },
   {collection: 'GuildConfig'}
 );

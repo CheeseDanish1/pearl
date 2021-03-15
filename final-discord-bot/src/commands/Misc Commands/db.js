@@ -14,6 +14,28 @@ module.exports.run = async (
   {UserConfig, GuildConfig, GuildMemberConfig}
 ) => {
   const hasGuildPerms = message.member.hasPermission('MANAGE_GUILD');
+  if (args[0]) {
+    let what = args.join(' ').toLowerCase();
+
+    switch (what) {
+      case 'guild' || 'server':
+        if (!hasGuildPerms)
+          message.channel.send(
+            `You dont have permission to view the server config`
+          );
+        else message.author.send(`\`\`\`json\n${GuildConfig}\n\`\`\``);
+        break;
+      case 'member':
+        message.author.send(`\`\`\`json\n${GuildMemberConfig}\n\`\`\``);
+        break;
+      case 'user':
+        message.author.send(`\`\`\`json\n${UserConfig}\n\`\`\``);
+        break;
+      default:
+        break;
+    }
+    return;
+  }
 
   let mes = `Type \`User\` to see your user information\nType \`Member\` to see your member information`;
   if (hasGuildPerms) mes += `\nType \`Guild\` to see the server information`;
@@ -33,15 +55,15 @@ module.exports.run = async (
     switch (m.content.toLowerCase()) {
       case 'guild':
         message.author.send(`\`\`\`json\n${GuildConfig}\n\`\`\``);
-        message.channel.send(`Success`);
+        message.channel.send(`Sent you all the server info`);
         break;
       case 'member':
         message.author.send(`\`\`\`json\n${GuildMemberConfig}\n\`\`\``);
-        message.channel.send(`Success`);
+        message.channel.send(`Sent you all your member info`);
         break;
       case 'user':
         message.author.send(`\`\`\`json\n${UserConfig}\n\`\`\``);
-        message.channel.send(`Success`);
+        message.channel.send(`Sent you all your user info`);
         break;
       default:
         break;

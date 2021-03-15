@@ -1,19 +1,16 @@
 const Discord = require('discord.js');
-const GuildConfig = require('../database/models/GuildConfig');
+const {getGuild} = require('../Storage/database');
 
 module.exports = async (client, oldMessage, newMessage) => {
   if (
     !oldMessage.author ||
     !newMessage.author ||
     oldMessage.content == newMessage.content ||
-    newMessage.content.startsWith(':game_die:') ||
-    oldMessage.content.startsWith(':game_die:')
+    newMessage.author.bot
   )
     return;
 
-  const Guild =
-    (await GuildConfig.findOne({id: oldMessage.guild.id})) ||
-    (await GuildConfig.create({id: oldMessage.guild.id}));
+  const Guild = await getGuild(newMessage.guild.id);
   let y = Guild.logging.events.includes('Message edits');
   if (!y) return;
   let x = Guild.logging.channel;

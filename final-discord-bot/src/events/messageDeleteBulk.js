@@ -1,12 +1,10 @@
 const Discord = require('discord.js');
-const GuildConfig = require('../database/models/GuildConfig');
+const {getGuild} = require('../Storage/database');
 const fs = require('fs');
 
 module.exports = async (client, messages) => {
   const guild = messages.random().guild;
-  const Guild =
-    (await GuildConfig.findOne({id: guild.id})) ||
-    (await GuildConfig.create({id: guild.id}));
+  const Guild = await getGuild(guild.id);
 
   let y = Guild.logging.events.includes('Bulk deletes');
   if (!y) return;

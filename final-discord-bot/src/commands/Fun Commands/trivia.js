@@ -2,6 +2,7 @@ const Discord = require('discord.js');
 const ms = require('pretty-ms');
 const parse = require('parse-ms');
 const fetch = require('got');
+const {setTimeout, addMoney, removeMoney} = require('../../Storage/database');
 
 async function getQuestion(d) {
   if (d != 'easy' && d != 'medium' && d != 'hard') d = null;
@@ -46,7 +47,7 @@ module.exports.run = async (bot, message, args, {UserConfig}) => {
     );
     return;
   }
-  await UserConfig.updateOne({$set: {'timout.trivia': Date.now()}});
+  await setTimeout('trivia', message.author.id);
 
   //Get the questions
   let difficulty = args[0] ? args[0].toLowerCase() : null;
@@ -88,8 +89,7 @@ module.exports.run = async (bot, message, args, {UserConfig}) => {
     //Check's if the user sent the right message
     if (parseInt(msgs.first().content) == q.correct) {
       message.channel.send(`You got it correct! Plus 15$`);
-      // db.add(`money_${message.author.id}`, 15);
-      await UserConfig.updateOne({$inc: {'economy.balance': 15}});
+      addMoney(15, message.author.id);
       return;
     } else {
       message.channel.send(
@@ -97,12 +97,12 @@ module.exports.run = async (bot, message, args, {UserConfig}) => {
           q.options[q.correct - 1]
         }\`. Minus 5$`
       );
-      await UserConfig.updateOne({$inc: {'economy.balance': -5}});
+      removeMoney(5, message.author.id);
       return;
     }
   } catch (e) {
     message.channel.send(`You did not answer. Minus 1$`);
-    await UserConfig.updateOne({$inc: {'economy.balance': -1}});
+    removeMoney(1, message.author.id);
     return;
   }
 };

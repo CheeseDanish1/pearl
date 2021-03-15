@@ -1,10 +1,8 @@
 const Discord = require('discord.js');
-const GuildConfig = require('../database/models/GuildConfig');
+const {getGuild} = require('../Storage/database');
 
 module.exports = async (client, role) => {
-  const Guild =
-    (await GuildConfig.findOne({id: role.guild.id})) ||
-    (await GuildConfig.create({id: role.guild.id}));
+  const Guild = await getGuild(role.guild.id);
   let y = Guild.logging.events.includes('Role creation');
   if (!y) return;
   let x = Guild.logging.channel;

@@ -1,20 +1,10 @@
 /** @format */
 
 const Discord = require('discord.js');
-const {GuildMember, Client} = require('discord.js');
-const GuildConfig = require('../database/models/GuildConfig');
-
-/**
- *
- * @param {Client} client
- * @param {GuildMember} oldMember
- * @param {GuildMember} newMember
- */
+const {getGuild} = require('../Storage/database');
 
 module.exports = async (client, oldMember, newMember) => {
-  const Guild =
-    (await GuildConfig.findOne({id: oldMember.guild.id})) ||
-    (await GuildConfig.create({id: oldMember.guild.id}));
+  const Guild = await getGuild(oldMember.guild.id);
   let x = Guild.logging.channel;
   x = oldMember.guild.channels.cache.get(x);
   if (!x) return;

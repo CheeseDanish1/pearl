@@ -1,13 +1,11 @@
-const UserModelConfig = require('../../../database/models/UserConfig');
+const {getUser} = require('../../../Storage/database');
 
 module.exports.run = async (client, message, args, {UserConfig}) => {
   let user = message.mentions.members.first() || message.author;
   let config;
   user == message.author
     ? (config = UserConfig)
-    : (config =
-        (await UserModelConfig.findOne({id: user.id})) ||
-        (await UserModelConfig.create({id: user.id})));
+    : (config = await getUser(user));
 
   let money = config.economy.balance || 0;
 

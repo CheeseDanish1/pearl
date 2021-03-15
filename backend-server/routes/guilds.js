@@ -54,6 +54,17 @@ router.get(`/id/:guildId/config`, async (req, res) => {
     : res.status(400).send({msg: 'Guild not found'});
 });
 
+router.put(`/config/create`, async (req, res) => {
+  // GuildConfig.find((err, docs) => res.send(docs))
+
+  if (!req.user) return res.status(401).send({msg: 'Unauthorized'});
+  const {id, guild} = req.body;
+  const hasPerms = (guild.permissions & 0x20) === 0x20;
+  if (!hasPerms) return res.status(401).send({msg: 'Not enough permissions'});
+  const created = await GuildConfig.create({id});
+  return res.status(200).send(created);
+});
+
 router.put('/id/:guildId/logging/:what', async (req, res) => {
   if (!req.user) return res.status(401).send({msg: 'Unauthorized'});
   const {to} = req.body;
@@ -92,10 +103,10 @@ router.put(`/id/:guildId/prefix`, async (req, res) => {
   // const update = await GuildConfig.findOneAndUpdate({id: guildId}, {prefix}, {new: true})
   // return update ? res.send(update) : res.status(400).send({msg: "Could not find guild"})
 
-  const prefix = req.body.prefix;
+  const {prefix, guilds} = req.body;
   if (!req.user) return res.send({msg: 'Unauthorized', error: true});
   if (!prefix) return res.send({msg: 'Prefix is required', error: true});
-  const g = req.user.guilds.find(g => g.id == req.params.guildId);
+  const g = guilds.find(g => g.id == req.params.guildId);
   const userPermissions = g.permissions;
   const canManageGuild = (userPermissions & 0x20) === 0x20;
   if (!canManageGuild)
@@ -107,7 +118,7 @@ router.put(`/id/:guildId/prefix`, async (req, res) => {
       {new: true}
     );
     return update
-      ? res.send(update)
+      ? res.send({msg: 'Success', result: update})
       : res.send({msg: 'Could not find that guild', error: true});
   }
 });

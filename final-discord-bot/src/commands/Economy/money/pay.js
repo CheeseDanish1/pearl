@@ -1,5 +1,5 @@
 const ms = require('parse-ms');
-const Discord = require('discord.js');
+const {removeMoney, addMoney} = require('../../../Storage/database');
 
 module.exports.run = async (client, message, args, {UserConfig}) => {
   const target = message.mentions.members.first();
@@ -10,7 +10,7 @@ module.exports.run = async (client, message, args, {UserConfig}) => {
   const time = ms(twoWeeks - (Date.now() - userAccountAge));
   if (!target) return message.channel.send('You must mention someone');
 
-  if (!amount || amount == null || amount == undefined)
+  if (!amount)
     return message.channel.send('Please include an amount of money to send');
 
   if (isNaN(amount))
@@ -35,24 +35,10 @@ module.exports.run = async (client, message, args, {UserConfig}) => {
       'You are trying to send more money than you have'
     );
 
-  //   db.subtract(`money_${message.author.id}`, amount);
-  //   db.add(`money_${target.id}`, amount);
-  await UserConfig.updateOne({$inc: {'economy.balance': -parseInt(amount)}});
-  await UserConfig.collection.findOneAndUpdate(
-    {id: target.id},
-    {$inc: {'economy.balance': parseInt(amount)}}
-  );
-  //   await UserConfig.
+  let mes = `**${message.author.username}** sent **${amount}$** to **${target.user.username}**`;
 
-  let embed = new Discord.MessageEmbed()
-    .setTitle('Payed')
-    .setColor('GREEN')
-    .addFields(
-      {name: `From`, value: `${message.author.tag}`},
-      {name: `To`, value: `${target.user.username}`},
-      {name: `Amount`, value: `${amount}`}
-    );
-
-  message.channel.send(embed);
+  message.channel.send(mes);
+  await removeMoney(amount, message.author.id);
+  await addMoney(amount, target.id);
   return;
 };

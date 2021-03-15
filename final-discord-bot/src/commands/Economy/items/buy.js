@@ -3,6 +3,7 @@
 const items = require('../../../Storage/items');
 const Client = require('discord.js').Client;
 const Message = require('discord.js').Message;
+const {buyItem, removeMoney} = require('../../../Storage/database');
 
 /**
  *
@@ -32,20 +33,9 @@ module.exports.run = async (client, message, args, {prefix, UserConfig}) => {
   let inventory = UserConfig.economy.inventory;
 
   item.amount = 1;
-
-  let userItem = inventory.find(i => i.lowercaseName == what.toLowerCase());
-
-  if (userItem) {
-    message.channel.send(`Successfully bought item ${item.name}!`);
-    await UserConfig.updateOne(
-      {$inc: {'economy.inventory.$[i].amount': 1}},
-      {arrayFilters: [{'i.lowercaseName': what.toLowerCase()}]}
-    );
-  } else {
-    message.channel.send(`Successfully bought item ${item.name}!`);
-    return await UserConfig.updateOne({
-      $push: {'economy.inventory': item},
-      $inc: {'economy.balance': -item.price},
-    });
-  }
+  message.channel.send(
+    `Successfully bought item **${item.name}** for **${item.sellPrice}$**!`
+  );
+  buyItem(item, inventory, message.author.id);
+  removeMoney(item.price, message.author.id);
 };

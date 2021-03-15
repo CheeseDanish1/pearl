@@ -1,5 +1,6 @@
 const ms = require('parse-ms');
 const Discord = require('discord.js');
+const {setTimeout, addMoney} = require('../../../Storage/database');
 
 module.exports.run = async (client, message, args, {UserConfig}) => {
   let timeout = 604800000;
@@ -10,25 +11,23 @@ module.exports.run = async (client, message, args, {UserConfig}) => {
   if (weekly !== null && timeout - (Date.now() - weekly) > 0) {
     let time = ms(timeout - (Date.now() - weekly));
 
-    message.channel.send(
+    return message.channel.send(
       `You already collected your weekly reward! \nYou can come back and collect it in **${time.days}d ${time.hours}h ${time.minutes}m ${time.seconds}s**!`
     );
-  } else {
-    let embed = new Discord.MessageEmbed()
-      .setAuthor(`Weekly`, message.author.avatarURL())
-      .setColor('GREEN')
-      .setDescription(`**Weekly Reward**`)
-      .addFields({
-        name: 'Collected',
-        value: amount,
-      });
-
-    message.channel.send(embed);
-    // db.add(`money_${message.author.id}`, amount)
-    // db.set(`weekly_${message.author.id}`, Date.now())
-    await UserConfig.updateOne({
-      $inc: {'economy.balance': amount},
-      $set: {'timeout.weekly': Date.now()},
-    });
   }
+
+  let embed = new Discord.MessageEmbed()
+    .setAuthor(`Weekly`, message.author.avatarURL())
+    .setColor('GREEN')
+    .setDescription(`**Weekly Reward**`)
+    .addFields({
+      name: 'Collected',
+      value: amount,
+    });
+
+  message.channel.send(embed);
+  Promise.all([
+    setTimeout('weekly', message.author.id),
+    addMoney(amount, message.author.id),
+  ]);
 };

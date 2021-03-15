@@ -1,4 +1,4 @@
-const GuildConfig = require('../database/models/GuildConfig');
+const {getGuild} = require('../Storage/database');
 const Discord = require('discord.js');
 
 module.exports = async (client, member) => {
@@ -7,9 +7,7 @@ module.exports = async (client, member) => {
   );
 
   const {guild} = member;
-  const Guild =
-    (await GuildConfig.findOne({id: guild.id})) ||
-    (await GuildConfig.create({id: guild.id}));
+  const Guild = await getGuild(guild.id);
   if (!Guild.logging.channel) return;
   if (!Guild.logging.events.find(e => e == 'Member leaves')) return;
   const loggingChannel = guild.channels.cache.get(Guild.logging.channel);

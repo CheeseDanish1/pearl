@@ -11,7 +11,7 @@ const SidebarComp = ({index, item}) => {
         }
       >
         {item.icon}
-        <span>{item.title}</span>
+        <span className="nav-title">{item.title}</span>
       </Link>
     </li>
   );

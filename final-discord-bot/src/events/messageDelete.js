@@ -1,18 +1,10 @@
-const {Message, Client, MessageEmbed} = require('discord.js');
-const GuildConfig = require('../database/models/GuildConfig');
-
-/**
- *
- * @param {Client} client
- * @param {Message} message
- */
+const {MessageEmbed} = require('discord.js');
+const {getGuild} = require('../Storage/database');
 
 module.exports = async (client, message) => {
   if (!message.author || !message.guild || message.author.bot) return;
 
-  const Guild =
-    (await GuildConfig.findOne({id: message.guild.id})) ||
-    (await GuildConfig.create({id: message.guild.id}));
+  const Guild = await getGuild(message.guild.id);
 
   logging();
   snipe();

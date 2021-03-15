@@ -1,13 +1,6 @@
 const Discord = require('discord.js');
-const GuildConfig = require('../database/models/GuildConfig');
-const {Client, VoiceState} = require('discord.js');
+const {getGuild} = require('../Storage/database');
 
-/**
- *
- * @param {Client} client
- * @param {VoiceState} oldState
- * @param {VoiceState} newState
- */
 module.exports = async (client, oldState, newState) => {
   if (oldState.guild.me.id == newState.member.user.id) {
     if (oldState.channel && !newState.channel) {
@@ -17,9 +10,7 @@ module.exports = async (client, oldState, newState) => {
     }
   }
 
-  const Guild =
-    (await GuildConfig.findOne({id: oldState.guild.id})) ||
-    (await GuildConfig.create({id: oldState.guild.id}));
+  const Guild = await getGuild(oldState.guild.id);
 
   let y = Guild.logging.events.includes('Voice channel changes');
   if (!y) return;

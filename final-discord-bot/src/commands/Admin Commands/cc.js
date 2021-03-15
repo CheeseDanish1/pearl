@@ -11,8 +11,6 @@ const {Client, Message, Guild} = require('discord.js');
 
 module.exports.run = async (bclient, message, args, ops) => {
   const {GuildConfig} = ops;
-  // const GuildConfig = await GuildConfigs.findOne({id: ''});
-  // console.log(GuildConfig)
   if (!message.member.hasPermission('MANAGE_GUILD'))
     return message.channel.send('You dont have permission to use this command');
   if (!args[0])
@@ -27,22 +25,8 @@ module.exports.run = async (bclient, message, args, ops) => {
     content: args.slice(1).join(' '),
   };
 
-  // GuildConfig.collection.findOneAndUpdate({"customCommands.content": cc.content})
-
   if (GuildConfig.customCommands.find(c => c.command == cc.command)) {
     console.log('Ran');
-    // await GuildConfig.updateOne({
-    //   $pull: {
-    //     customCommands: {
-    //       command: cc.command,
-    //     },
-    //   },
-    // });
-    // await GuildConfig.updateOne({
-    //   $push: {
-    //     customCommands: cc,
-    //   },
-    // });
     await GuildConfig.updateOne(
       {$set: {'customCommands.$[c]': cc}},
       {arrayFilters: [{'c.command': cc.command}]}

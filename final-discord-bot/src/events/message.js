@@ -1,10 +1,9 @@
 /** @format */
 
 const {onMes} = require('../Storage/functions');
-const GuildConfig = require('../database/models/GuildConfig');
 const GuildMemberConfig = require('../database/models/GuildMemberConfig');
-const UserConfig = require('../database/models/UserConfig');
 const {Client, Message} = require('discord.js');
+const {getUser, getGuild, getGuildMember} = require('../Storage/database');
 
 /**
  *
@@ -16,33 +15,11 @@ module.exports = async (client, message) => {
   //Leave's if you are in a DM Or if the bot sends a message or if they have admin only mode set to true
   if (message.guild === null || message.author.bot) return;
 
-  let Guild =
-    (await GuildConfig.findOne({id: message.guild.id})) ||
-    (await GuildConfig.create({id: message.guild.id}));
+  let Guild = await getGuild(message.guild.id);
 
-  let GuildMember =
-    (await GuildMemberConfig.findOne({
-      id: message.member.id,
-      guild: message.guild.id,
-    })) ||
-    (await GuildMemberConfig.create({
-      id: message.member.id,
-      guild: message.guild.id,
-    }));
+  let GuildMember = await getGuildMember(message.member.id, message.guild.id);
 
-  let name = `${message.author.username}#${message.author.discriminator}`;
-
-  let User =
-    (await UserConfig.findOneAndUpdate(
-      {id: message.author.id},
-      {name, avatar: message.author.avatar},
-      {new: true}
-    )) ||
-    (await UserConfig.create({
-      id: message.author.id,
-      name,
-      avatar: message.author.avatar,
-    }));
+  let User = await getUser(message.author);
 
   if (!Guild || !User || !GuildMember)
     return message.channel.send('Unknown error');
@@ -128,7 +105,7 @@ module.exports = async (client, message) => {
     }
   }
 
-  await onMes({prefix, GuildMember, User});
+  await onMes(GuildMember);
 
   const c = Guild.customCommands.find(
     c => c.command == message.content.toLowerCase()

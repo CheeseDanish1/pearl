@@ -1,5 +1,6 @@
 const ms = require('parse-ms');
 const Discord = require('discord.js');
+const {addMoney, setTimeout} = require('../../../Storage/database');
 
 module.exports.run = async (client, message, args, {UserConfig}) => {
   let timeout = 86400000;
@@ -21,9 +22,7 @@ module.exports.run = async (client, message, args, {UserConfig}) => {
       .addField(`Collected`, amount);
 
     message.channel.send(embed);
-    // db.add(`money_${message.author.id}`, amount);
-    // db.set(`daily_${message.author.id}`, Date.now());
-    await UserConfig.updateOne({$inc: {'economy.balance': amount}});
-    await UserConfig.updateOne({'timeout.daily': Date.now()});
+    await addMoney(amount, message.author.id);
+    await setTimeout('daily', message.author.id);
   }
 };

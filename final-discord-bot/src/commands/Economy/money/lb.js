@@ -2,7 +2,6 @@ const Discord = require('discord.js');
 
 module.exports.run = async (client, message, args, {UserConfig}) => {
   let re = await dbsw();
-  console.log(re);
   let start = 0;
   let end = 10;
   let embed = new Discord.MessageEmbed()

@@ -1,12 +1,6 @@
 /** @format */
 
-const {Guild} = require('discord.js');
-const GuildConfig = require('../database/models/GuildConfig');
-
-/**
- *
- * @param {Guild} guild
- */
+const {getGuild} = require('../Storage/database');
 
 module.exports = async (client, guild) => {
   console.log(`Joined a new guild`);
@@ -31,9 +25,9 @@ module.exports = async (client, guild) => {
     .filter(c => c.type === 'text')
     .find(x => x.position == 0);
 
-  const Guild = await GuildConfig.findOne({id: guild.id}) || await GuildConfig.create({id: guild.id,});
+  const Guild = await getGuild(guild.id);
 
-  const prefix = Guild.prefix
+  const prefix = Guild.prefix;
 
   let mes = `Thank you for inviting Pearl to your server!\n`;
   mes += `My prefix is **${prefix}** but you can change it any time you like using the command ${prefix}SetPrefix <prefix>\n`;

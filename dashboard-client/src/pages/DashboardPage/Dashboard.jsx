@@ -1,5 +1,10 @@
 import React, {useState, useEffect} from 'react';
-import {getUserDetails, getGuild, getGuildsWithPerms} from '../../utils/api';
+import {
+  getUserDetails,
+  getGuild,
+  getGuildsWithPerms,
+  createGuildConfig,
+} from '../../utils/api';
 import Loading from '../../components/Loading';
 import Header from '../../components/Header';
 import {Redirect} from 'react-router-dom';
@@ -32,11 +37,14 @@ const Dashboard = ({match, history}) => {
 
   useEffect(() => {
     Promise.all([getUserDetails(), getGuild(id), getGuildsWithPerms()])
-      .then(res => {
+      .then(async res => {
         let u = res[0].data;
         let g = res[1].data;
         let gs = res[2].data;
         // u.guild = g;
+
+        if (!g.config) g.config = (await createGuildConfig(id, g)).data;
+
         setUser(u);
         setGuild(g);
         setGuilds(gs);
@@ -54,7 +62,6 @@ const Dashboard = ({match, history}) => {
 
   if (loading) return <Loading />;
   if (!loading) setTimeout(() => Expand(), 100);
-  if (!loading) console.log(user);
 
   return (
     !loading && (
@@ -65,15 +72,11 @@ const Dashboard = ({match, history}) => {
             <Sidebar guild={guild} />
             <div className="dash-work1">
               <div className="dash-idk1">
-                {/* <div className="dash-work2">
-                  <div className="dash-idk2"> */}
-                <Pages page={place} guild={guild} user={user} />
-                {/* <Br /> */}
-                {/* </div>
-                </div> */}
+                <Pages page={place} guild={guild} guilds={guilds} user={user} />
               </div>
               <div className="sidebar-background"></div>
             </div>
+            <br />
           </div>
         </div>
       </>

@@ -1,5 +1,4 @@
 const Canvas = require('canvas');
-const GuildMemberConfig = require('../../database/models/GuildMemberConfig');
 const {level} = require('../../Storage/functions');
 const Discord = require('discord.js');
 
@@ -19,22 +18,14 @@ const applyText = (canvas, text, re = 70) => {
   return ctx.font;
 };
 
-module.exports.run = async (client, message, args) => {
+module.exports.run = async (client, message, args, {GuildMemberConfig}) => {
   let person = message.mentions.users.first() || message.author;
   if (person.bot)
     return message.channel.send(
       `This user is a bot, so does not have any stats`
     );
 
-  let config =
-    (await GuildMemberConfig.findOne({
-      id: person.id,
-      guild: message.guild.id,
-    })) ||
-    (await GuildMemberConfig.create({
-      id: person.id,
-      guild: message.guild.id,
-    }));
+  let config = GuildMemberConfig;
 
   let xp = config.xp;
   let mes = config.messages;

@@ -2,6 +2,7 @@ const Canvas = require('canvas');
 const Discord = require('discord.js');
 const {level} = require('../../Storage/functions');
 const UserConfig = require('../../database/models/UserConfig');
+const {getUser} = require('../../Storage/database');
 
 const applyText = (canvas, text, re = 70) => {
   const ctx = canvas.getContext('2d');
@@ -26,14 +27,7 @@ module.exports.run = async (client, message, args) => {
     return message.channel.send(
       `This user is a bot, so does not have any stats`
     );
-  let name = `${message.author.username}#${message.author.discriminator}`;
-  let config =
-    (await UserConfig.findOne({id: person.id})) ||
-    (await UserConfig.create({
-      id: person.id,
-      name,
-      avatar: message.author.avatar,
-    }));
+  let config = await getUser(person);
 
   let xp = config.xpg;
   let mes = config.messages;

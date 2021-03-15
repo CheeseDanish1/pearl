@@ -1,20 +1,30 @@
-module.exports = (client) => {
+const {getGiveaways, endGiveaway} = require('../Storage/database');
+const {drawWinner, addVars, startGiveaway} = require('../Storage/giveaway');
 
-    client.user.setStatus('online'); //dnd, idle, online, invisible
-    client.user.setActivity('>Help || Use the Feedback Command To Give Me Feedback');
+module.exports = async client => {
+  setInterval(() => {
+    client.user.setStatus('online');
+    client.user.setActivity(
+      '>Help || Use the Feedback Command To Give Me Feedback'
+    );
+  }, 1000 * 60 * 60);
 
-    console.log(client.user.username + " has logged in.");
+  console.log(client.user.username + ' has logged in.');
 
-
-    // db.set(`cmd_per_min`, 0)
-    // db.set(`cmd_per_day`, 0)
-    
-    // setInterval(() => {
-    //     db.set(`cmd_per_min`, 0)
-    // }, 3600000);
-
-    // setInterval(() => {
-    //     db.set(`cmd_per_day`, 0)
-    // }, 86400000);
-
-}
+  // Resume giveaways or declare ended giveaways
+  let giveaways = await getGiveaways();
+  giveaways.forEach(g => {
+    if (g.ends - +new Date() > 0) return startGiveaway(g, client);
+    if (!g.ended) {
+      addVars(g, client).then(gf => {
+        drawWinner(gf).then(winner => {
+          gf.message.channel.send(
+            `The winner of **${gf.prize}** is... ${winner}`
+          );
+          gf.message.edit(gf.message.embeds[0].setFooter('Giveaway ended'));
+          return endGiveaway(g);
+        });
+      });
+    }
+  });
+};

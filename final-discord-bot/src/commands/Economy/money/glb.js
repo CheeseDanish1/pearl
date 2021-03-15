@@ -3,14 +3,7 @@ const Discord = require('discord.js');
 module.exports.run = async (client, message, args, {UserConfig}) => {
   let start = 0;
   let end = 10;
-  // let all = db.all().filter(d => d.ID.startsWith("money_")).sort((a, b) => b.data - a.data);
-  // let mes = [];
-  // all.forEach(a => {
-  //     let who = client.users.cache.get(a.ID.split("_")[1])
-  //     if (who) {
-  //         mes.push(`${who.username} - ${a.data}`);
-  //     }
-  // })
+
   let all = await UserConfig.collection
     .find()
     .sort({'economy.balance': -1})

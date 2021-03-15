@@ -1,5 +1,5 @@
 const {MessageEmbed, GuildMember, Client} = require('discord.js');
-const GuildConfig = require('../database/models/GuildConfig');
+const {getGuild} = require('../Storage/database');
 
 /**
  *
@@ -14,8 +14,7 @@ module.exports = async (client, member) => {
   const {guild} = member;
   const {id} = guild;
 
-  const Guild =
-    (await GuildConfig.findOne({id})) || (await GuildConfig.create({id}));
+  const Guild = await getGuild(id);
 
   let roles = Guild.autorole;
   if (roles.length > 0) {

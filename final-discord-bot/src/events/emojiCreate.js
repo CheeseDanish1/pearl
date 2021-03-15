@@ -1,14 +1,12 @@
 const Discord = require('discord.js');
-const GuildConfig = require('../database/models/GuildConfig');
+const {getGuild} = require('../Storage/database');
 
 module.exports = async (client, emoji) => {
   // Make sure where in a server
   if (!emoji.guild) return;
 
   // Get the server configuration from the database
-  const Guild =
-    (await GuildConfig.findOne({id: emoji.guild.id})) ||
-    (await GuildConfig.create({id: emoji.guild.id}));
+  const Guild = await getGuild(emoji.guild.id);
 
   // If they dont have a logging channel exit
   if (!Guild.logging.channel) return;
@@ -27,7 +25,7 @@ module.exports = async (client, emoji) => {
     .setColor('RANDOM')
     .setAuthor('Emoji Created', emoji.guild.iconURL)
     .addField('Emoji Name', emoji.name)
-    .addField('Emoji', emoji + `\n**----------------------**`)
+    .addField('Emoji Url', emoji.url + `\n**----------------------**`)
     .setTimestamp();
 
   // Send the embed

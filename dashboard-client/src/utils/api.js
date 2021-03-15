@@ -1,5 +1,15 @@
 import axios from 'axios';
 
+export function createGuildConfig(id, guild) {
+  return axios.put(
+    `http://localhost:3001/api/bot/guilds/config/create`,
+    {id, guild},
+    {
+      withCredentials: true,
+    }
+  );
+}
+
 export function getUserDetails() {
   return axios.get('http://localhost:3001/api/bot/users/me/', {
     withCredentials: true,

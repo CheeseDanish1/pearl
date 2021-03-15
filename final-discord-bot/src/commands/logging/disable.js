@@ -1,6 +1,7 @@
 /** @format */
 
 const allLoggingEvents = require('../../Storage/allLoggingEvents');
+const {disableEvent} = require('../../Storage/database');
 
 module.exports.run = async (client, message, args, {GuildConfig, prefix}) => {
   if (!message.member.hasPermission(`MANAGE_GUILD`))
@@ -31,7 +32,7 @@ module.exports.run = async (client, message, args, {GuildConfig, prefix}) => {
     );
 
   if (num == 'all') {
-    await GuildConfig.updateOne({$unset: {'logging.events': ""}});
+    await disableEvent(num, GuildConfig);
     return message.channel.send('Disabled logging for all events');
   }
 
@@ -40,168 +41,7 @@ module.exports.run = async (client, message, args, {GuildConfig, prefix}) => {
   if (!GuildConfig.logging.events.find(e => e == event))
     return message.channel.send(`Logging for \`${event}\` is already disabled`);
 
-  await GuildConfig.updateOne({$pull: {'logging.events': event}});
+  await disableEvent(event, GuildConfig);
 
   return message.channel.send(`Disabled logging for \`${event}\``);
-
-  //   let prefix = db.fetch(`prefix_${message.guild.id}`);
-  //   if (prefix == null) prefix = '>';
-
-  //   if (!message.guild) return message.reply('use this command in a server pls');
-  //   if (
-  //     !message.member.hasPermission(`MANAGE_CHANNELS`) ||
-  //     !message.member.hasPermission(`MANAGE_GUILD`)
-  //   )
-  //     return message.channel.send(
-  //       `sorry, you need manage channels / manage guild permission to use this!`
-  //     );
-  //   if (!args[0])
-  //     return message.channel.send(
-  //       `you need to specify a number with the event u want to not log. type \`${prefix}help\``
-  //     );
-  //   var x = await db.get('loggingchannel_' + message.guild.id);
-  //   if (x == null || x == 'none') {
-  //     return message.channel.send(
-  //       `you haven't set up a logging channel for this guild. type \`${prefix}help\``
-  //     );
-  //   }
-  //   if (args[0] > 21 || args[0] < 1)
-  //     return message.reply(
-  //       `type \`${prefix}LoggingHelp\` and find the number with what event u want to disable logging for`
-  //     );
-  //   switch (args[0]) {
-  //     case '1':
-  //       await db.set(`messagedelete_${message.guild.id}`, 'disabled');
-  //       message.channel.send(`ok, disabled the logging for deleted messages`);
-  //       await db.delete(`allenabled_${message.guild.id}`);
-  //       break;
-  //     case '2':
-  //       await db.set(`rolecreate_${message.guild.id}`, 'disabled');
-  //       message.channel.send(`ok, disabled the logging for created roles`);
-  //       await db.delete(`allenabled_${message.guild.id}`);
-  //       break;
-  //     case '3':
-  //       await db.set(`roledelete_${message.guild.id}`, 'disabled');
-  //       message.channel.send(`ok, disabled the logging for deleted roles`);
-  //       await db.delete(`allenabled_${message.guild.id}`);
-  //       break;
-  //     case '4':
-  //       await db.set(`messagebulkdelete_${message.guild.id}`, 'disabled');
-  //       message.channel.send(`ok, disabled the logging for message bulk deletes`);
-  //       await db.delete(`allenabled_${message.guild.id}`);
-  //       break;
-  //     case '5':
-  //       await db.set(`guildmemberremove_${message.guild.id}`, 'disabled');
-  //       message.channel.send(`ok, disabled the logging member leaves/user kicks`);
-  //       await db.delete(`allenabled_${message.guild.id}`);
-  //       break;
-  //     case '6':
-  //       await db.set(`guildmemberadd_${message.guild.id}`, 'disabled');
-  //       message.channel.send(`ok, disabled the logging for new members`);
-  //       await db.delete(`allenabled_${message.guild.id}`);
-  //       break;
-  //     case '7':
-  //       await db.set(`guildbanadd_${message.guild.id}`, 'disabled');
-  //       message.channel.send(`ok, disabled the logging banned users`);
-  //       await db.delete(`allenabled_${message.guild.id}`);
-  //       break;
-  //     case '8':
-  //       await db.set(`guildbanremove_${message.guild.id}`, 'disabled');
-  //       message.channel.send(`ok, disabled the logging unbanned users`);
-  //       await db.delete(`allenabled_${message.guild.id}`);
-  //       break;
-  //     case '9':
-  //       await db.set(`emojicreate_${message.guild.id}`, 'disabled');
-  //       message.channel.send(`ok, disabled the logging for emoji creations`);
-  //       await db.delete(`allenabled_${message.guild.id}`);
-  //       break;
-  //     case '10':
-  //       await db.set(`emojidelete_${message.guild.id}`, 'disabled');
-  //       message.channel.send(`ok, disabled the logging for emoji deletions`);
-  //       await db.delete(`allenabled_${message.guild.id}`);
-  //       break;
-  //     case '11':
-  //       await db.set(`channelcreate_${message.guild.id}`, 'disabled');
-  //       message.channel.send(`ok, disabled the logging for channel creations`);
-  //       await db.delete(`allenabled_${message.guild.id}`);
-  //       break;
-  //     case '12':
-  //       await db.set(`channeldelete_${message.guild.id}`, 'disabled');
-  //       message.channel.send(`ok, disabled the logging for channel deletions`);
-  //       await db.delete(`allenabled_${message.guild.id}`);
-  //       break;
-  //     case '13':
-  //       await db.set(`messageedit_${message.guild.id}`, 'disabled');
-  //       message.channel.send(`ok, disabled the logging for message edits`);
-  //       await db.delete(`allenabled_${message.guild.id}`);
-  //       break;
-  //     case '14':
-  //       await db.set(`emojiupdate_${message.guild.id}`, 'disabled');
-  //       message.channel.send(`ok, disabled the logging for emoji updates`);
-  //       await db.delete(`allenabled_${message.guild.id}`);
-  //       break;
-  //     case '15':
-  //       await db.set(`roleadd_${message.guild.id}`, 'disabled');
-  //       message.channel.send(
-  //         `ok, disabled the logging for when some gets a role`
-  //       );
-  //       await db.delete(`allenabled_${message.guild.id}`);
-  //       break;
-  //     case '16':
-  //       await db.set(`roleremove_${message.guild.id}`, 'disabled');
-  //       message.channel.send(
-  //         `ok, disabled the logging for when someone loses a role`
-  //       );
-  //       await db.delete(`allenabled_${message.guild.id}`);
-  //       break;
-  //     case '17':
-  //       await db.set(`nickchange_${message.guild.id}`, 'disabled');
-  //       message.channel.send(`ok, disabled the logging for nickname changes`);
-  //       await db.delete(`allenabled_${message.guild.id}`);
-  //       break;
-  //     case '18':
-  //       await db.set(`userchange_${message.guild.id}`, 'disabled');
-  //       message.channel.send(`ok, disabled the logging for user changes`);
-  //       await db.delete(`allenabled_${message.guild.id}`);
-  //       break;
-  //     case '19':
-  //       await db.set(`voicechange_${message.guild.id}`, 'disabled');
-  //       message.channel.send(`ok, disabled the logging for voice changes`);
-  //       await db.delete(`allenabled_${message.guild.id}`);
-  //       break;
-  //     case '20':
-  //       await db.set(`preschange_${message.guild.id}`, 'disabled');
-  //       message.channel.send(`ok, disabled the logging for presence changes`);
-  //       await db.delete(`allenabled_${message.guild.id}`);
-  //       break;
-  //     case '21':
-  //       await db.set(`mesreaction_${message.guild.id}`, 'disabled');
-  //       message.channel.send(`ok, disabled logging of message reactions`);
-  //       await db.delete(`allenabled_${message.guild.id}`);
-  //       break;
-  //     case 'all':
-  //       await db.set(`allenabled_${message.guild.id}`, 'disabled');
-  //       await db.set(`messagedelete_${message.guild.id}`, 'disabled');
-  //       await db.set('rolecreate_' + message.guild.id, 'disabled');
-  //       await db.set('roledelete_' + message.guild.id, 'disabled');
-  //       await db.set('messagebulkdelete_' + message.guild.id, 'disabled');
-  //       await db.set('guildmemberremove_' + message.guild.id, 'disabled');
-  //       await db.set('guildmemberadd_' + message.guild.id, 'disabled');
-  //       await db.set('guildbanadd_' + message.guild.id, 'disabled');
-  //       await db.set('guildbanremove_' + message.guild.id, 'disabled');
-  //       await db.set('emojicreate_' + message.guild.id, 'disabled');
-  //       await db.set('emojidelete_' + message.guild.id, 'disabled');
-  //       await db.set('channelcreate_' + message.guild.id, 'disabled');
-  //       await db.set('channeldelete_' + message.guild.id, 'disabled');
-  //       await db.set('messageedit_' + message.guild.id, 'disabled');
-  //       await db.set(`emojiupdate_${message.guild.id}`, 'disabled');
-  //       await db.set(`roleadd_${message.guild.id}`, 'disabled');
-  //       await db.set(`roleremove_${message.guild.id}`, 'disabled');
-  //       await db.set(`nickchange_${message.guild.id}`, 'disabled');
-  //       await db.set(`userchange_${message.guild.id}`, 'disabled');
-  //       await db.set(`voicechange_${message.guild.id}`, 'disabled');
-  //       await db.set(`preschange_${message.guild.id}`, 'disabled');
-  //       await db.set(`mesreaction_${message.guild.id}`, 'disabled');
-  //       message.channel.send(`ok disabled logging for all events in this guild`);
-  //   }
 };

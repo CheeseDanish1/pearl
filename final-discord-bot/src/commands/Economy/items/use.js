@@ -1,21 +1,11 @@
 /** @format */
 
-const Client = require('discord.js').Client;
-const Message = require('discord.js').Message;
-// const db = require('../../../database/connection');
-const MessageEmbed = require('discord.js').MessageEmbed;
-
-/**
- *
- * @param {Client} botClient
- * @param {Message} message
- * @param {string[]} args
- */
+const {sellItem} = require('../../../Storage/database');
 
 module.exports.run = async (botClient, message, args, ops) => {
   const {prefix, UserConfig} = ops;
   const what = args.join(' ');
-  if (!what) return message.channel.send('What would you like to use?');
+  if (!what) return message.channel.send('What item would you like to use?');
   const inventory = UserConfig.economy.inventory;
 
   if (!inventory.length)
@@ -30,18 +20,5 @@ module.exports.run = async (botClient, message, args, ops) => {
   const whatHappensWhenYouRunTheItem = require(`../../items/${item.name.toLowerCase()}`);
   whatHappensWhenYouRunTheItem.run(botClient, message, args, ops, 'd');
 
-  if (item.amount <= 1) {
-    return await UserConfig.updateOne(
-      {
-        $pull: {'economy.inventory': item},
-      } /* ,{
-      arrayFilters: [{'i': item}]
-    } */
-    );
-  }
-
-  await UserConfig.updateOne(
-    {$inc: {'economy.inventory.$[i].amount': -1}},
-    {arrayFilters: [{'i.lowercaseName': item.lowercaseName}]}
-  );
+  sellItem(item, message.author.id);
 };

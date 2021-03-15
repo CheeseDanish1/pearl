@@ -11,17 +11,22 @@ const Header = ({isLoggedIn, shadow}) => {
   const [visible, setVisible] = React.useState(false);
   let style = {};
   if (shadow) style.boxShadow = '0 0 5px rgba(0, 0, 0, .35)';
-  setTimeout(() => {
-    let box = document.querySelector('.box') ||
-      document.querySelector('.dash-box') || {style: {overflow: ''}};
-    if (
-      Array.from(
-        document.querySelector('.mobile-nav-menu-real').classList
-      ).includes('visible')
-    ) {
-      box.style.overflow = 'hidden';
-    } else if (box.style.overflow === 'hidden') box.style.overflow = '';
-  }, 100);
+
+  let width = getWidth();
+  if (width < 601) {
+    setTimeout(() => {
+      let box = document.querySelector('.box') ||
+        document.querySelector('.dash-box') || {style: {overflow: ''}};
+      if (
+        Array.from(
+          document.querySelector('.mobile-nav-menu-real').classList
+        ).includes('visible')
+      ) {
+        box.style.overflow = 'hidden';
+      } else if (box.style.overflow === 'hidden') box.style.overflow = '';
+    }, 100);
+  }
+
   return (
     <>
       <HeaderComp className="header-header" style={style}>
@@ -84,31 +89,20 @@ const Header = ({isLoggedIn, shadow}) => {
             }
             type="mobile"
           />
-          {/* <div
-            className="menu-mobile-list-element list-active"
-            style={listStyle}
-          >
-            <Link to="/">Home</Link>
-          </div>
-          <div className="menu-mobile-list-element" style={listStyle}>
-            Manage
-          </div>
-          <div className="menu-mobile-list-element" style={listStyle}>
-            Invite
-          </div>
-          <div className="menu-mobile-list-element" style={listStyle}>
-            Support
-          </div>
-          <div className="menu-mobile-list-element" style={listStyle}>
-            FAQ
-          </div>
-          <div className="menu-mobile-list-element" style={listStyle}>
-            {isLoggedIn ? 'Account' : 'Login'}
-          </div> */}
         </div>
       </div>
     </>
   );
+
+  function getWidth() {
+    return Math.max(
+      document.body.scrollWidth,
+      document.documentElement.scrollWidth,
+      document.body.offsetWidth,
+      document.documentElement.offsetWidth,
+      document.documentElement.clientWidth
+    );
+  }
 };
 
 export default Header;

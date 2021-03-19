@@ -14,3 +14,12 @@ module.exports.run = async (client, message, args, ops) => {
     `${status ? `Disabled` : `Enabled`} admin only mode`
   );
 };
+
+module.exports.info = {
+  name: 'adminonly',
+  alias: [],
+  usage: '<p>Adminonly',
+  example: '<p>Adminonly',
+  description: 'Toggle admin only mode',
+  category: 'moderation',
+};

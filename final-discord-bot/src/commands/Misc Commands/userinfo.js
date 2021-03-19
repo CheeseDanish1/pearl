@@ -84,3 +84,12 @@ module.exports.run = (
 
   message.channel.send(embed);
 };
+
+module.exports.info = {
+  name: 'userinfo',
+  alias: [],
+  usage: '<p>Userinfo [User]',
+  example: '<p>Userinfo @Jimmy#7932',
+  description: 'Get all info on a user',
+  category: 'misc',
+};

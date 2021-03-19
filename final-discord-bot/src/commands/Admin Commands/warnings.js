@@ -1,19 +1,15 @@
-const {Message} = require('discord.js');
+const {getGuildMember} = require('../../Storage/database');
 
-/**
- *
- * @param {Message} message
- */
-
-module.exports.run = async (client, message, args, {GuildMemberConfig}) => {
+module.exports.run = async (client, message, args) => {
   if (!message.member.hasPermission('MANAGE_GUILD'))
     return message.channel.send(`You dont have permission to use this command`);
 
   const member = message.mentions.members.first() || message.member;
-  const amount = GuildMember.warnings.amount || 0;
+  const GuildMemberConfig = await getGuildMember(member.id, member.guild.id);
+  const amount = GuildMemberConfig.warnings.amount || 0;
 
   message.channel.send(
-    `${member.displayName} has been warned **${amount}** times${
+    `**${member.displayName}** has been warned **${amount}** times${
       amount > 0 ? '\nType `extra` to view the information about each warn' : ''
     }`
   );
@@ -29,7 +25,7 @@ module.exports.run = async (client, message, args, {GuildMemberConfig}) => {
   collecter.on('collect', m => {
     if (m.content.toLowerCase() == 'extra') {
       message.channel.send(
-        GuildMember.warnings.info
+        GuildMemberConfig.warnings.info
           .map(
             i =>
               `Warning **${i.warning}**, Reason **${i.reason}**, Warned By: **${
@@ -42,4 +38,13 @@ module.exports.run = async (client, message, args, {GuildMemberConfig}) => {
       );
     }
   });
+};
+
+module.exports.info = {
+  name: 'warnings',
+  alias: [],
+  usage: '<p>Warnings [User]',
+  example: '<p>Warnings @Jimmy#7932',
+  description: "View all of a user's warnings and why they were warned",
+  category: 'moderation',
 };

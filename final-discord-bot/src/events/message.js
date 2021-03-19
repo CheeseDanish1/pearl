@@ -1,7 +1,6 @@
 /** @format */
 
 const {onMes} = require('../Storage/functions');
-const GuildMemberConfig = require('../database/models/GuildMemberConfig');
 const {Client, Message} = require('discord.js');
 const {getUser, getGuild, getGuildMember} = require('../Storage/database');
 
@@ -122,6 +121,10 @@ module.exports = async (client, message) => {
   const args = message.content.slice(prefix.length).trim().split(/ +/g);
   const command = args.shift().toLowerCase();
   const cmd = client.commands.get(command);
+  const alias = [...client.commands.entries()].find(f => {
+    if (!f[1].info || !f[1].info.alias) return;
+    return f[1].info.alias.includes(command);
+  });
 
   let adminOnly = Guild.ops.adminOnly;
   if (adminOnly && !message.member.hasPermission('ADMINISTRATOR'))
@@ -140,6 +143,11 @@ module.exports = async (client, message) => {
       $set: {lastCmdRanDate: Date.now(), lastCmdRanName: command},
     });
     return;
+  } else if (alias) {
+    alias[1].run(client, message, args, ops);
+    return await User.updateOne({
+      $set: {lastCmdRanDate: Date.now(), lastCmdRanName: command},
+    });
   }
 
   return message.channel.send(`Command doesn't exist`);

@@ -72,15 +72,14 @@ module.exports.run = async (client, message, args) => {
       i += 1;
       return `#${i} - ${w.username} - ${value.xpg}`;
     });
-    // let mes = [];
-    // let j = 0;
-    // all.forEach(a => {
-    //     let who = client.users.cache.get(a.ID.split("_")[1])
-    //     if (who) {
-    //         j++
-    //         mes.push(`#${j} - ${who.username} - ${a.data}`);
-    //     }
-    // })
-    // return mes
   }
+};
+
+module.exports.info = {
+  name: 'xpglb',
+  alias: [],
+  usage: '<p>Xpglb',
+  example: '<p>Xpglb',
+  description: 'View the global xp leaderboard and see your ranking',
+  category: 'xp',
 };

@@ -39,3 +39,12 @@ module.exports.run = async (client, message, args, {prefix, UserConfig}) => {
   buyItem(item, inventory, message.author.id);
   removeMoney(item.price, message.author.id);
 };
+
+module.exports.info = {
+  name: 'buy',
+  alias: [],
+  usage: '<p>Buy [Item name]',
+  example: '<p>Buy Paycheck',
+  description: 'Buy an item from the store',
+  category: 'economy',
+};

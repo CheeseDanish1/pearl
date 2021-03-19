@@ -1,37 +1,33 @@
 module.exports.run = (client, message, args) => {
-    if (!message.member.hasPermission('MANAGE_ROLES')) {
-        message.channel.send(
-            "You don't have Permission to use this command"
-        );
-        return;
-    }
-    if (!message.guild.me.hasPermission('MANAGE_ROLES')) {
-        message.channel.send('I do not have permission to manage roles.');
-        return;
-    }
-    const user = message.mentions.members.first();
+  if (!message.member.hasPermission('MANAGE_ROLES')) {
+    message.channel.send("You don't have permission to use this command");
+    return;
+  }
+  if (!message.guild.me.hasPermission('MANAGE_ROLES'))
+    return message.channel.send('I do not have permission to manage roles.');
 
-    if (!user) {
-        message.channel.send(
-            'Please mention the member to who you want to unmute'
-        );
-        return;
-    }
-    let muterole = message.guild.roles.cache.find(
-        (x) => x.name === 'Muted'
-    );
+  const user = message.mentions.members.first();
 
-    if (user.roles.cache.has(muterole)) {
-        message.channel.send(
-            'Given User does not have mute role, so what i am suppose to take'
-        );
-        return;
-    }
-    user.roles.remove(muterole);
+  if (!user) return message.channel.send('Mention who you want to unmute');
 
-    message.channel.send(
-        `**${message.mentions.users.first().username}** is unmuted`
-    );
+  let muterole = message.guild.roles.cache.find(x => x.name === 'Muted');
+  if (!muterole)
+    return message.channel.send('Server does not have mute role set up');
+  if (!user.roles.cache.has(muterole))
+    return message.channel.send('User is not muted');
 
-    user.send(`You are now unmuted from **${message.guild.name}**`);
-}
+  user.roles.remove(muterole);
+
+  message.channel.send(`**${user.user.username}** is unmuted`);
+
+  user.send(`You are now unmuted from **${message.guild.name}**`);
+};
+
+module.exports.info = {
+  name: 'unmute',
+  alias: ['unshut'],
+  usage: '<p>Unmute [Member]',
+  example: '<p>Kick @Jimmy#7932',
+  description: 'Kick a member from your server',
+  category: 'moderation',
+};

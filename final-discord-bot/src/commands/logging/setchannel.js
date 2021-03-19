@@ -15,3 +15,12 @@ module.exports.run = async (client, message, args, {GuildConfig, prefix}) => {
     `Successfully set logging channel to ${channel.toString()}`
   );
 };
+
+module.exports.info = {
+  name: 'Setchannel',
+  alias: [],
+  usage: '<p>Setchannel [Channel]',
+  example: '<p>Setchannel #logs',
+  description: 'Set the channel you want events to be logged to',
+  category: 'logging',
+};

@@ -153,3 +153,12 @@ module.exports.run = (client, message, args) => {
       break;
   }
 };
+
+module.exports.info = {
+  name: 'clear',
+  alias: ['purge', 'clean'],
+  usage: '<p>Clear [Amount]',
+  example: '<p>Clear 100',
+  description: 'Mass delete a channels messages',
+  category: 'admin',
+};

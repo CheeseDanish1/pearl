@@ -22,3 +22,12 @@ module.exports.run = async (botClient, message, args, ops) => {
 
   sellItem(item, message.author.id);
 };
+
+module.exports.info = {
+  name: 'use',
+  alias: [],
+  usage: '<p>User [Item name]',
+  example: '<p>Use Paycheck',
+  description: 'Use an item you have in your inventory',
+  category: 'economy',
+};

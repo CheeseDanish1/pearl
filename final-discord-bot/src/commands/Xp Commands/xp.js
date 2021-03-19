@@ -1,6 +1,7 @@
 const Canvas = require('canvas');
 const {level} = require('../../Storage/functions');
 const Discord = require('discord.js');
+const {getGuildMember} = require('../../Storage/database');
 
 const applyText = (canvas, text, re = 70) => {
   const ctx = canvas.getContext('2d');
@@ -25,7 +26,7 @@ module.exports.run = async (client, message, args, {GuildMemberConfig}) => {
       `This user is a bot, so does not have any stats`
     );
 
-  let config = GuildMemberConfig;
+  let config = getGuildMember(person.id, message.guild.id);
 
   let xp = config.xp;
   let mes = config.messages;
@@ -75,8 +76,18 @@ module.exports.run = async (client, message, args, {GuildMemberConfig}) => {
   message.channel.send(attachment);
 
   async function getRankLevels() {
-    let r = await GuildMemberConfig.collection.find().sort({xp: -1}).toArray();
-    r = r.filter(g => g.guild == message.guild.id);
+    let r = await GuildMemberConfig.find({guild: message.guild.id}).sort({
+      xp: -1,
+    });
     return r.indexOf(r.find(g => g.id == person.id)) + 1;
   }
+};
+
+module.exports.info = {
+  name: 'xp',
+  alias: [],
+  usage: '<p>Xp (person)',
+  example: '<p>Xp @Jimmy#7932',
+  description: 'Get a persons server stats and rankings',
+  category: 'xp',
 };

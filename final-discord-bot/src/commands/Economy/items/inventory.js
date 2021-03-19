@@ -47,3 +47,12 @@ module.exports.run = async (client, message, args, {prefix, UserConfig}) => {
   });
   return message.channel.send(embed);
 };
+
+module.exports.info = {
+  name: 'inventory',
+  alias: [],
+  usage: '<p>Inventory (Who)',
+  example: '<p>Inventory\n<p>Inventory @Jimmy#7932',
+  description: 'View all the items you have',
+  category: 'economy',
+};

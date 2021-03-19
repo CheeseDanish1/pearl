@@ -67,3 +67,12 @@ module.exports.run = async (client, message, args, {UserConfig}) => {
     ]);
   }
 };
+
+module.exports.info = {
+  name: 'rob',
+  alias: [],
+  usage: '<p>Rob [User]',
+  example: '<p>Rob @Jimmy#7932',
+  description: 'Feeling naughty? Rob a fellow server member!',
+  category: 'economy',
+};

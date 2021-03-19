@@ -12,3 +12,12 @@ module.exports.run = async (client, message, args, {GuildConfig}) => {
   );
   editOps(message.guild.id, 'profanities', !GuildConfig.ops.profanities);
 };
+
+module.exports.info = {
+  name: 'Profanities',
+  alias: [],
+  usage: '<p>Profanities',
+  example: '<p>Profanities',
+  description: 'Toggle curse word detection and removal',
+  category: 'moderation',
+};

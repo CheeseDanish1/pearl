@@ -8,18 +8,16 @@ module.exports.run = (client, message, args) => {
   if (isNaN(scrambles))
     return message.channel.send('You need to provide a number');
 
-  let result = '';
-  for (let i = 0; i < scrambles; i++) {
-    result += '```\n' + cubes('666', '1') + '\n```';
-  }
+  var result = cubes('sq1', scrambles).join('\n\n');
 
   message.channel.send(result);
 };
+
 module.exports.info = {
-  name: '6x6',
-  alias: [],
-  usage: '<p>6x6 (amount of scrambles)',
-  example: '<p>6x6 5',
-  description: 'Generate a scrable for the 6x6 cube',
+  name: 'square1',
+  alias: ['squan', 'sq1', 'sq-1', 'Square-1'],
+  usage: '<p>Square1 (amount of scrambles)',
+  example: '<p>Square1 5',
+  description: 'Generate a scrable for the square 1',
   category: 'scramble',
 };

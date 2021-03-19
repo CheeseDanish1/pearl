@@ -22,3 +22,12 @@ module.exports.run = async (client, message, args, {GuildConfig}) => {
     `The new winner of **${giveaway.prize}** is... ${winner}`
   );
 };
+
+module.exports.info = {
+  name: 'reroll',
+  alias: [],
+  usage: '<p>Reroll [Message Id]',
+  example: '<p>Reroll 822332032327090207',
+  description: 'Reroll a giveaway that already finished',
+  category: 'admin',
+};

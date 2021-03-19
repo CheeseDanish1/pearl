@@ -42,3 +42,12 @@ module.exports.run = async (client, message, args, {UserConfig}) => {
   await addMoney(amount, target.id);
   return;
 };
+
+module.exports.info = {
+  name: 'pay',
+  alias: [],
+  usage: '<p>Pay [Member] [Amount]',
+  example: '<p>Pay @Jimmy#7932 2000',
+  description: 'Pay someone money!',
+  category: 'economy',
+};

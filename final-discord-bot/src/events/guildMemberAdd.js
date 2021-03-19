@@ -18,7 +18,6 @@ module.exports = async (client, member) => {
 
   let roles = Guild.autorole;
   if (roles.length > 0) {
-    console.log(roles);
     roles.forEach(r => {
       const role = member.guild.roles.cache.get(r);
       member.roles.add(role);

@@ -89,6 +89,15 @@ module.exports.run = async (client, message, args) => {
   async function getRankGlobal() {
     let r = await UserConfig.collection.find().sort({xpg: -1}).toArray();
 
-    return r.indexOf(r.find(g => g.id == message.author.id)) + 1;
+    return r.indexOf(r.find(g => g.id == person.id)) + 1;
   }
+};
+
+module.exports.info = {
+  name: 'xpg',
+  alias: [],
+  usage: '<p>Xpg (person)',
+  example: '<p>Xpg @Jimmy#7932',
+  description: 'Get a persons global stats and rankings',
+  category: 'xp',
 };

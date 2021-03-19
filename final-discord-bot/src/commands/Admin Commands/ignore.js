@@ -42,7 +42,6 @@ module.exports.run = async (client, message, args, {GuildConfig}) => {
       });
       ignoredChannels.push(chanMen.id);
 
-      // db.push(`ignoreChan_${message.guild.id}`, `/${chanMen.id}/`);
       return message.channel.send(
         `Now ignoring channel ${chanMen.toString()}.\nThe full list of ignored channels is ${ignoredChannels
           .map(
@@ -72,23 +71,22 @@ module.exports.run = async (client, message, args, {GuildConfig}) => {
         return message.channel.send(
           'I do not have permission to use this command'
         );
-      if (message.author.id == memMen.user.id)
-        return message.channel.send("You can't ignore your self");
-      if (memMen.hasPermission('ADMINISTRATOR'))
-        return message.channel.send('You cant make me ignore an admin');
-
       if (!memMen)
         return message.channel.send(
           'Please provide a person you would like me to ignore'
         );
-
+      if (message.author.id == memMen.user.id)
+        return message.channel.send("You can't ignore your self");
+      if (memMen.hasPermission('ADMINISTRATOR'))
+        return message.channel.send('You cant make me ignore an admin');
+      if (memMen.user.bot)
+        return message.channel.send("I'm already ignoring bots");
       if (ignoredChannels.includes(memMen.id)) {
         return message.channel.send(
           `Member ${memMen.user.username} is already being ignored`
         );
       }
 
-      // db.push(`ignoreMem_${message.guild.id}`, `/${memMen.id}/`);
       await GuildConfig.updateOne({$push: {'ignoredStuff.people': memMen.id}});
       ignoredPeople.push(memMen.id);
 
@@ -130,7 +128,6 @@ module.exports.run = async (client, message, args, {GuildConfig}) => {
         );
       }
 
-      // db.push(`ignoreRole_${message.guild.id}`, `/${roleMen.id}/`);
       await GuildConfig.updateOne({$push: {'ignoredStuff.roles': roleMen.id}});
       ignoredRoles.push(roleMen.id);
 
@@ -164,11 +161,9 @@ module.exports.run = async (client, message, args, {GuildConfig}) => {
           await GuildConfig.updateOne({$set: {'ignoredStuff.channels': []}});
           return message.channel.send('Reset ignored channels for this guild');
         } else if (args[1].toLowerCase() == 'roles') {
-          // db.delete(`ignoreRole_${message.guild.id}`);
           await GuildConfig.updateOne({$set: {'ignoredStuff.roles': []}});
           return message.channel.send('Reset ignored roles for this guild');
         } else if (args[1].toLowerCase() == 'members') {
-          // db.delete(`ignoreMem_${message.guild.id}`);
           await GuildConfig.updateOne({$set: {'ignoredStuff.people': []}});
           return message.channel.send('Reset ignored members for this guild');
         } else if (args[1].toLowerCase() == 'all') {
@@ -241,9 +236,7 @@ module.exports.run = async (client, message, args, {GuildConfig}) => {
                 m =>
                   `**${
                     message.guild.members.cache.get(m)
-                      ? message.guild.members.cache
-                          .get(m)
-                          .toString()
+                      ? message.guild.members.cache.get(m).toString()
                       : 'Error'
                   }**`
               )
@@ -260,9 +253,7 @@ module.exports.run = async (client, message, args, {GuildConfig}) => {
                       m =>
                         `**${
                           message.guild.channels.cache.get(m)
-                            ? message.guild.channels.cache
-                                .get(m)
-                                .toString()
+                            ? message.guild.channels.cache.get(m).toString()
                             : 'Error'
                         }**`
                     )
@@ -277,9 +268,7 @@ module.exports.run = async (client, message, args, {GuildConfig}) => {
                       m =>
                         `**${
                           message.guild.roles.cache.get(m)
-                            ? message.guild.roles.cache
-                                .get(m)
-                                .toString()
+                            ? message.guild.roles.cache.get(m).toString()
                             : 'Error'
                         }**`
                     )
@@ -294,9 +283,7 @@ module.exports.run = async (client, message, args, {GuildConfig}) => {
                       m =>
                         `**${
                           message.guild.members.cache.get(m)
-                            ? message.guild.members.cache
-                                .get(m)
-                                .toString()
+                            ? message.guild.members.cache.get(m).toString()
                             : 'Error'
                         }**`
                     )
@@ -342,9 +329,11 @@ module.exports.run = async (client, message, args, {GuildConfig}) => {
           if (!ignoredChannels.includes(chanMen.id))
             return message.channel.send(
               'The channel you provided is not in the list of ignored channels\nTo see a list of ignored channels, do `>Ignore List Channels`'
-              )
+            );
 
-          await GuildConfig.updateOne({$pull: {"ignoredStuff.channels": chanMen.id}})
+          await GuildConfig.updateOne({
+            $pull: {'ignoredStuff.channels': chanMen.id},
+          });
 
           return message.channel.send(
             `Successfully removed ${chanMen.toString()} from list of ignored channels`
@@ -364,14 +353,9 @@ module.exports.run = async (client, message, args, {GuildConfig}) => {
               'The role you provided is not in the list of ignored roles\nTo see a list of ignored roles, do `>Ignore List Roles`'
             );
 
-          // let oldArr = db.fetch(`ignoreRole_${message.guild.id}`);
-          // let newArr = oldArr.filter(r => r != `/${roleMen.id}/`);
-
-          // db.set(`ignoreRole_${message.guild.id}`, newArr);
-          // if (db.get(`ignoreRole_${message.guild.id}`).length == 0)
-          //   db.set(`ignoreRole_${message.guild.id}`, null);
-
-          await GuildConfig.updateOne({"$pull": {"ignoredStuff.roles": roleMen.id}})
+          await GuildConfig.updateOne({
+            $pull: {'ignoredStuff.roles': roleMen.id},
+          });
 
           return message.channel.send(
             `Successfully removed ${roleMen.toString()} from list of ignored roles`
@@ -390,19 +374,15 @@ module.exports.run = async (client, message, args, {GuildConfig}) => {
             return message.channel.send(
               'The member you provided is not in the list of ignored member\nTo see a list of ignored member, do `>Ignore List Members`'
             );
-          
-          await GuildConfig.updateOne({$pull: {"ignoredStuff.people": memMen.id}})
-          // let oldArr = db.fetch(`ignoreMem_${message.guild.id}`);
-          // let newArr = oldArr.filter(r => r != `/${memMen.id}/`);
 
-          // db.set(`ignoreMem_${message.guild.id}`, newArr);
-          // if (db.get(`ignoreMem_${message.guild.id}`).length == 0)
-          //   db.set(`ignoreMem_${message.guild.id}`, null);
+          await GuildConfig.updateOne({
+            $pull: {'ignoredStuff.people': memMen.id},
+          });
 
           return message.channel.send(
             `Successfully removed ${memMen.toString()} from list of ignored members`
           );
-        }else {
+        } else {
           return message.channel.send(
             'Please provide a valid parameters to remove\nValid options are `Channel/Chan`, `Role`, or `Member`'
           );
@@ -437,4 +417,13 @@ Ignore Remove Role - Removes A Role That Is Being Ignored From The Ignored Roles
 \`\`\`
         `);
   }
+};
+
+module.exports.info = {
+  name: 'ignore',
+  alias: [],
+  usage: '<p>Ignore [What to ignore] [Mention]',
+  example: '<p>Ignore channel #spam\n<p>Ignore Member @Jimmy#7932',
+  description: 'Ignore a person channel or role from being registered by Pearl',
+  category: 'admin',
 };

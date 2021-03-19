@@ -45,3 +45,12 @@ module.exports.run = async (client, message, args, {GuildConfig, prefix}) => {
 
   return message.channel.send(`Enabled logging for \`${event}\``);
 };
+
+module.exports.info = {
+  name: 'enable',
+  alias: [],
+  usage: '<p>Enable [Event Number | All]',
+  example: '<p>Enable 7',
+  description: 'Enable event logging to keep up to date with your server',
+  category: 'logging',
+};

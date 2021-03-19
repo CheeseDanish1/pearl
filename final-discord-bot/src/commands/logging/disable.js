@@ -45,3 +45,12 @@ module.exports.run = async (client, message, args, {GuildConfig, prefix}) => {
 
   return message.channel.send(`Disabled logging for \`${event}\``);
 };
+
+module.exports.info = {
+  name: 'disable',
+  alias: [],
+  usage: '<p>Disable [Event Number | All]',
+  example: '<p>Disable 19',
+  description: 'Disable an event from being logged',
+  category: 'logging',
+};

@@ -106,3 +106,13 @@ module.exports.run = async (bot, message, args, {UserConfig}) => {
     return;
   }
 };
+
+module.exports.info = {
+  name: 'trivia',
+  alias: [],
+  usage: '<p>Trivia (difficulty)',
+  example: '<p>Trivia medium',
+  description:
+    'Test your knowledge on a variety of different things with some trivia1',
+  category: 'fun',
+};

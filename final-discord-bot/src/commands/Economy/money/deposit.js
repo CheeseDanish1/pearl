@@ -50,3 +50,13 @@ module.exports.run = async (client, message, args, {UserConfig}) => {
   removeMoney(amount, message.author.id);
   addBank(amount, message.author.id);
 };
+
+module.exports.info = {
+  name: 'deposit',
+  alias: ['dep'],
+  usage: '<p>Deposit [amount]',
+  example: '<p>Deposit 200',
+  description:
+    'Deposit money into your bank to store for later and to let it grow!',
+  category: 'economy',
+};

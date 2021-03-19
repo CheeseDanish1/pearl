@@ -10,3 +10,12 @@ module.exports.run = async (client, message, args, {GuildConfig}) => {
   );
   editOps(message.guild.id, 'zalgo', !zal);
 };
+
+module.exports.info = {
+  name: 'zalgo',
+  alias: ['zal'],
+  usage: '<p>Zalgo',
+  example: '<p>Zalgo',
+  description: 'Toggle zalgo detection and deletion in your server',
+  category: 'moderation',
+};

@@ -171,3 +171,12 @@ module.exports.run = async (client, message, args, ops) => {
     message.channel.send(_);
   }
 };
+
+module.exports.info = {
+  name: 'adminonly',
+  alias: [],
+  usage: '<p>Adminonly [Add or Remove] [Role]',
+  example: '<p>Adminonly add @Member',
+  description: 'Set roles to be automaticly given to new server members',
+  category: 'admin',
+};

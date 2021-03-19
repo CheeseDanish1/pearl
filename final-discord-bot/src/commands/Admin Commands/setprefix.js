@@ -20,3 +20,12 @@ module.exports.run = async (client, message, args, {GuildConfig}) => {
   message.channel.send(_);
   changePrefix(message.guild.id, prefix);
 };
+
+module.exports.info = {
+  name: 'setprefix',
+  alias: ['prefix', 'changeprefix', 'updateprefix'],
+  usage: '<p>Setprefix [new prefix]',
+  example: '<p>SetPrefix o!',
+  description: 'Changes the servers prefix',
+  category: 'admin',
+};

@@ -28,6 +28,11 @@ module.exports.run = async (client, message, args) => {
     ms => ms.author.id == message.author.id
   );
   collector.on('collect', mes => {
+    if (
+      mes.content.toLowerCase() == 'stop' ||
+      mes.content.toLowerCase() == 'exit'
+    )
+      return collector.stop();
     if (step == 1) {
       let chan =
         mes.mentions.channels.first() ||
@@ -71,7 +76,6 @@ module.exports.run = async (client, message, args) => {
         .then(me => {
           giveaway.mes = me.id;
           me.react('🎉');
-          console.log(giveaway);
           startGiveaway(giveaway, client);
           createGiveaway(giveaway);
           collector.stop();

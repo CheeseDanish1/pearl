@@ -31,3 +31,12 @@ module.exports.run = async (client, message, args, {UserConfig}) => {
     addMoney(amount, message.author.id),
   ]);
 };
+
+module.exports.info = {
+  name: 'weekly',
+  alias: [],
+  usage: '<p>Weekly',
+  example: '<p>Weekly',
+  description: 'Claim your weekly reward of cash!',
+  category: 'economy',
+};

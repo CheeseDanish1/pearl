@@ -37,3 +37,12 @@ module.exports.run = async (botClient, message, args, {prefix}) => {
 
   message.channel.send(embed);
 };
+
+module.exports.info = {
+  name: 'info',
+  alias: ['information'],
+  usage: '<p>Info [Item name]',
+  example: '<p>Info Paycheck',
+  description: 'Get all the information on an item',
+  category: 'economy',
+};

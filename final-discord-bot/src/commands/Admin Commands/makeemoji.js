@@ -1,10 +1,10 @@
-const {Client, Message} = require('discord.js')
+const {Client, Message} = require('discord.js');
 
 /**
- * 
- * @param {Client} client 
- * @param {Message} message 
- * @param {string[]} args 
+ *
+ * @param {Client} client
+ * @param {Message} message
+ * @param {string[]} args
  */
 
 module.exports.run = (client, message, args) => {
@@ -39,7 +39,11 @@ module.exports.run = (client, message, args) => {
           .then(emoji =>
             message.channel.send(`Created new emoji with name ${emoji.name}`)
           )
-          .catch(er => message.channel.send(`There was an error, if it is a problem with the bot go report it with the feedback command\n\nError Message: ${er}`));
+          .catch(er =>
+            message.channel.send(
+              `There was an error, if it is a problem with the bot go report it with the feedback command\n\nError Message: ${er}`
+            )
+          );
       }
     }
   } else {
@@ -57,4 +61,14 @@ module.exports.run = (client, message, args) => {
       url.indexOf('jpg', url.length - 'jpg'.length /*or 3*/) !== -1
     );
   }
+};
+
+module.exports.info = {
+  name: 'makeemoji',
+  alias: ['createemoji'],
+  usage: '<p>Makeemoji [Emoji Name]',
+  example: '<p>Makeemoji Pong',
+  description:
+    'Create a server emoji (Make sure to include the image of the emoji!)',
+  category: 'admin',
 };

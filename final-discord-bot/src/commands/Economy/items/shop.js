@@ -32,3 +32,12 @@ module.exports.run = async (client, message, args) => {
 
   return message.channel.send(embed);
 };
+
+module.exports.info = {
+  name: 'shop',
+  alias: [],
+  usage: '<p>Shop',
+  example: '<p>Shop',
+  description: 'View all the items available to buy',
+  category: 'economy',
+};

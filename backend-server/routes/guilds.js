@@ -34,12 +34,21 @@ router.get('/me', async (req, res) => {
 
 router.get(`/id/:guildId`, async (req, res) => {
   if (!req.user) return res.status(401).send({msg: 'Unauthorized'});
-  let g = await guild(req.params.guildId);
-  const channels = await getGuildChannels(req.params.guildId);
-  g.channels = channels;
-  g.config = await GuildConfig.findOne({id: req.params.guildId});
-  // g.members = await getGuildMembers(req.params.guildId);
-  res.send(g);
+  let id = req.params.guildId;
+  // let g = await guild(req.params.guildId);
+  Promise.all([
+    guild(id),
+    getGuildChannels(id),
+    GuildConfig.findOne({id}),
+    getGuildMembers(id),
+  ]).then(r => {
+    let g = r[0];
+    g.channels = r[1];
+    g.config = r[2];
+    g.members = r[3];
+
+    return res.send(g);
+  });
 });
 
 router.get(`/id/:guildId/config`, async (req, res) => {
@@ -96,6 +105,28 @@ router.put('/id/:guildId/logging/:what', async (req, res) => {
   }
 });
 
+router.put('/id/:guildId/ignored/:w', async (req, res) => {
+  const {ignored, guilds} = req.body;
+  if (!req.user) return res.send({msg: 'Unauthorized', error: true});
+  const g = guilds.find(g => g.id == req.params.guildId);
+  if (!g) return res.send({msg: 'Could not find that guild', error: true});
+  const userPermissions = g.permissions;
+  const canManageGuild = (userPermissions & 0x20) === 0x20;
+  if (!canManageGuild)
+    return res.send({msg: 'Not enough permission', error: true});
+  let n = {};
+  n[`ignoredStuff.${req.params.w}`] = ignored;
+  const update = await GuildConfig.updateOne(
+    {id: g.id},
+    {$set: n},
+    {new: true}
+  );
+  return res.status(200).send({
+    msg: `Updated servers ignored ${req.params.w}`,
+    result: update,
+  });
+});
+
 router.put(`/id/:guildId/prefix`, async (req, res) => {
   // const { prefix } = req.body
   // const { guildId } = req.params
@@ -107,20 +138,20 @@ router.put(`/id/:guildId/prefix`, async (req, res) => {
   if (!req.user) return res.send({msg: 'Unauthorized', error: true});
   if (!prefix) return res.send({msg: 'Prefix is required', error: true});
   const g = guilds.find(g => g.id == req.params.guildId);
+  if (!g) return res.send({msg: 'Could not find that guild', error: true});
   const userPermissions = g.permissions;
   const canManageGuild = (userPermissions & 0x20) === 0x20;
   if (!canManageGuild)
     return res.send({msg: 'Not enough permission', error: true});
-  else {
-    const update = await GuildConfig.findOneAndUpdate(
-      {id: req.params.guildId},
-      {prefix},
-      {new: true}
-    );
-    return update
-      ? res.send({msg: 'Success', result: update})
-      : res.send({msg: 'Could not find that guild', error: true});
-  }
+
+  const update = await GuildConfig.findOneAndUpdate(
+    {id: req.params.guildId},
+    {prefix},
+    {new: true}
+  );
+  return update
+    ? res.send({msg: 'Updated server prefix', result: update})
+    : res.send({msg: 'Could not find that guild', error: true});
 });
 
 router.get('/mutual', async (req, res) => {

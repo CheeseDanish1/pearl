@@ -36,3 +36,12 @@ module.exports.run = async (client, message, args, {prefix, UserConfig}) => {
   sellItem(item, message.author.id);
   addMoney(item.price, message.author.id);
 };
+
+module.exports.info = {
+  name: 'sell',
+  alias: [],
+  usage: '<p>Sell [Item name]',
+  example: '<p>Sell Paycheck',
+  description: 'Sell an item for cash',
+  category: 'economy',
+};

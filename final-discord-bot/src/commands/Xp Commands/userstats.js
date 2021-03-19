@@ -75,3 +75,12 @@ module.exports.run = async (
     return r.indexOf(r.find(g => g.id == message.author.id)) + 1;
   }
 };
+
+module.exports.info = {
+  name: 'userstats',
+  alias: [],
+  usage: '<p>Userstats',
+  example: '<p>Userstats',
+  description: 'Get your stats and rankings',
+  category: 'xp',
+};

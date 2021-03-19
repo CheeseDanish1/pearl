@@ -324,3 +324,12 @@ module.exports.run = (client, message, args) => {
     });
   });
 };
+
+module.exports.info = {
+  name: 'asciifont',
+  alias: [],
+  usage: '<p>Asciifont [Font]',
+  example: '<p>Asciifont Isometric1',
+  description: 'Choose the font you want the ascii text to be',
+  category: 'fun',
+};

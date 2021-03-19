@@ -33,7 +33,6 @@ module.exports.run = async (client, message, args, ops) => {
 
   if (currBanWords && currBanWords.includes(word)) {
     await Guild.updateOne({$pull: {'ops.bannedWords': word}});
-    let newArr = currBanWords.filter(d => d != word);
     // db.set(`bannedwords_${message.guild.id}`, newArr)
     return message.channel.send(`Removed that word from list of banned words`);
   }
@@ -42,4 +41,13 @@ module.exports.run = async (client, message, args, ops) => {
   await Guild.updateOne({$push: {'ops.bannedWords': word}});
 
   return message.channel.send(`Added that word to list of banned word`);
+};
+
+module.exports.info = {
+  name: 'banword',
+  alias: [],
+  usage: '<p>Banword [word]',
+  example: '<p>Banword ||Creeper||',
+  description: 'Ban word from being sent in messages',
+  category: 'moderation',
 };

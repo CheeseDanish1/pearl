@@ -1,4 +1,6 @@
-module.exports.run = async (client, message, args, {GuildMemberConfig}) => {
+const {addWarning, getGuildMember} = require('../../Storage/database');
+
+module.exports.run = async (client, message, args) => {
   if (!message.member.hasPermission('MANAGE_GUILD'))
     return message.channel.send(
       `You need the \`MANAGE_GUILD\` permissions to use this command`
@@ -19,22 +21,12 @@ module.exports.run = async (client, message, args, {GuildMemberConfig}) => {
   if (member.id === message.guild.owner.id)
     return message.channel.send('You jerk, how can you warn server owner -_-');
 
-  const reason = args.slice(1).join(' ');
+  const GuildMemberConfig = await getGuildMember(member.id, member.guild.id);
 
-  if (!reason)
-    return message.channel.send(
-      'Please provide reason to warn - warn @mention <reason>'
-    );
+  const reason = args.slice(1).join(' ') || 'No reason';
 
   const warns = GuildMemberConfig.warnings || [];
   const amount = warns.amount || 0;
-  // const currentWarning = warns.info.find(w => w.warning == amount)
-
-  if (amount == 3) {
-    return message.channel.send(
-      `${member.displayName} already reached their limit of 3 warnings`
-    );
-  }
 
   let info = {
     warning: amount + 1,
@@ -49,5 +41,14 @@ module.exports.run = async (client, message, args, {GuildMemberConfig}) => {
       member.user.username
     }** for **${reason}**, they now have **${amount + 1}** warning`
   );
-  return addWarning(info, message.author.id);
+  return addWarning(info, member.id, message.guild.id);
+};
+
+module.exports.info = {
+  name: 'warn',
+  alias: [],
+  usage: '<p>Warn [User] (Reason)',
+  example: '<p>Warn @Jimmy#7932 Spamming',
+  description: 'Warn someone for breaking the server rules',
+  category: 'moderation',
 };

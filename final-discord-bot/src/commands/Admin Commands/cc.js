@@ -26,7 +26,6 @@ module.exports.run = async (bclient, message, args, ops) => {
   };
 
   if (GuildConfig.customCommands.find(c => c.command == cc.command)) {
-    console.log('Ran');
     await GuildConfig.updateOne(
       {$set: {'customCommands.$[c]': cc}},
       {arrayFilters: [{'c.command': cc.command}]}
@@ -41,4 +40,14 @@ module.exports.run = async (bclient, message, args, ops) => {
   });
 
   message.channel.send('Success :smile:');
+};
+
+module.exports.info = {
+  name: 'cc',
+  alias: ['customcommand', 'customcomand'],
+  usage: '<p>cc [command] [content]',
+  example:
+    '<p>cc Info This server is about praising our one and only god. Zordon',
+  description: 'Set a custom text trigger for the bot to respond to',
+  category: 'admin',
 };

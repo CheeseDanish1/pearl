@@ -16,3 +16,12 @@ module.exports.run = (client, message, args) => {
 
   message.channel.send(embed);
 };
+
+module.exports.info = {
+  name: 'mc',
+  alias: ['membercount'],
+  usage: '<p>Mc',
+  example: '<p>Mc',
+  description: 'Get the servers member count',
+  category: 'misc',
+};

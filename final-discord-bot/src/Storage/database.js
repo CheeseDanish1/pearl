@@ -114,23 +114,38 @@ const database = {
   setLoggingChannel: async (channel, config) => {
     await config.updateOne({$set: {'logging.channel': channel}});
   },
-  addWarning: async (info, id) => {
-    await GuildMemberConfig.findOneAndUpdate(
-      {id},
+  addWarning: async (info, id, guild) => {
+    let res = await GuildMemberConfig.findOneAndUpdate(
+      {id, guild},
       {
         $inc: {'warnings.amount': 1},
         $push: {
           'warnings.info': info,
         },
-      }
-    );
-  },
-  resetWarnings: async id => {
-    return await GuildMemberConfig.findOneAndUpdate(
-      {id},
-      {$set: {'warnings.amount': 0, 'warnings.info': []}},
+      },
       {new: true}
     );
+    return res;
+  },
+  removeWarnings: async (amount, gmc, id, guild) => {
+    if (amount == 'all')
+      return await GuildMemberConfig.findOneAndUpdate(
+        {id, guild},
+        {$set: {'warnings.amount': 0, 'warnings.info': []}},
+        {new: true}
+      );
+
+    let r = gmc.warnings.amount - amount;
+
+    let res = await GuildMemberConfig.findOneAndUpdate(
+      {id, guild},
+      {
+        $pull: {'warnings.info': {warning: {$gt: r}}},
+        $set: {'warnings.amount': r},
+      },
+      {multi: true}
+    );
+    return res;
   },
   createGiveaway: async giveaway => {
     return await GuildConfig.findOneAndUpdate(
@@ -204,7 +219,6 @@ const database = {
     );
   },
   mes: async (id, guild) => {
-    console.log(id, 'Updated mes');
     await GuildMemberConfig.findOneAndUpdate(
       {id, guild},
       {$inc: {messages: 1}},

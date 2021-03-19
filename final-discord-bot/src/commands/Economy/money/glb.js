@@ -68,3 +68,12 @@ module.exports.run = async (client, message, args, {UserConfig}) => {
     }
   });
 };
+
+module.exports.info = {
+  name: 'glb',
+  alias: [],
+  usage: '<p>glb',
+  example: '<p>glb',
+  description: 'See your ranking on the global money leaderboard!',
+  category: 'economy',
+};

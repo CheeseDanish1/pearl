@@ -20,3 +20,12 @@ module.exports.run = async (client, message, args, {UserConfig}) => {
 
   message.channel.send(embed);
 };
+
+module.exports.info = {
+  name: 'balance',
+  alias: ['bal'],
+  usage: '<p>Balance (who)',
+  example: '<p>Balance\n<p>Balance @Jimmy#7932',
+  description: 'View how much money you currently have in your bank',
+  category: 'economy',
+};

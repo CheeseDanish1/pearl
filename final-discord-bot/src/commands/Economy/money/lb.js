@@ -66,17 +66,14 @@ module.exports.run = async (client, message, args, {UserConfig}) => {
       if (!who || !bal) return;
       return `#${index + 1} - ${who.user.username} - ${bal}`;
     });
-    // let all = db
-    //   .all()
-    //   .filter(d => d.ID.startsWith(wat))
-    //   .sort((a, b) => b.data - a.data);
-    // let mes = [];
-    // all.forEach(a => {
-    //   let who = message.guild.members.cache.get(a.ID.split('_')[1]);
-    //   if (who) {
-    //     mes.push(`${who.user.username} - ${a.data}`);
-    //   }
-    // });
-    // return mes;
   }
+};
+
+module.exports.info = {
+  name: 'lb',
+  alias: [],
+  usage: '<p>lb',
+  example: '<p>lb',
+  description: 'See your ranking compared to other server members',
+  category: 'economy',
 };

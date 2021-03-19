@@ -3,6 +3,7 @@ import {getGuildsWithPerms} from '../../utils/api';
 import Header from '../../components/Header';
 import GuildComp from '../../components/GuildComp';
 import GuildCompSkeleton from '../../components/GuildCompSkeleton';
+import './Menu.css';
 
 let howManySkeletonsToLoad = 5;
 let arr = Array.from(Array(howManySkeletonsToLoad).keys());
@@ -27,42 +28,15 @@ const Menu = ({history}) => {
 
   return (
     <>
-      <div
-        className="container"
-        style={{
-          backgroundColor: '#2f3237',
-          minHeight: '100%',
-          overflowX: 'hidden',
-        }}
-      >
+      <div className="menu-container">
         <div className="box" style={{height: '100vh', maxWidth: '100%'}}>
           <Header isLoggedIn={!!guilds} loading={loading} />
           <center>
-            {/* <br />
-            <br />
-            <br /> */}
             <div className="text">
-              <p
-                style={{
-                  color: 'white',
-                  fontFamily: 'Poppins, Helvetica, arial, sans-serif',
-                  textTransform: 'uppercase',
-                  padding: '20px 0 10px 0',
-                  fontWeight: '700',
-                  fontSize: '24px',
-                }}
-              >
-                Select a server
-              </p>
+              <p className="menu-instructions">Select a server</p>
             </div>
             <br />
-            <div
-              className="guilds"
-              style={{
-                minHeight: '100%',
-                backgroundColor: '#2f3237',
-              }}
-            >
+            <div className="guilds">
               {loading
                 ? arr.map(i => <GuildCompSkeleton key={i} />)
                 : promote(guilds).map(guild => (

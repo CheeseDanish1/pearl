@@ -35,3 +35,12 @@ module.exports.run = async (client, message, args, {GuildConfig, prefix}) => {
 
   message.channel.send(embed);
 };
+
+module.exports.info = {
+  name: 'LoggingHelp',
+  alias: [],
+  usage: '<p>LoggingHelp',
+  example: '<p>LoggingHelp',
+  description: 'The configuration menu for the logging module',
+  category: 'logging',
+};

@@ -14,3 +14,12 @@ module.exports.run = async (bot, message, args, {GuildConfig}) => {
     message.channel.send(embed);
   }
 };
+
+module.exports.info = {
+  name: 'snipe',
+  alias: [],
+  usage: '<p>Snipe',
+  example: '<p>Snipe',
+  description: 'Snipe a the mostly recently deleted message in a channel',
+  category: 'misc',
+};

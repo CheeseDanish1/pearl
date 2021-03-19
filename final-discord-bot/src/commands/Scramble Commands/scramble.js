@@ -1,36 +1,36 @@
 module.exports.run = (client, message, args) => {
-  const cubes = require("scrambler-util");
+  const cubes = require('scrambler-util');
 
   switch (args[0]) {
-    case "3x3":
-      var cube = "333";
+    case '3x3':
+      var cube = '333';
       break;
-    case "4x4":
-      var cube = "444";
+    case '4x4':
+      var cube = '444';
       break;
-    case "5x5":
-      var cube = "555";
+    case '5x5':
+      var cube = '555';
       break;
-    case "6x6":
-      var cube = "666";
+    case '6x6':
+      var cube = '666';
       break;
-    case "7x7":
-      var cube = "777";
+    case '7x7':
+      var cube = '777';
       break;
-    case "2x2":
-      var cube = "222";
+    case '2x2':
+      var cube = '222';
       break;
-    case "1x1":
-      var cube = "111";
+    case '1x1':
+      var cube = '111';
       break;
-    case "skewb":
-      var cube = "skewb";
+    case 'skewb':
+      var cube = 'skewb';
       break;
-    case "pyraminx":
-      var cube = "pyraminx";
+    case 'pyraminx':
+      var cube = 'pyraminx';
       break;
-    case "2x2":
-      var cube = "222";
+    case '2x2':
+      var cube = '222';
       break;
     default:
       message.channel.send(
@@ -44,9 +44,18 @@ module.exports.run = (client, message, args) => {
   if (!scrambles || scrambles == null || scrambles == undefined) scrambles = 1;
 
   if (isNaN(scrambles))
-    return message.channel.send("You need to provide a number");
+    return message.channel.send('You need to provide a number');
 
-  var result = cubes(cube, scrambles).join("\n");
+  var result = cubes(cube, scrambles).join('\n');
 
   message.channel.send(result);
+};
+
+module.exports.info = {
+  name: 'scramble',
+  alias: [],
+  usage: '<p>Scramble [cube] (amount of scrambles)',
+  example: '<p>scramble 4x4 5',
+  description: 'Generate a scrable for the cube of choice',
+  category: 'scramble',
 };

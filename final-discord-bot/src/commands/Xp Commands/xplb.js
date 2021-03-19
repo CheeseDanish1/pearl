@@ -76,3 +76,12 @@ module.exports.run = async (client, message, args) => {
     });
   }
 };
+
+module.exports.info = {
+  name: 'xplb',
+  alias: [],
+  usage: '<p>Xplb',
+  example: '<p>Xplb',
+  description: 'View the local xp leaderboard and see your ranking',
+  category: 'xp',
+};

@@ -30,3 +30,12 @@ module.exports.run = async (client, message, args, {UserConfig}) => {
 
   Promise.all(addMoney(amount, sender.id), addBank(-amount, sender.id));
 };
+
+module.exports.info = {
+  name: 'withdraw',
+  alias: [],
+  usage: '<p>Withdraw [Amount]',
+  example: '<p>Withdraw 2000',
+  description: 'Withdraw money from your bank if your low on cash!',
+  category: 'economy',
+};

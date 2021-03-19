@@ -11,26 +11,20 @@ module.exports = {
   },
 
   level: function (xp) {
-    remaining_xp = xp;
-    level = 0;
-    while (remaining_xp >= getLevelXp(level)) {
-      remaining_xp -= getLevelXp(level);
-      level += 1;
-    }
-    return level;
-
-    function getLevelXp(n) {
-      return 5 * (n ^ 2) + 50 * n + 100;
-    }
+    return Math.floor(0.25 * Math.sqrt(xp));
+  },
+  xpNextLevel: level => {
+    return Math.pow((level + 1) * 4, 2);
+  },
+  xpRequiredTillNextLevel: xp => {
+    return Math.pow((Math.floor(0.25 * Math.sqrt(xp)) + 1) * 4, 2) - xp;
   },
 
   formatDate: function (date) {
     return new Intl.DateTimeFormat('en-US').format(date);
   },
   colourNameToHex: function (colour) {
-    if (typeof colours[colour.toLowerCase()] != 'undefined')
-      return colours[colour.toLowerCase()];
-
-    return false;
+    let r = colours[colour.toLowerCase] || false;
+    return r;
   },
 };

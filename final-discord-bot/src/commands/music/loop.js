@@ -8,10 +8,22 @@ module.exports.run = (client, message, args) => {
   if (channel != message.guild.me.voice.channel)
     return message.channel.send('We are not in the same vc');
 
-  const serverQueue = client.queue.get(message.guild.id)
-  if (!serverQueue || !serverQueue.songs[0]) return message.channel.send("There is nothing playing");
+  const serverQueue = client.queue.get(message.guild.id);
+  if (!serverQueue || !serverQueue.songs[0])
+    return message.channel.send('There is nothing playing');
 
   serverQueue.loop = !serverQueue.loop;
-  message.channel.send(`Loop is **${serverQueue.loop ? "Enabled" : "Disabled"}**`)
+  message.channel.send(
+    `Loop is **${serverQueue.loop ? 'Enabled' : 'Disabled'}**`
+  );
   // console.log(serverQueue)
+};
+
+module.exports.info = {
+  name: 'loop',
+  alias: ['rp', 'repeat'],
+  usage: '<p>Loop',
+  example: '<p>Loop',
+  description: 'Set the current song to loop',
+  category: 'music',
 };

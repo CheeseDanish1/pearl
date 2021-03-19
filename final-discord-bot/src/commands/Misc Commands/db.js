@@ -70,3 +70,13 @@ module.exports.run = async (
     }
   });
 };
+
+module.exports.info = {
+  name: 'db',
+  alias: ['database', 'getinfo', 'getstoredinfo'],
+  usage: '<p>Db [User | Member | Guild]',
+  example: '<p>Db Guild',
+  description:
+    'Get **ALL** information stored on you or your server in pearls database',
+  category: 'misc',
+};

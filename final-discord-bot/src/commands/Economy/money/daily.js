@@ -26,3 +26,12 @@ module.exports.run = async (client, message, args, {UserConfig}) => {
     await setTimeout('daily', message.author.id);
   }
 };
+
+module.exports.info = {
+  name: 'daily',
+  alias: [],
+  usage: '<p>Daily',
+  example: '<p>Daily',
+  description: 'Collect your daily reward of cash',
+  category: 'economy',
+};

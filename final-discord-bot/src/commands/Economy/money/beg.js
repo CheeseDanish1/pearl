@@ -13,9 +13,18 @@ module.exports.run = async (client, message, args, {UserConfig}) => {
       `You have been begging to much lately! \nYou can start beggining again in **${time.seconds}** seconds!`
     );
   } else {
-    message.channel.send(`You've begged and received you ${amount}$`);
+    message.channel.send(`You begged and received you ${amount}$`);
 
     await addMoney(amount, message.author.id);
     await setTimeout('beg', message.author.id);
   }
+};
+
+module.exports.info = {
+  name: 'beg',
+  alias: [],
+  usage: '<p>Beg',
+  example: '<p>Beg',
+  description: 'Need some money? Try begging',
+  category: 'economy',
 };

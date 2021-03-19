@@ -1,0 +1,9 @@
+.multi-select {
+  /* border: 1px solid #1a1a1a !important; */
+  border-radius: 3px;
+  box-shadow: none;
+  color: #e3e3e3;
+  height: 42px;
+  width: 100%;
+  font-size: 16px;
+}

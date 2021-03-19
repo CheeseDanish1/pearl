@@ -59,3 +59,11 @@ export function updateGuildPrefix(id, ops) {
     {withCredentials: true}
   );
 }
+
+export function updateIgnored(id, ops, what) {
+  return axios.put(
+    `http://localhost:3001/api/bot/guilds/id/${id}/ignored/${what}`,
+    ops,
+    {withCredentials: true}
+  );
+}

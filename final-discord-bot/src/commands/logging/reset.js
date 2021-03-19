@@ -12,3 +12,12 @@ module.exports.run = async (client, message, args, {GuildConfig}) => {
     'Reset the logging configuration for this server'
   );
 };
+
+module.exports.info = {
+  name: 'reset',
+  alias: [],
+  usage: '<p>Reset',
+  example: '<p>Reset',
+  description: 'Reset all logging events to the default',
+  category: 'logging',
+};

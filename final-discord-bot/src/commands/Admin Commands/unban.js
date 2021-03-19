@@ -1,46 +1,29 @@
-const Discord = require("discord.js");
+const Discord = require('discord.js');
 
-module.exports.run = (client, message, args) => {
+module.exports.run = async (client, message, args) => {
+  let member = args[0];
+  if (!member)
+    return message.channel.send(
+      `Provide the id of the person you want to unban`
+    );
 
-    let unbanned = args[0];
+  if (!message.guild.me.permissions.has('BAN_MEMBERS'))
+    return message.channel.send(`I dont have permission to unbanned members`);
 
-    // MESSAGES
+  if (!message.member.permissions.has('BAN_MEMBERS'))
+    return message.channel.send(`You dont have permission to unban members`);
 
-    if (!unbanned) {
-        let unbaninfoembed = new Discord.MessageEmbed()
-            .setTitle("Command: unban")
-            .setDescription(
-                `**Description:** Unban a member. \n` +
-                "**Usage:**\n" +
-                "-unban [user] (limit) (reason) \n" +
-                "**Examples:** \n" +
-                "-unban <@597253939469221891> good guy \n" +
-                "-unban 597253939469221891 good guy "
-            )
-            .setColor("random");
-        return message.channel.send(unbaninfoembed);
-    }
+  let user = await message.guild.members
+    .unban(args[0])
+    .catch(err => message.channel.send(err));
+  return message.channel.send(`**${user.username}** was successfully unbanned`);
+};
 
-    let member = client.users.fetch(unbanned);
-
-    if (!message.guild.me.permissions.has("BAN_MEMBERS")) {
-        let botnoperms = new Discord.MessageEmbed()
-            .setDescription("I do not have permissions, please contact an administrator")
-            .setColor("#2C2F33");
-        return message.channel.send(botnoperms);
-    }
-
-    if (!message.member.permissions.has("BAN_MEMBERS")) {
-        let nopermsembed = new Discord.MessageEmbed()
-            .setDescription("You do not have permission `BAN MEMBERS` contact an administrator")
-            .setColor("#2C2F33");
-        return message.channel.send(nopermsembed);
-    }
-    
-    message.guild.members.unban(args[0]).catch((err) => message.channel.send(err))
-    let successfullyembed = new Discord.MessageEmbed()
-        .setTitle(`${member.username} has been successfully unbanned.`)
-        .setColor("#2C2F33");
-
-    return message.channel.send(successfullyembed);
+module.exports.info = {
+  name: 'unban',
+  alias: [],
+  usage: '<p>Unban [User Id]',
+  example: '<p>Unban 9832981209838371',
+  description: 'Unban member from server ban list',
+  category: 'moderation',
 };

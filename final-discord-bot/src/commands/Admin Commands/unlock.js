@@ -33,5 +33,5 @@ module.exports.info = {
   usage: '<p>Unlock [Channel]',
   example: '<p>Unlock #general',
   description: 'Allows @everyone to send messages to unlocked channel again',
-  category: 'moderation',
+  category: 'admin',
 };

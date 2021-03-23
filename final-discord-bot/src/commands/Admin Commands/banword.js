@@ -6,14 +6,13 @@ const {Client, Message, MessageEmbed} = require('discord.js');
  * @param {string[]} args
  */
 
-module.exports.run = async (client, message, args, ops) => {
+module.exports.run = async (client, message, args, {GuildConfig: Guild}) => {
   if (!message.member.hasPermission('MANAGE_GUILD'))
     return message.channel.send('You dont have permission to use this command');
   if (!message.guild.me.hasPermission('MANAGE_MESSAGES'))
     return message.channel.send('I dont have permission to use this command');
 
-  const {GuildConfig: Guild} = ops;
-  const currBanWords = Guild.ops.bannedWords;
+  const currBanWords = Guild.automod.bannedWords;
   let word = args[0];
 
   if (!word) {
@@ -32,13 +31,13 @@ module.exports.run = async (client, message, args, ops) => {
   word = word.toLowerCase();
 
   if (currBanWords && currBanWords.includes(word)) {
-    await Guild.updateOne({$pull: {'ops.bannedWords': word}});
+    await Guild.updateOne({$pull: {'automod.bannedWords': word}});
     // db.set(`bannedwords_${message.guild.id}`, newArr)
     return message.channel.send(`Removed that word from list of banned words`);
   }
 
   // db.push(`bannedwords_${message.guild.id}`, word)
-  await Guild.updateOne({$push: {'ops.bannedWords': word}});
+  await Guild.updateOne({$push: {'automod.bannedWords': word}});
 
   return message.channel.send(`Added that word to list of banned word`);
 };

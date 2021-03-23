@@ -7,8 +7,12 @@ const {
   removeAutorole,
 } = require('../../Storage/database');
 
-module.exports.run = async (client, message, args, ops) => {
-  let {prefix} = ops;
+module.exports.run = async (
+  client,
+  message,
+  args,
+  {prefix, GuildConfig: Guild}
+) => {
   if (!message.member.hasPermission('MANAGE_ROLES'))
     return message.channel.send(
       'You do not have permission to use this command'
@@ -16,7 +20,6 @@ module.exports.run = async (client, message, args, ops) => {
   if (!message.guild.me.hasPermission('MANAGE_ROLES'))
     return message.channel.send('I do not have permission to use this command');
 
-  const Guild = ops.GuildConfig;
   const autorole = Guild.autorole;
 
   if (args[0]) {
@@ -96,15 +99,17 @@ module.exports.run = async (client, message, args, ops) => {
             `That role is already in the autorole for this server`
           );
 
+        autorole.push(role2.id);
+
         message.channel.send(
-          `Added role **${
+          `Added role ${
             role2.name
-          }**.\nThe autorole for this server is now **${newGuild2.autorole
+          }**.\nThe autorole for this server is now **${autorole
             .map(c => {
               roleFull = message.guild.roles.cache.get(c);
-              return roleFull ? roleFull.name : '';
+              return `\`${roleFull ? roleFull.name : ''}\``;
             })
-            .join(', ')}**`
+            .join(', ')}`
         );
         insertAutorole(message.guild.id, role2.id);
 
@@ -173,10 +178,10 @@ module.exports.run = async (client, message, args, ops) => {
 };
 
 module.exports.info = {
-  name: 'adminonly',
+  name: 'autorole',
   alias: [],
-  usage: '<p>Adminonly [Add or Remove] [Role]',
-  example: '<p>Adminonly add @Member',
-  description: 'Set roles to be automaticly given to new server members',
+  usage: '<p>Autorole [Add or Remove] [Role]',
+  example: '<p>Autorole add @Member',
+  description: 'Set roles to be automatically given to new server members',
   category: 'admin',
 };

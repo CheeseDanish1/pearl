@@ -1,6 +1,6 @@
 const {addMoney} = require('../../Storage/database');
 
-module.exports.run = async (client, message, args, ops, real) => {
+module.exports.run = async (client, message, args, options, real) => {
   if (!real) return message.channel.send(`Command doesn't exist.`);
   let randomAmount = getRndInteger(1, 10000);
 

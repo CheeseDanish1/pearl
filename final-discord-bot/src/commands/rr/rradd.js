@@ -2,9 +2,7 @@
 
 const {MessageEmbed} = require('discord.js');
 
-module.exports.run = async (bot, message, args, ops) => {
-  const {GuildConfig: Guild} = ops;
-
+module.exports.run = async (bot, message, args, {GuildConfig: Guild}) => {
   if (!message.member.permissions.has('ADMINISTRATOR'))
     return message.channel.send(`You do not have permissions!`);
   if (!args[0])

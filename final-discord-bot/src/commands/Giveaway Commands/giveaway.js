@@ -16,6 +16,6 @@ module.exports.info = {
   usage: '<p>Giveaway (start)',
   example: '<p>Giveaway',
   description:
-    'Use the giveaway command to walk you through the process of creating a giveaway\nOr do `<p>Giveaway Start` for the quick setup',
+    'Do `<p>Giveaway` to walk you through the process of creating a giveaway\nOr do `<p>Giveaway Start` for the quick setup',
   category: 'admin',
 };

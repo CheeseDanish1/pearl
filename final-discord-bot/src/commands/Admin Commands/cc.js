@@ -9,8 +9,7 @@ const {Client, Message, Guild} = require('discord.js');
  * @param {String[]} args
  */
 
-module.exports.run = async (bclient, message, args, ops) => {
-  const {GuildConfig} = ops;
+module.exports.run = async (bclient, message, args, {GuildConfig}) => {
   if (!message.member.hasPermission('MANAGE_GUILD'))
     return message.channel.send('You dont have permission to use this command');
   if (!args[0])

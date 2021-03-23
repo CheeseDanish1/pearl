@@ -30,6 +30,6 @@ module.exports.info = {
   alias: [],
   usage: '<p>Lock [Channel]',
   example: '<p>Lock #general',
-  description: 'Prevent @everyone from sending messages',
-  category: 'moderation',
+  description: 'Prevent @everyone from sending messages in a certain channel',
+  category: 'admin',
 };

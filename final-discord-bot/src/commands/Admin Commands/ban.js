@@ -32,6 +32,6 @@ module.exports.info = {
   alias: ['banmember'],
   usage: '<p>Ban [Member] (reason)',
   example: '<p>Ban @friend#1234',
-  description: 'Permanently remove member from ',
-  category: 'moderation',
+  description: 'Permanently remove member from server',
+  category: 'admin',
 };

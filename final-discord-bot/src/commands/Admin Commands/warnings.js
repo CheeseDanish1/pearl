@@ -29,9 +29,9 @@ module.exports.run = async (client, message, args) => {
           .map(
             i =>
               `Warning **${i.warning}**, Reason **${i.reason}**, Warned By: **${
-                message.guild.members.cache.get(i.warnedBy)
+                !isNaN(parseInt(i.warnedBy))
                   ? message.guild.members.cache.get(i.warnedBy).displayName
-                  : 'Error'
+                  : i.warnedBy
               }**`
           )
           .join('\n')

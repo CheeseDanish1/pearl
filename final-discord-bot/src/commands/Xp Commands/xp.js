@@ -26,8 +26,7 @@ module.exports.run = async (client, message, args, {GuildMemberConfig}) => {
       `This user is a bot, so does not have any stats`
     );
 
-  let config = getGuildMember(person.id, message.guild.id);
-
+  let config = await getGuildMember(person.id, message.guild.id);
   let xp = config.xp;
   let mes = config.messages;
   let lev = await getRankLevels();
@@ -76,9 +75,13 @@ module.exports.run = async (client, message, args, {GuildMemberConfig}) => {
   message.channel.send(attachment);
 
   async function getRankLevels() {
-    let r = await GuildMemberConfig.find({guild: message.guild.id}).sort({
-      xp: -1,
-    });
+    let r = await GuildMemberConfig.collection
+      .find({guild: message.guild.id})
+      .sort({
+        xp: -1,
+      })
+      .toArray();
+    // console.log(r);
     return r.indexOf(r.find(g => g.id == person.id)) + 1;
   }
 };

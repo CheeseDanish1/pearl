@@ -27,7 +27,7 @@ module.exports.run = async (client, message, args) => {
 };
 
 module.exports.info = {
-  name: 'pig',
+  name: 'pug',
   alias: [],
   usage: '<p>Pug',
   example: '<p>Pug',

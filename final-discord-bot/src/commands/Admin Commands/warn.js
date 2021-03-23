@@ -41,7 +41,7 @@ module.exports.run = async (client, message, args) => {
       member.user.username
     }** for **${reason}**, they now have **${amount + 1}** warning`
   );
-  return addWarning(info, member.id, message.guild.id);
+  return addWarning(info, member.user.username, message.guild.id);
 };
 
 module.exports.info = {

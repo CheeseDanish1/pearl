@@ -19,18 +19,18 @@ module.exports.run = async (client, message, args) => {
 
   message.channel.send(
     newWarnings == 0
-      ? 'Turned off zalgo detection'
-      : `Users will get \`${newWarnings}\` warnings for posting zalgo`
+      ? 'Turned off invite detection'
+      : `Users now will get \`${newWarnings}\` warnings for sending invites`
   );
-  editAutomod(message.guild.id, 'zalgo', newWarnings);
+
+  editAutomod(message.guild.id, 'invite', newWarnings);
 };
 
 module.exports.info = {
-  name: 'zalgo',
-  alias: ['zal'],
-  usage: '<p>Zalgo [Warnings to give]',
-  example: '<p>Zalgo 1',
-  description:
-    'Prevents users from sending messages with zalgo and warn them if they keep doing it',
+  name: 'removeinvites',
+  alias: ['removeinvite'],
+  usage: '<p>RemoveInvites [Warnings to give]',
+  example: '<p>RemoveInvites 2',
+  description: 'Prevent users from sending invites to other servers ',
   category: 'moderation',
 };

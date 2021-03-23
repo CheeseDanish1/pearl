@@ -32,6 +32,6 @@ module.exports.info = {
   alias: [],
   usage: '<p>Slowmode [Channel] [Time]',
   example: '<p>Slowmode #general 10s',
-  description: 'Change a channels slowmode',
+  description: 'Change a channels slowmode length',
   category: 'moderation',
 };

@@ -23,7 +23,10 @@ module.exports.run = async (
           message.channel.send(
             `You dont have permission to view the server config`
           );
-        else message.author.send(`\`\`\`json\n${GuildConfig}\n\`\`\``);
+        else {
+          console.log(GuildConfig);
+          message.author.send(`\`\`\`json\n${GuildConfig}\n\`\`\``);
+        }
         break;
       case 'member':
         message.author.send(`\`\`\`json\n${GuildMemberConfig}\n\`\`\``);

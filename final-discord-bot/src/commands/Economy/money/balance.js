@@ -14,7 +14,7 @@ module.exports.run = async (client, message, args, {UserConfig}) => {
 
 module.exports.info = {
   name: 'balance',
-  alias: ['bal'],
+  alias: ['bal', 'money', 'mon'],
   usage: '<p>Balance (who)',
   example: '<p>Balance\n<p>Balance @Jimmy#7932',
   description: 'View how much money you currently have',

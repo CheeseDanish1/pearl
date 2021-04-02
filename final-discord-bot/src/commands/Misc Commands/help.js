@@ -73,12 +73,9 @@ module.exports.run = async (client, message, args, {prefix}) => {
 
     if (!help)
       return message.channel.send(
-        `That command does not exist, did you mean ${(
-          await getMostLikely(args[0].toLowerCase(), allCmds)
-        )
-          .slice(0, 1)
-          .map(r => `\`${r}\``)
-          .join(', ')}`
+        `That command does not exist, did you mean \`${
+          prefix + (await getMostLikely(args[0].toLowerCase(), allCmds))[0][0]
+        }\``
       );
     help = help.info;
     const embed = new Discord.MessageEmbed()
@@ -123,6 +120,6 @@ module.exports.info = {
   alias: [],
   usage: '<p>Help [Category | Command]',
   example: '<p>Help Warnings\n<p>Help Moderation',
-  description: 'Get help info on command or categoys',
+  description: 'Get information on command or categoys',
   category: 'misc',
 };

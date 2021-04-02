@@ -4,7 +4,7 @@
 
 .dash-box {
   background-color: #34373d;
-  height: 100%;
+  min-height: 100vh;
   /* max-width: 100%; */
 }
 
@@ -32,4 +32,86 @@
 .dash-input:focus {
   border: none;
   outline: none;
+}
+
+@media screen and (max-width: 600px) {
+  .dash-idk1 {
+    width: 100%;
+  }
+  .sidebar-background {
+    display: none;
+  }
+  .nav-menu {
+    display: none;
+  }
+}
+
+.multi-select {
+  /* border: 1px solid #1a1a1a !important; */
+  border-radius: 3px;
+  box-shadow: none;
+  color: #e3e3e3;
+  height: 42px;
+  width: 100%;
+  font-size: 16px;
+}
+
+.command {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  width: 100%;
+  max-width: calc(100% / 3 - 2vh);
+  height: 100px;
+  margin: 5px;
+  background-color: #313339;
+  border: 1px solid rgba(0, 0, 0, 0.2);
+}
+
+@media screen and (max-width: 1306px) {
+  .command {
+    max-width: 48%;
+  }
+}
+
+@media screen and (max-width: 973px) {
+  .command {
+    max-width: 100%;
+  }
+}
+
+.command .command-info {
+  display: flex;
+  flex-direction: column;
+  margin-left: 10px;
+}
+
+.command .command-info .command-name {
+  color: white;
+  font-family: Montserrat;
+  font-size: 24px;
+}
+
+.command .command-switch {
+  margin-right: 10px;
+}
+
+.command .command-info .command-desc {
+  color: #acabbe;
+  font-size: 16px;
+}
+
+@media screen and (max-width: 600px) {
+  .norm-input {
+    flex-direction: column;
+  }
+
+  .norm-input .multi-select {
+    width: 100%;
+  }
+
+  .norm-input p,
+  .norm-input label {
+    max-width: 100% !important;
+  }
 }

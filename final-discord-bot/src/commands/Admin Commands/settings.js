@@ -132,7 +132,7 @@ module.exports.run = (client, message, args, {GuildConfig, prefix}) => {
       Warnings: \`${Warnings}\`
 
       __Cap Spam__
-      Percent: \`${Percent}%\`
+      Percent: \`${Percent ? Percent + '%' : 'None'}\`
       Warnings: \`${CapsWarnings}\`
 
       Zalgo: \`${Zalgo}\`

@@ -19,8 +19,8 @@ const GuildMemberConfig = new mongoose.Schema(
     messages: Number,
     afk: {
       message: String,
-      wentAfk: Date,
-      isAfk: Boolean,
+      timestamp: Date,
+      status: Boolean,
     },
   },
   {collection: 'GuildMemberConfig'}

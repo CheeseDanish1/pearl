@@ -1,6 +1,5 @@
-const message = require('../events/message');
 const colours = require('./colors');
-const {addWarnings} = require('./database');
+const {addWarnings, getAfk} = require('./database');
 const help = require('./onMesInfo');
 
 module.exports = {
@@ -133,7 +132,7 @@ module.exports = {
     ) {
       const totCaps = message.content
         .split('')
-        .filter(c => c.toUpperCase() == c)
+        .filter(c => c.toUpperCase() == c && c.match(/[a-z]/i))
         .join('').length;
 
       const percent = (totCaps / message.content.length) * 100;
@@ -142,7 +141,7 @@ module.exports = {
         send(
           `You were given \`${caps.warnings}\` warning${
             caps.warnings > 1 ? 's' : ''
-          } for \`Spammin caps\`\nYou now have \`${
+          } for \`Spamming caps\`\nYou now have \`${
             amount + caps.warnings
           }\` warning${amount + caps.warnings == 1 ? '' : 's'}`
         );
@@ -316,5 +315,25 @@ module.exports = {
       }
       return costs[s2.length];
     }
+  },
+  mesPingsAfk: async (message, prefix) => {
+    if (
+      (message.member.hasPermission('MANAGE_GUILD') &&
+        message.content.startsWith(prefix)) ||
+      Array.from(message.mentions.users).length == 0
+    )
+      return false;
+    const arr = Array.from(message.mentions.users.filter(u => !u.bot));
+    if (arr.length == 0) return false;
+    const array = arr
+      .map(u => u[1])
+      .map(async user => {
+        const status = await getAfk(user.id, message.guild.id);
+        return {user, status};
+      });
+    const arra = [];
+    for (let i = 0; i < array.length; i++) arra.push(await array[i]);
+    if (arra.some(s => s.status.status)) return arra.find(s => s.status.status);
+    return false;
   },
 };

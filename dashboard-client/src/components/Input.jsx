@@ -18,7 +18,7 @@ export default function Input({
   if (type === 'text')
     return (
       <div
-        className="dash-input"
+        className="dash-input norm-input"
         style={{
           display: 'flex',
           maxWidth: '800px',
@@ -64,6 +64,7 @@ export default function Input({
   else if (type === 'multi') {
     return (
       <div
+        className="norm-input"
         style={{
           display: 'flex',
           maxWidth: '800px',
@@ -111,6 +112,60 @@ export default function Input({
           })}
           onBlur={() => onFinish(stateVar, guild, guilds)}
           className="multi-select"
+        />
+      </div>
+    );
+  } else if (type === 'input') {
+    return (
+      <div
+        className="norm-input"
+        style={{
+          display: 'flex',
+          maxWidth: '800px',
+          width: '100%',
+          alignItems: 'center',
+          marginTop: '10px',
+        }}
+      >
+        <p
+          style={{
+            color: '#e3e3e3',
+            fontSize: '16px',
+            fontFamily: 'Montserrat',
+            maxWidth: '400px',
+            width: '100%',
+          }}
+        >
+          {name}
+        </p>
+        <Select
+          value={stateVar}
+          isMulti={false}
+          options={options}
+          onChange={handleChange}
+          isSearchable={true}
+          name={name}
+          onBlur={() => onFinish(stateVar, guild, guilds)}
+          className="multi-select"
+          theme={t => ({
+            ...t,
+            borderRadius: 0,
+            colors: {
+              ...t.colors,
+              // primary: '#212326',
+              neutral20: '#212326',
+
+              neutral0: '#2b2f33',
+
+              primary25: '#212326',
+              neutral5: '#212326',
+              neutral10: '#212326',
+
+              neutral60: '#e3e3e3',
+              neutral70: '#e3e3e3',
+              neutral80: '#e3e3e3',
+            },
+          })}
         />
       </div>
     );

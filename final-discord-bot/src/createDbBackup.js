@@ -1,5 +1,3 @@
-require('dotenv').config();
-require('./database/connection');
 const fs = require('fs');
 const gc = require('./database/models/GuildConfig');
 const gmc = require('./database/models/GuildMemberConfig');

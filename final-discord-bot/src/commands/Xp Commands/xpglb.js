@@ -5,7 +5,6 @@ module.exports.run = async (client, message, args) => {
   let start = 0;
   let end = 10;
   let res = (await dbsw()).filter(a => a);
-  console.log(res);
   let embed = new Discord.MessageEmbed()
     .setTitle('Global Xp LeaderBoard')
     .setDescription(res.slice(start, end).join('\n'))

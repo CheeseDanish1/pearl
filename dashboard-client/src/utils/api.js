@@ -67,3 +67,27 @@ export function updateIgnored(id, ops, what) {
     {withCredentials: true}
   );
 }
+
+export function toggleCommand(id, {command, guilds, enabled}) {
+  if (enabled) {
+    return axios.put(
+      `http://localhost:3001/api/bot/guilds/id/${id}/enableCommand`,
+      {command, guilds},
+      {withCredentials: true}
+    );
+  } else {
+    return axios.put(
+      `http://localhost:3001/api/bot/guilds/id/${id}/disableCommand`,
+      {command, guilds},
+      {withCredentials: true}
+    );
+  }
+}
+
+export function updateLoggingChannel(id, ops) {
+  return axios.put(
+    `http://localhost:3001/api/bot/guilds/id/${id}/logging/channel`,
+    ops,
+    {withCredentials: true}
+  );
+}

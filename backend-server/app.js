@@ -15,6 +15,7 @@ const routes = require('./routes');
 mongoose.connect(process.env.MONGO_URI, {
   useUnifiedTopology: true,
   useNewUrlParser: true,
+  useFindAndModify: true,
 });
 
 app.use(express.json());

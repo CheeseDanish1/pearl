@@ -1,4 +1,4 @@
-const {addWarning, getGuildMember} = require('../../Storage/database');
+const {addWarnings, getGuildMember} = require('../../Storage/database');
 
 module.exports.run = async (client, message, args) => {
   if (!message.member.hasPermission('MANAGE_GUILD'))
@@ -29,19 +29,23 @@ module.exports.run = async (client, message, args) => {
   const amount = warns.amount || 0;
 
   let info = {
-    warning: amount + 1,
-    warnedBy: message.author.id,
+    // warning: amount + 1,
+    // warnedBy: message.author.id,
+    // reason,
+    amount: 1,
     reason,
+    message,
   };
   member.send(
     `You have been warned in **${message.guild.name}** for **${reason}**`
   );
-  message.channel.send(
-    `You warned **${
-      member.user.username
-    }** for **${reason}**, they now have **${amount + 1}** warning`
-  );
-  return addWarning(info, member.user.username, message.guild.id);
+  // message.channel.send(
+  //   `You warned **${
+  //     member.user.username
+  //   }** for **${reason}**, they now have **${amount + 1}** warning`
+  // );
+  addWarnings(info);
+  // return addWarning(info, member.user.username, message.guild.id);
 };
 
 module.exports.info = {

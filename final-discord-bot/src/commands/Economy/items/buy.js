@@ -34,7 +34,7 @@ module.exports.run = async (client, message, args, {prefix, UserConfig}) => {
 
   item.amount = 1;
   message.channel.send(
-    `Successfully bought item **${item.name}** for **${item.sellPrice}$**!`
+    `Successfully bought item **${item.name}** for **${item.price}$**!`
   );
   buyItem(item, inventory, message.author.id);
   removeMoney(item.price, message.author.id);

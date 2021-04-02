@@ -10,6 +10,7 @@ export default function Top({name, children}) {
         paddingLeft: '15px',
         marginLeft: 'auto',
         marginTop: '15px',
+        marginBottom: '10px',
       }}
     >
       <h2

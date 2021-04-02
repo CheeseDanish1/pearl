@@ -32,8 +32,8 @@ const Dashboard = ({match, history}) => {
 
   const {guildId: id} = match.params;
 
-  let place = places.find(p => p === window.location.href.split('/')[5]);
-  place = place[0].toUpperCase() + place.substring(1);
+  let url = places.find(p => p === window.location.href.split('/')[5]);
+  let place = !url ? null : url[0].toUpperCase() + url.substring(1);
 
   useEffect(() => {
     Promise.all([getUserDetails(), getGuild(id), getGuildsWithPerms()])
@@ -57,31 +57,46 @@ const Dashboard = ({match, history}) => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
-  if ((!loading && !guilds.find(g => g.id === id)) || !place)
-    return <Redirect to="/menu" />;
-
   if (loading) return <Loading />;
-  if (!loading) setTimeout(() => Expand(), 100);
 
-  return (
-    !loading && (
+  if (!loading) {
+    if (!guilds.find(g => g.id === id)) return <Redirect to="/menu" />;
+
+    if (!place)
+      return (
+        <Redirect
+          to={`${[
+            ...window.location.pathname.split('/').slice(0, -1),
+            'overview',
+          ].join('/')}`}
+        />
+      );
+
+    setTimeout(() => Expand(), 100);
+    window.info = {guild, guilds, user};
+    return (
       <>
         <div className="dash-container">
           <div className="dash-box">
             <Header isLoggedIn={true} loading={false} shadow={true} />
+            {/* Hide this for fullscreen */}
             <Sidebar guild={guild} />
             <div className="dash-work1">
+              {/* Hide this for fullscreen */}
+
               <div className="dash-idk1">
                 <Pages page={place} guild={guild} guilds={guilds} user={user} />
+                {/* Hide this for fullscreen */}
               </div>
+              {/* Hide this for fullscreen */}
               <div className="sidebar-background"></div>
             </div>
             <br />
           </div>
         </div>
       </>
-    )
-  );
+    );
+  }
 };
 
 export default Dashboard;

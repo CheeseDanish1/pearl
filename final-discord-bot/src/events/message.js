@@ -1,8 +1,18 @@
 /** @format */
 
-const {onMes, automod, getMostLikely} = require('../Storage/functions');
-const {Client, Message} = require('discord.js');
-const {getUser, getGuild, getGuildMember} = require('../Storage/database');
+const {
+  onMes,
+  automod,
+  getMostLikely,
+  mesPingsAfk,
+} = require('../Storage/functions');
+const {Client, Message, MessageEmbed} = require('discord.js');
+const {
+  getUser,
+  getGuild,
+  getGuildMember,
+  removeAfk,
+} = require('../Storage/database');
 
 /**
  *
@@ -34,6 +44,40 @@ module.exports = async (client, message) => {
   if (res == 'return') return;
 
   await onMes(GuildMember);
+
+  // Check if they ping someone who is afk
+  const pingsAfk = await mesPingsAfk(message, prefix);
+  if (pingsAfk)
+    message.channel.send(
+      new MessageEmbed()
+        .setTitle(`**${pingsAfk.user.username}** is currently afk`)
+        .addFields(
+          {name: 'Afk Message', value: pingsAfk.status.message},
+          {
+            name: 'Afk For',
+            value: `${require('ms')(new Date() - pingsAfk.status.timestamp, {
+              long: true,
+            })}`,
+          }
+        )
+        .setColor('RED')
+    );
+
+  // Check if they were afk
+  if (GuildMember.afk && GuildMember.afk.status) {
+    message.channel.send(
+      new MessageEmbed()
+        .setTitle(`You're no longer afk!`)
+        .setDescription(
+          `You were afk for **${require('ms')(
+            new Date() - GuildMember.afk.timestamp,
+            {long: true}
+          )}** doing **${GuildMember.afk.message}**`
+        )
+        .setColor('GREEN')
+    );
+    removeAfk(message.member.id, message.guild.id);
+  }
 
   //Return's if the message does not start with the set prefix
   if (

@@ -172,9 +172,6 @@ const database = {
     );
     const punishment = punishments.find(pun => idk(pun));
     if (punishment) {
-      // Being punished
-      // console.log('Being punished');
-      console.log(punishment);
       const pun = {
         ban: 'banned',
         mute: 'muted',
@@ -352,6 +349,30 @@ const database = {
       {$push: {'automod.punishments': info}},
       {new: true}
     );
+  },
+  setAfk: async (status, id, guild) => {
+    return await GuildMemberConfig.findOneAndUpdate(
+      {id, guild},
+      {
+        $set: {
+          'afk.message': status,
+          'afk.timestamp': new Date(),
+          'afk.status': true,
+        },
+      },
+      {new: true}
+    );
+  },
+  removeAfk: async (id, guild) => {
+    return await GuildMemberConfig.findOneAndUpdate(
+      {id, guild},
+      {$set: {'afk.status': false}},
+      {new: true}
+    );
+  },
+  getAfk: async (id, guild) => {
+    const member = await GuildMemberConfig.findOne({id, guild});
+    return member.afk || null;
   },
 };
 

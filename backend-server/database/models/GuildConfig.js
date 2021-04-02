@@ -4,6 +4,7 @@ let {
   String: MongString,
   Array: MongArray,
   Boolean: MongBool,
+  Number: MongNumber,
 } = mongoose.SchemaTypes;
 
 const GuildConfig = new mongoose.Schema(
@@ -33,11 +34,27 @@ const GuildConfig = new mongoose.Schema(
       required: true,
     },
 
-    ops: {
+    automod: {
       adminOnly: MongBool,
       bannedWords: MongArray,
-      profanities: MongBool,
-      zalgo: MongBool,
+      profanities: MongNumber,
+      zalgo: MongNumber,
+      mentions: {
+        max: MongNumber,
+        warnings: MongNumber,
+      },
+      invite: MongNumber,
+      caps: {
+        percent: MongNumber,
+        warnings: MongNumber,
+      },
+      punishments: [
+        {
+          strike: MongNumber,
+          action: MongString,
+          time: MongNumber,
+        },
+      ],
     },
     customCommands: [
       {
@@ -66,7 +83,18 @@ const GuildConfig = new mongoose.Schema(
     ],
     disabledCategories: [],
     disabledCommands: [],
-    enabledCommands: [],
+    giveaways: [
+      {
+        prize: MongString,
+        ends: Date,
+        channel: MongString,
+        mes: MongString,
+        interval: MongString,
+        length: MongString,
+        guild: MongString,
+        ended: MongBool,
+      },
+    ],
   },
   {collection: 'GuildConfig'}
 );

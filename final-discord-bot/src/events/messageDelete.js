@@ -18,23 +18,20 @@ module.exports = async (client, message) => {
 
     if (message.content.startsWith(':game_die:')) return;
 
-    let m2;
-    let m3;
-    let m4;
-
-    if (!message.author.tag) m2 = 'Error';
-    else m2 = message.author.tag;
-    if (!message.content) m3 = 'Error';
-    else m3 = message.content;
-    if (!message.channel) m4 = 'Error';
-    else m4 = message.channel;
+    let m2 = message.author.toString() || 'Error';
+    let m3 = message.content || 'Error';
+    let m4 = message.channel.toString() || 'Error';
 
     let embed = new MessageEmbed()
-      .setColor('RANDOM')
-      .setAuthor(m2, message.author.avatarURL())
-      .addField('User', m2)
-      .addField('Message', m3)
-      .addField('Channel', m4)
+      .setColor('GREEN')
+      // .setAuthor(m2, message.author.avatarURL())
+      // .setTitle("Message")
+      // .addField('User', m2)
+      // .addField('Message', m3)
+      // .addField('Channel', m4)
+      // .setTitle("Message Deleted")
+      .setTitle(`**${m2}** deleted a message in ${m4}`)
+      .setDescription(m3)
       .setTimestamp();
 
     x.send(embed).catch();

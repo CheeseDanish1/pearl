@@ -1,4 +1,4 @@
-import {updateGuildPrefix, updateIgnored} from './api';
+import {updateGuildPrefix, updateIgnored, updateLoggingChannel} from './api';
 import {message} from 'antd';
 
 export const uic = async (state, guild, guilds) => {
@@ -41,6 +41,16 @@ export const updatePrefix = async (e, guild, guilds) => {
   }
   guild.config.prefix = prefix;
   let res = await updateGuildPrefix(guild.id, {prefix, guilds});
+  message[!res.data.error ? 'success' : 'error'](res.data.msg);
+};
+
+export const ulc = async (state, guild, guilds) => {
+  let newChannel = state.value;
+  let oldChannel = guild.config.logging ? guild.config.logging.channel : null;
+  if (oldChannel === newChannel) return;
+  guild.config.logging.channel = newChannel;
+  let o = {channel: newChannel, guilds};
+  let res = await updateLoggingChannel(guild.id, o);
   message[!res.data.error ? 'success' : 'error'](res.data.msg);
 };
 

@@ -4,7 +4,6 @@ const Discord = require('discord.js');
 
 module.exports.run = (client, message, args) => {
   let time = m(client.uptime, {verbose: true});
-
   let embed = new Discord.MessageEmbed()
     .setTitle('Bot Uptime')
     .setDescription(time)

@@ -18,5 +18,6 @@ new TicTacToe(
 );
 
 client.queue = new Map();
+client.snipes = new Map();
 
 require('./config/registry')(client);

@@ -1,17 +1,23 @@
-const Discord = require('discord.js');
+const {Message, MessageEmbed} = require('discord.js');
+
+/**
+ *
+ * @param {Message} message
+ */
 
 module.exports.run = async (client, message, args) => {
   let msg = await message.channel.send(`🏓 Pinging....`);
-  let mes = '🏓 Pong!';
-  mes += `\nLatency is ${Math.floor(
+  let title = '🏓 Pong!';
+  let description = `Latency is ${Math.floor(
     msg.createdTimestamp - message.createdTimestamp
-  )}ms`;
-  mes += `\nAPI Latency is ${Math.round(client.ws.ping)}ms`;
-  const _ = new Discord.MessageEmbed()
-    .setTitle('Pong!')
-    .setDescription(mes)
+  )}\nAPI Latency is ${Math.round(client.ws.ping)}ms`;
+
+  const _ = new MessageEmbed()
+    .setTitle(title)
+    .setDescription(description)
     .setColor('RANDOM');
-  msg.edit(_);
+  message.channel.send(_);
+
   msg.edit('\u200B');
 };
 

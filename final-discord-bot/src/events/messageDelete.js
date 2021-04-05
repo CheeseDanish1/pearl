@@ -41,18 +41,8 @@ module.exports = async (client, message) => {
     let snipe = {
       content: message.content,
       author: `${message.author.username}#${message.author.discriminator}`,
-      id: message.channel.id,
     };
 
-    if (Guild.snipe.find(c => c.id == message.channel.id)) {
-      return await Guild.updateOne(
-        {$set: {'snipe.$[s]': snipe}},
-        {arrayFilters: [{'s.id': snipe.id}]}
-        // {$pull: {'snipe.$.id': snipe.id}, /* $push: {snipe} */},
-        // {}
-      );
-    }
-
-    await Guild.updateOne({$push: {snipe: snipe}});
+    client.snipes.set(message.channel.id, snipe);
   }
 };

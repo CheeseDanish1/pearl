@@ -74,13 +74,6 @@ const GuildConfig = new mongoose.Schema(
         Role: MongString,
       },
     ],
-    snipe: [
-      {
-        id: MongString,
-        content: MongString,
-        author: MongString,
-      },
-    ],
     disabledCategories: [],
     disabledCommands: [],
     giveaways: [

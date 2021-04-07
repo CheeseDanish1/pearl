@@ -198,12 +198,30 @@ router.get('/mutual', async (req, res) => {
 });
 
 router.get('/perms', async (req, res) => {
+  console.time('total time');
+  console.time('auth');
   if (!req.user) return res.status(401).send({msg: 'Unauthorized'});
-  console.log('Call to fetch');
+
+  console.timeEnd('auth');
+  console.time('fetch bot guilds');
 
   const botGuilds = await guilds();
-  let userGuilds = await getUserGuilds(req.user.id);
-  res.send(idk(userGuilds, botGuilds));
+
+  console.timeEnd('fetch bot guilds');
+  console.time('fetch user guilds');
+
+  const userGuilds = await getUserGuilds(req.user.id);
+
+  console.timeEnd('fetch user guilds');
+  console.time('filter guilds');
+
+  const sorted = idk(userGuilds, botGuilds);
+
+  console.timeEnd('filter guilds');
+
+  res.send(sorted);
+
+  console.timeEnd('total time');
 });
 
 module.exports = router;

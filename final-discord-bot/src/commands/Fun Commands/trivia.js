@@ -9,6 +9,7 @@ async function getQuestion(d) {
   let url = `https://opentdb.com/api.php?amount=1&type=multiple&encode=url3986${
     d ? `&difficulty=${d}` : ''
   }`;
+
   const body = JSON.parse((await fetch(url)).body);
   const results = body.results[0];
   const {question, correct_answer, incorrect_answers, difficulty} = results;

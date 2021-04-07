@@ -60,7 +60,9 @@ const Dashboard = ({match, history}) => {
   if (loading) return <Loading />;
 
   if (!loading) {
-    if (!guilds.find(g => g.id === id)) return <Redirect to="/menu" />;
+    if (!guild.members.find(m => m.user.id === user.id))
+      return <Redirect to="/menu" />;
+    // if (!guilds.find(g => g.id === id)) return <Redirect to="/menu" />;
 
     if (!place)
       return (
@@ -79,16 +81,11 @@ const Dashboard = ({match, history}) => {
         <div className="dash-container">
           <div className="dash-box">
             <Header isLoggedIn={true} loading={false} shadow={true} />
-            {/* Hide this for fullscreen */}
             <Sidebar guild={guild} />
             <div className="dash-work1">
-              {/* Hide this for fullscreen */}
-
               <div className="dash-idk1">
                 <Pages page={place} guild={guild} guilds={guilds} user={user} />
-                {/* Hide this for fullscreen */}
               </div>
-              {/* Hide this for fullscreen */}
               <div className="sidebar-background"></div>
             </div>
             <br />

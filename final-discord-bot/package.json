@@ -23,7 +23,6 @@
     "novelcovid": "^3.0.0",
     "parse-ms": "^2.1.0",
     "pretty-ms": "^7.0.1",
-    "random-puppy": "^1.1.0",
     "request": "^2.88.2",
     "scrambler-util": "^0.2.9",
     "spotify-web-api-node": "^5.0.0",

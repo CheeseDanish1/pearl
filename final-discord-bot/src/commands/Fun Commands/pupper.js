@@ -1,29 +1,29 @@
-const randomPuppy = require('random-puppy');
+const fetch = require('node-fetch')
 
 module.exports.run = (client, message, args) => {
   const subreddit = 'rarepuppers';
-  randomPuppy(subreddit)
-    .then(async url => {
-      await message.channel
-        .send({
-          files: [
-            {
-              attachment: url,
-              name: `${subreddit}.png`,
-            },
-          ],
-        })
-        .catch(err => {
-          console.error(
-            `Error in server ${message.guild.name} on channel ${message.channel.name}\n` +
-              err
-          );
-          message.channel.send(
-            'Error. Failed to send image. File size is too large'
-          );
-        });
-    })
-    .catch(err => console.error(err));
+  const res = await fetch(`https://reddit.com/r/${subreddit}/top/.json?t=day`);
+  const json = await res.json();
+  const {
+    url,
+    title,
+    ups,
+    num_comments,
+    url_overridden_by_dest,
+  } = json.data.children[Math.floor(Math.random() * 25)].data;
+
+  const embed = new MessageEmbed()
+    .setTitle(title)
+    .setURL(url)
+    .setImage(url_overridden_by_dest)
+    .setColor('GREEN')
+    .setFooter(`👍 ${ups} 📄 ${num_comments}`);
+
+  try {
+    message.channel.send(embed);
+  } catch (e) {
+    message.channel.send(`An error occurred\n${e}`);
+  }
 };
 
 module.exports.info = {

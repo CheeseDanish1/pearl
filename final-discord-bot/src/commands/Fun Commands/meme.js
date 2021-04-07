@@ -1,4 +1,3 @@
-const randomPuppy = require('random-puppy');
 const got = require('got');
 const {MessageEmbed} = require('discord.js');
 

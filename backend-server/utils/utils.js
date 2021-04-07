@@ -13,21 +13,16 @@ function getMutualGuilds(usersGuilds, botsGuilds) {
 async function getUserToken(id) {
   const Creds = await creds.findOne({id});
   if (!Creds) throw Error('No credential');
-  const ac = Creds.get('accessToken');
+  const ac = Creds.accessToken;
   const decrypred = decrypt(ac);
   const realAc = decrypred.toString(Crypto.enc.Utf8);
   return realAc;
 }
 
 function allGuildsThatTheUserHasPermsIn(usersGuilds, botGuilds) {
-  // usersGuilds.map(guild => guild.hasPearl == botGuilds.find(botGuild => botGuild.id == guild.id))
-  usersGuilds.forEach(guild => {
-    usersGuilds.find(g => g.id == guild.id).hasPearl = !!botGuilds.find(
-      botGuild => botGuild.id == guild.id
-    );
-  });
-  console.log('Done filtering guilds');
-  return usersGuilds.filter(guild => (guild.permissions & 0x20) === 0x20);
+  return usersGuilds
+    .filter(guild => (guild.permissions & 0x20) === 0x20)
+    .map(g => ({...g, hasPearl: !!botGuilds.find(b => b.id === g.id)}));
 }
 
 function encrypt(token) {

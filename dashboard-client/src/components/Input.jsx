@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React from 'react';
 import Select from 'react-select';
 
 export default function Input({
@@ -6,14 +6,14 @@ export default function Input({
   value,
   onFinish,
   type,
-  initalState,
+  state,
   guild,
   guilds,
   options,
+  setState,
 }) {
   let styledName = name[0].toUpperCase() + name.substring(1);
-  const [stateVar, setStateVar] = useState(initalState);
-  const handleChange = q => setStateVar(q);
+  const handleChange = q => setState(q);
 
   if (type === 'text')
     return (
@@ -85,7 +85,7 @@ export default function Input({
           {name}
         </p>
         <Select
-          value={stateVar}
+          value={state}
           isMulti={true}
           options={options}
           onChange={handleChange}
@@ -110,7 +110,7 @@ export default function Input({
               neutral80: '#e3e3e3',
             },
           })}
-          onBlur={() => onFinish(stateVar, guild, guilds)}
+          onBlur={() => onFinish(state, guild, guilds)}
           className="multi-select"
         />
       </div>
@@ -139,13 +139,13 @@ export default function Input({
           {name}
         </p>
         <Select
-          value={stateVar}
+          value={state}
           isMulti={false}
           options={options}
           onChange={handleChange}
           isSearchable={true}
           name={name}
-          onBlur={() => onFinish(stateVar, guild, guilds)}
+          onBlur={() => onFinish(state, guild, guilds)}
           className="multi-select"
           theme={t => ({
             ...t,

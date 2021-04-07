@@ -2,7 +2,7 @@ import React, {useState} from 'react';
 import {Switch, message} from 'antd';
 import {toggleCommand} from '../utils/api';
 
-function Command({name, info, styledName, guild, guilds, setGuild, enabled}) {
+function Command({name, info, styledName, guild, guilds, enabled}) {
   const [checked, setChecked] = useState(enabled);
   const {prefix} = guild.config;
 
@@ -21,9 +21,6 @@ function Command({name, info, styledName, guild, guilds, setGuild, enabled}) {
       guilds,
       enabled,
     });
-    setGuild(prev =>
-      res.data.error ? prev : {...prev, config: {...res.data.result}}
-    );
     message[res.data.error ? 'warning' : 'success'](res.data.msg);
   };
 

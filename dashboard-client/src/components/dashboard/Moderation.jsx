@@ -4,10 +4,19 @@ import Top from './Top';
 import Command from '../Command';
 import {ulc} from '../../utils/update';
 
-const Moderation = ({user, Guild, guilds}) => {
-  // const [user, setUser] = useState(User);
-  console.log(Guild);
-  const [guild, setGuild] = useState(Guild);
+const Moderation = ({user, guild, guilds}) => {
+  const [loggingChannel, setLoggingChannel] = useState(
+    guild.config && guild.config.logging && guild.config.logging.channel
+      ? {
+          value: `${guild.config.logging.channel}`,
+          label:
+            '#' +
+            guild.channels.find(c => c.id === guild.config.logging.channel)
+              .name,
+        }
+      : null
+  );
+
   return (
     <>
       <Top name="Moderation">
@@ -17,19 +26,9 @@ const Moderation = ({user, Guild, guilds}) => {
           type="input"
           guild={guild}
           guilds={guilds}
-          initalState={
-            guild.config.logging && guild.config.logging.channel
-              ? {
-                  value: guild.config.logging.channel,
-                  label:
-                    '#' +
-                    guild.channels.find(
-                      c => c.id === guild.config.logging.channel
-                    ).name,
-                }
-              : null
-          }
+          state={loggingChannel}
           name="Logging Channel"
+          setState={setLoggingChannel}
           onFinish={(e, guild, guilds) => ulc(e, guild, guilds)}
           options={guild.channels
             .filter(c => c.type === 0)
@@ -98,7 +97,6 @@ const Moderation = ({user, Guild, guilds}) => {
         info={info}
         styledName={styledName}
         guild={guild}
-        setGuild={setGuild}
         guilds={guilds}
         enabled={!guild.config.disabledCommands.includes(name)}
       />

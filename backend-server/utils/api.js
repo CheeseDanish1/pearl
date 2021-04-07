@@ -1,9 +1,5 @@
 const fetch = require('node-fetch');
-const creds = require('../database/models/Creds');
-const Crypto = require('crypto-js');
 const {getUserToken} = require('./utils');
-const key =
-  'facfb2e8-2996-4266-a2ac-d770a6f57648-bdb259c7-0ef5-4a89-a195-b2eaabbb4de7';
 
 async function getBotGuilds() {
   const res = await fetch('http://discord.com/api/v6/users/@me/guilds', {
@@ -12,7 +8,6 @@ async function getBotGuilds() {
       Authorization: `Bot ${process.env.BOT_TOKEN}`,
     },
   });
-  console.log('Returned bot guilds');
   return res.json();
 }
 
@@ -83,7 +78,6 @@ async function getUserGuilds(id) {
       Authorization: `Bearer ${realAc}`,
     },
   });
-  console.log('Returned user guilds');
   return responce.json();
 }
 

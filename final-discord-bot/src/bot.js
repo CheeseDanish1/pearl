@@ -1,6 +1,7 @@
 require('dotenv').config();
 require('./database/connection');
-require('./createDbBackup');
+require('./backupDb');
+
 const discord = require('discord.js');
 const client = new discord.Client({
   disableMentions: 'everyone',

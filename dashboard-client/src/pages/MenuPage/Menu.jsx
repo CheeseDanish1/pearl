@@ -13,10 +13,12 @@ const Menu = ({history}) => {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
+    console.time('load servers');
     getGuildsWithPerms()
       .then(({data}) => {
         setGuilds(data);
         setLoading(false);
+        console.timeEnd('load servers');
       })
       .catch(err => {
         console.log(err);
@@ -25,7 +27,6 @@ const Menu = ({history}) => {
 
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
-
   return (
     <>
       <div className="menu-container">

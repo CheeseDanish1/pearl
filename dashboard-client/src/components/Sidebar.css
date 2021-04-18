@@ -1,56 +1,55 @@
 /* #2f3135 */
 
+.nav-menu {
+  transition: height 0.3s !important;
+  background-color: #2f3135 !important;
+  width: 250px !important;
+  /* height: 100vh; */
+  height: calc(100% - 64px) !important;
+  z-index: 1 !important;
+  position: fixed !important;
+  /* z-index: 0; */
+  bottom: 0 !important;
+  box-shadow: rgba(0, 0, 0, 0.15) 2px 2px 4px !important;
+}
 .sidebar-full {
   height: 100vh !important;
 }
 
-.nav-menu {
-  transition: height 0.3s;
-  background-color: #2f3135;
-  width: 250px;
-  /* height: 100vh; */
-  height: calc(100% - 64px);
-  z-index: 1;
-  position: fixed;
-  /* z-index: 0; */
-  bottom: 0;
-  box-shadow: rgba(0, 0, 0, 0.15) 2px 2px 4px;
-}
-
 .nav-main-text {
-  font-size: 25px;
-  color: white;
-  font-weight: 700;
-  height: 42px;
-  margin-bottom: 20px;
+  font-size: 25px !important;
+  color: white !important;
+  font-weight: 700 !important;
+  height: 42px !important;
+  margin-bottom: 20px !important;
 }
 
 .nav-text {
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
+  white-space: nowrap !important;
+  overflow: hidden !important;
+  text-overflow: ellipsis !important;
 }
 
 .active-nav {
-  left: 0;
+  left: 0 !important;
 }
 
 .nav-text {
-  padding: 8px 0px 8px 16px;
-  list-style: none;
-  height: 60px;
+  padding: 8px 0px 8px 16px !important;
+  list-style: none !important;
+  height: 60px !important;
 }
 
 .nav-text a {
-  text-decoration: none;
+  text-decoration: none !important;
   color: #f5f5f5 !important;
-  font-size: 18px;
-  width: 95%;
-  height: 100%;
-  display: flex;
-  align-items: center;
-  padding: 0 16px;
-  border-radius: 4px;
+  font-size: 18px !important;
+  width: 95% !important;
+  height: 100% !important;
+  display: flex !important;
+  align-items: center !important;
+  padding: 0 16px !important;
+  border-radius: 4px !important;
 }
 
 .nav-text-active {
@@ -58,9 +57,19 @@
 }
 
 .nav-text a:hover {
-  background-color: rgba(255, 255, 255, 0.2);
+  background-color: rgba(255, 255, 255, 0.2) !important;
 }
 
 .nav-title {
-  margin-left: 16px;
+  margin-left: 16px !important;
+}
+
+hr {
+  display: block !important;
+  margin-top: 0.5em !important;
+  margin-bottom: 0.5em !important;
+  margin-left: auto !important;
+  margin-right: auto !important;
+  border-style: inset !important;
+  border-width: 1px !important;
 }

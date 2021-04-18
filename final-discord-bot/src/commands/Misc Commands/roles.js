@@ -14,7 +14,7 @@ module.exports.run = (client, message, args) => {
     );
 
   message.channel.send(embed).then(m => {
-    lb(arr);
+    lb(roles);
 
     function lb(mes) {
       if (mes.length > end) m.react('◀️').then(me => m.react('▶️'));
@@ -32,7 +32,9 @@ module.exports.run = (client, message, args) => {
             new Discord.MessageEmbed()
               .setTitle(`${message.guild.name}'s Roles`)
               .setColor('GREEN')
-              .setDescription(mes.slice(start, end).join('\n'))
+              .setDescription(
+                mes.slice(start, end).join('\n-----------------------------\n')
+              )
           );
         } else if (reaction.emoji.name === '▶️') {
           start += 10;
@@ -41,7 +43,9 @@ module.exports.run = (client, message, args) => {
             new Discord.MessageEmbed()
               .setTitle(`${message.guild.name}'s Roles`)
               .setColor('GREEN')
-              .setDescription(mes.slice(start, end).join('\n'))
+              .setDescription(
+                mes.slice(start, end).join('\n-----------------------------\n')
+              )
           );
         }
       });

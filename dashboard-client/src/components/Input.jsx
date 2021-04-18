@@ -11,9 +11,13 @@ export default function Input({
   guilds,
   options,
   setState,
+  onChange,
 }) {
   let styledName = name[0].toUpperCase() + name.substring(1);
-  const handleChange = q => setState(q);
+  const handleChange = q => {
+    setState(q);
+    if (typeof onChange == 'function') onChange(q);
+  };
 
   if (type === 'text')
     return (

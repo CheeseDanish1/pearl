@@ -91,3 +91,11 @@ export function updateLoggingChannel(id, ops) {
     {withCredentials: true}
   );
 }
+
+export function setPunishments(id, ops) {
+  return axios.post(
+    `http://localhost:3001/api/bot/guilds/id/${id}/automod/punishments`,
+    ops,
+    {withCredentials: true}
+  );
+}

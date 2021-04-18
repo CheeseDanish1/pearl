@@ -70,6 +70,20 @@ async function joinGuild({userId, guildId}) {
   return finalRes;
 }
 
+async function authorized(req) {
+  if (!req.user) return false;
+  const accessToken = await getUserToken(req.user.id);
+  const responce = await fetch('http://discord.com/api/v6/users/@me', {
+    method: 'GET',
+    headers: {
+      Authorization: `Bearer ${accessToken}`,
+    },
+  });
+  let json = await responce.json();
+  console.log(json.code, json.code != 0);
+  return json.code != 0;
+}
+
 async function getUserGuilds(id) {
   const realAc = await getUserToken(id);
   const responce = await fetch('http://discord.com/api/v6/users/@me/guilds', {
@@ -102,4 +116,5 @@ module.exports = {
   getGuildChannels,
   getUserGuilds,
   getGuildMembers,
+  authorized,
 };

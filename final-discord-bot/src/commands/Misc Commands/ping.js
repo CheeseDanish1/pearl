@@ -16,7 +16,7 @@ module.exports.run = async (client, message, args) => {
     .setTitle(title)
     .setDescription(description)
     .setColor('RANDOM');
-  message.channel.send(_);
+  msg.edit(_);
 
   msg.edit('\u200B');
 };

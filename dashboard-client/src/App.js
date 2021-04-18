@@ -1,6 +1,7 @@
 import {Switch, Route} from 'react-router-dom';
 import {Landing, Menu, Dashboard} from './pages/index';
 import 'antd/dist/antd.css';
+import 'bootstrap/dist/css/bootstrap.min.css';
 
 function App() {
   return (

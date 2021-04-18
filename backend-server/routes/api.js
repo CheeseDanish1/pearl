@@ -1,19 +1,19 @@
-const router = require('express').Router()
-const bot = require('./bot')
+const router = require('express').Router();
+const {authorized} = require('../utils/api');
+const bot = require('./bot');
 
 router.get('/', (req, res) => {
-  req.user ? res.send(req.user) : res.status(401).send({msg: "Unauthorized"})
-})
+  req.user ? res.send(req.user) : res.status(401).send({msg: 'Unauthorized'});
+});
 
-router.get('/isLoggedIn', (req, res) => {
-  console.log('Got call to is logged in');
-  res.send(!!req.user);
+router.get('/isLoggedIn', async (req, res) => {
+  res.send(await authorized(req));
 });
 
 router.get('/me', (req, res) => {
-  req.user ? res.send(req.user) : res.status(401).send({msg: "Unauthorized"})
-})
+  req.user ? res.send(req.user) : res.status(401).send({msg: 'Unauthorized'});
+});
 
-router.use('/bot', bot)
+router.use('/bot', bot);
 
-module.exports = router
+module.exports = router;

@@ -36,7 +36,7 @@ const Header = ({isLoggedIn, shadow}) => {
             <Choice name="Manage" page="/menu" />
             <Choice
               name="Invite"
-              page={`https://discord.com/oauth2/authorize?client_id=732334443196317879&scope=bot&permissions=8`}
+              page={`https://discord.com/oauth2/authorize?client_id=732334443196317879&scope=bot%20applications.commands&permissions=8`}
             />
             <Choice name="Support" page="https://discord.gg/NGS6DmA" />
             <Choice name="FAQ" page="/faq" />
@@ -73,7 +73,7 @@ const Header = ({isLoggedIn, shadow}) => {
           <Choice name="Manage" page="/menu" type="mobile" />
           <Choice
             name="Invite"
-            page={`https://discord.com/oauth2/authorize?client_id=732334443196317879&scope=bot&permissions=8`}
+            page={`https://discord.com/oauth2/authorize?client_id=732334443196317879&scope=bot%20applications.commands&permissions=8`}
             type="mobile"
           />
           <Choice

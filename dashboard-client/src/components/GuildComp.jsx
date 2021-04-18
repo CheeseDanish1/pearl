@@ -45,7 +45,7 @@ const idk2 = guild => {
       type="ghost"
       onClick={() => {
         window.location.replace(
-          `https://discord.com/oauth2/authorize?client_id=732334443196317879&scope=bot&guild_id=${guild.id}&response_type=code&redirect_uri=http://localhost:3001/auth/invite/redirect&permissions=8`
+          `https://discord.com/oauth2/authorize?client_id=732334443196317879&scope=bot%20applications.commands&guild_id=${guild.id}&response_type=code&redirect_uri=http://localhost:3001/auth/invite/redirect&permissions=8`
         );
       }}
     >

@@ -49,6 +49,7 @@ const Dashboard = ({match, history}) => {
         setGuild(g);
         setGuilds(gs);
         setLoading(false);
+        document.title = `Pearl - ${capFirst(g.name)}'s Dashboard`;
       })
       .catch(err => {
         console.log(err);
@@ -93,6 +94,12 @@ const Dashboard = ({match, history}) => {
         </div>
       </>
     );
+  }
+  function capFirst(str) {
+    return str
+      .split(' ')
+      .map(s => s[0].toUpperCase() + s.toLowerCase().substring(1))
+      .join(' ');
   }
 };
 

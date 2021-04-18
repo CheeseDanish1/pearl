@@ -5,6 +5,7 @@ const {
   automod,
   getMostLikely,
   mesPingsAfk,
+  level,
 } = require('../Storage/functions');
 const {Client, Message, MessageEmbed} = require('discord.js');
 const {
@@ -35,6 +36,19 @@ module.exports = async (client, message) => {
   //Get's the prefix the user set.
   let prefix = Guild.prefix || '>';
 
+  const {levelRoles} = Guild;
+  if (levelRoles) {
+    if (levelRoles.find(r => r.level >= level(GuildMember.xp))) {
+      const rolesAboveCurrLevel = levelRoles
+        .filter(r => r.level <= level(GuildMember.xp))
+        .map(r => r.roles)
+        .flat();
+      rolesAboveCurrLevel.forEach(r => {
+        if (r) message.member.roles.add(r.id);
+      });
+    }
+  }
+
   if (message.content.toLowerCase() == 'prefix')
     return message.channel.send(
       `${message.guild.name}s prefix is **${prefix}**`
@@ -43,7 +57,7 @@ module.exports = async (client, message) => {
   const res = automod({Guild, message, GuildMember});
   if (res == 'return') return;
 
-  await onMes(GuildMember);
+  await onMes(GuildMember, Guild, message);
 
   // Check if they ping someone who is afk
   const pingsAfk = await mesPingsAfk(message, prefix);
@@ -51,14 +65,11 @@ module.exports = async (client, message) => {
     message.channel.send(
       new MessageEmbed()
         .setTitle(`**${pingsAfk.user.username}** is currently afk`)
-        .addFields(
-          {name: 'Afk Message', value: pingsAfk.status.message},
-          {
-            name: 'Afk For',
-            value: `${require('ms')(new Date() - pingsAfk.status.timestamp, {
-              long: true,
-            })}`,
-          }
+        .setDescription(
+          `They've been afk for **${require('ms')(
+            new Date() - pingsAfk.status.timestamp,
+            {long: true}
+          )}** doing **${pingsAfk.status.message}**`
         )
         .setColor('RED')
     );

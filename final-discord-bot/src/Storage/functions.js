@@ -1,18 +1,23 @@
-const colours = require('./colors');
+const colors = require('./colors');
 const {addWarnings, getAfk} = require('./database');
-const help = require('./onMesInfo');
+const {addXp, mes, onMesVars, checkLevelUp} = require('./onMesInfo');
 
 module.exports = {
-  onMes: async function (GuildMember) {
-    const vars = help.onMesVars(GuildMember);
+  onMes: async function (GuildMember, Guild, message) {
+    const vars = onMesVars(GuildMember, Guild);
+    const {timeout, xpTimout, randomXp} = vars;
     const {id, guild} = GuildMember;
-    help.addXp(id, guild, vars.timeout, vars.xpTimout, vars.randomXp);
-    help.addXpg(id, guild, vars.timeout, vars.xpTimout, vars.randomXp);
-    help.mes(id, guild);
+    const shouldAddXp = xpTimout && timeout - (Date.now() - xpTimout) <= 0;
+    checkLevelUp(Guild, GuildMember, randomXp, message, shouldAddXp);
+    addXp(id, guild, timeout, xpTimout, randomXp);
+    mes(id, guild);
   },
 
   level: function (xp) {
     return Math.floor(0.25 * Math.sqrt(xp));
+  },
+  xpForLevel: level => {
+    return Math.pow(level * 4, 2);
   },
   xpNextLevel: level => {
     return Math.pow((level + 1) * 4, 2);
@@ -24,8 +29,9 @@ module.exports = {
   formatDate: function (date) {
     return new Intl.DateTimeFormat('en-US').format(date);
   },
-  colourNameToHex: function (colour) {
-    let r = colours[colour.toLowerCase] || false;
+  colourNameToHex: function (color) {
+    if (['default', 'reset', 'normal'].some(r => r == color)) return '#c21135';
+    let r = colors[color.toLowerCase()];
     return r;
   },
   automod: ({Guild, message, GuildMember}) => {

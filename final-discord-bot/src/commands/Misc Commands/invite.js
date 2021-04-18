@@ -4,12 +4,13 @@ module.exports.run = (client, message, args) => {
   let embed = new Discord.MessageEmbed()
     .setTitle('Invite!')
     .setURL(
-      'https://discord.com/oauth2/authorize?client_id=732334443196317879&scope=bot&permissions=8'
+      'https://discord.com/oauth2/authorize?client_id=732334443196317879&scope=bot%20applications.commands&permissions=8'
     )
-    .setDescription('Thank you for helping supporting me and using Pearl!')
-    .setFooter(
-      'https://discord.com/oauth2/authorize?client_id=732334443196317879&scope=bot&permissions=8'
-    )
+    // .setDescription('Thank you for helping supporting me and using Pearl!')
+    .setDescription('Thank you very much for the support')
+    // .setFooter(
+    //   'https://discord.com/oauth2/authorize?client_id=732334443196317879&scope=bot%20applications.commands&permissions=8'
+    // )
     .setColor('GREEN');
 
   message.channel.send(embed);

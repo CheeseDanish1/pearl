@@ -30,7 +30,11 @@ module.exports = async (client, message) => {
       // .addField('Message', m3)
       // .addField('Channel', m4)
       // .setTitle("Message Deleted")
-      .setTitle(`**${m2}** deleted a message in ${m4}`)
+      .setAuthor(
+        message.author.username,
+        message.author.avatarURL({dynamic: true})
+      )
+      .setTitle(`Message deleted in #${message.channel.name}`)
       .setDescription(m3)
       .setTimestamp();
 

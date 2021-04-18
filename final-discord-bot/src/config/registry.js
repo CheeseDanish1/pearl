@@ -2,14 +2,14 @@ const path = require('path');
 const fs = require('fs').promises;
 const {PEARL_TOKEN: pearl, TESTING_BOT_TOKEN: testing} = process.env;
 
-module.exports = function (client) {
+module.exports = async function (client) {
   // Register Events, Commands.
   client.login(testing);
-  registerEvents(client);
-  registerCommands(client);
+  await registerEvents(client);
+  await registerCommands(client);
 };
 
-function registerEvents(client) {
+async function registerEvents(client) {
   fs.readdir(path.join(__dirname, '..', 'events'))
     .then(files => files.filter(file => file.endsWith('.js')))
     .then(files =>
@@ -22,18 +22,15 @@ function registerEvents(client) {
     .catch(err => console.log(err));
 }
 
-function registerCommands(client) {
+async function registerCommands(client) {
   client.commands = new Map();
-  recurDir(client, 'commands')
-    .then(() => console.log('Commands are done loading'))
-    .catch(err => console.log(err));
+  await recurDir(client, 'commands');
+  console.log('Commands are done loading');
 }
 
 async function recurDir(client, curr) {
   let dirs = await fs.readdir(path.join(__dirname, '..', curr));
-  if (dirs.length > 0) {
-    await dirs.forEachAsync(client, dirs, curr, fs.lstat); // Iterate through each file in the current directory.
-  }
+  if (dirs.length > 0) await dirs.forEachAsync(client, dirs, curr, fs.lstat); // Iterate through each file in the current directory.
 }
 
 Array.prototype.forEachAsync = async (client, dirs, currDir, cb) => {
@@ -48,13 +45,6 @@ Array.prototype.forEachAsync = async (client, dirs, currDir, cb) => {
       let {info} = cmdModule;
       if (!info) continue;
       client.commands.set(cmdName.toLowerCase(), cmdModule);
-      // if (info && info.alias && info.alias.length > 0)
-      //   info.alias.forEach(d => {
-      //     client.commands.set(d.toLowerCase(), {
-      //       run: cmdModule.run,
-      //       info: {...info, type: 'alias'},
-      //     });
-      //   });
     }
   }
 };

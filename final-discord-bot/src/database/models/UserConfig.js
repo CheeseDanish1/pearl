@@ -5,8 +5,7 @@ const UserConfig = new mongoose.Schema(
     id: String,
     name: String,
     avatar: String,
-    xpg: Number,
-    messages: Number,
+    xpcolor: String,
     economy: {
       balance: Number,
       bank: Number,

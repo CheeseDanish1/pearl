@@ -50,7 +50,7 @@ const Landing = () => {
                     className="landing-button-secondary"
                     onClick={() =>
                       (window.location.href =
-                        'https://discord.com/oauth2/authorize?client_id=732334443196317879&scope=bot&permissions=8')
+                        'https://discord.com/oauth2/authorize?client_id=732334443196317879&scope=bot%20applications.commands&permissions=8')
                     }
                     type="primary"
                   >

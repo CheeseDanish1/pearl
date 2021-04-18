@@ -51,8 +51,10 @@ module.exports.run = async (client, message, args, {prefix}) => {
           value: `${prefix}Help Scramble`,
           inline: true,
         }
-      )
-      .setTimestamp();
+      );
+    // .setTimestamp();
+    // .setDescription('[test](https://youtube.com)')
+    // .setFooter('[test](https://youtube.com)');
     return message.channel.send(helpEmbed);
   }
   const r = [...client.commands.entries()];

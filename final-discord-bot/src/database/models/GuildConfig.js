@@ -88,6 +88,46 @@ const GuildConfig = new mongoose.Schema(
         ended: MongBool,
       },
     ],
+    levelRoles: [
+      {
+        level: MongNumber,
+        roles: [{name: MongString, id: MongString}],
+      },
+    ],
+    xp: {
+      cooldown: {
+        default: 60000,
+        type: MongNumber,
+        required: true,
+      },
+      minxp: {
+        default: 15,
+        type: MongNumber,
+        required: true,
+      },
+      maxxp: {
+        default: 25,
+        type: MongNumber,
+        required: true,
+      },
+      multiplier: {
+        default: 1,
+        type: MongNumber,
+        required: true,
+      },
+    },
+    levelup: {
+      message: {
+        type: MongString,
+        default: 'Congrats to {mention} for getting to level {level}',
+        required: true,
+      },
+      channel: {
+        type: MongString,
+        default: 'channel',
+        required: true,
+      },
+    },
   },
   {collection: 'GuildConfig'}
 );

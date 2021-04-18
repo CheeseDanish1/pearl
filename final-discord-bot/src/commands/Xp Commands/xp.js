@@ -1,23 +1,7 @@
 const Canvas = require('canvas');
-const {level} = require('../../Storage/functions');
+const {level, xpForLevel, xpNextLevel} = require('../../Storage/functions');
 const Discord = require('discord.js');
-const {getGuildMember} = require('../../Storage/database');
-
-const applyText = (canvas, text, re = 70) => {
-  const ctx = canvas.getContext('2d');
-
-  // Declare a base size of the font
-  let fontSize = re;
-
-  do {
-    // Assign the font to the context and decrement it so it can be measured again
-    ctx.font = `${(fontSize -= 10)}px sans-serif`;
-    // Compare pixel width of the text to the canvas minus the approximate avatar size
-  } while (ctx.measureText(text).width > canvas.width - 300);
-
-  // Return the result to use in the actual canvas
-  return ctx.font;
-};
+const {getGuildMember, getUser} = require('../../Storage/database');
 
 module.exports.run = async (client, message, args, {GuildMemberConfig}) => {
   let person = message.mentions.users.first() || message.author;
@@ -26,13 +10,20 @@ module.exports.run = async (client, message, args, {GuildMemberConfig}) => {
       `This user is a bot, so does not have any stats`
     );
 
+  message.channel.startTyping();
+
   let config = await getGuildMember(person.id, message.guild.id);
+  let userConfig = await getUser(person);
   let xp = config.xp;
   let mes = config.messages;
   let lev = await getRankLevels();
+  const color = userConfig.xpcolor || '#c21135';
+  Canvas.registerFont('./src/Storage/fonts/mont/Montserrat-Medium.ttf', {
+    family: 'Montserrat',
+    weight: 'medium',
+  });
   const canvas = Canvas.createCanvas(1000, 250);
   const ctx = canvas.getContext('2d');
-  const background = await Canvas.loadImage('src/image/black.jpg');
   let levelN = level(xp);
 
   if (xp == null) {
@@ -41,38 +32,93 @@ module.exports.run = async (client, message, args, {GuildMemberConfig}) => {
     mes = 0;
   }
 
-  ctx.drawImage(background, 0, 0, canvas.width, canvas.height);
-
-  ctx.strokeStyle = '#000000';
-  ctx.strokeRect(0, 0, canvas.width, canvas.height);
-
-  // Slightly smaller text placed above the member's display name
-  ctx.font = applyText(canvas, `${person.username}'s Xp And Stuff,`);
-  ctx.fillStyle = '#ffffff';
-  ctx.fillText(`${person.username}'s Xp And Stuff,`, canvas.width / 4.0, 100);
-
-  // Add an exclamation point here and below
-  ctx.font = `26px sans-serif`;
-  ctx.fillStyle = '#ffffff';
-  ctx.fillText(
-    `Xp: ${xp}, Level: ${levelN}, Messages Sent: ${mes}, Rank: #${lev}`,
-    canvas.width / 4.0,
-    180
-  );
-
   ctx.beginPath();
-  ctx.arc(125, 125, 100, 0, Math.PI * 2, true);
+  ctx.moveTo(0, 0);
+  ctx.fillStyle = '#22272a';
+  ctx.lineTo(1000, 0);
+  ctx.lineTo(1000, 250);
+  ctx.lineTo(0, 250);
+  ctx.lineTo(0, 0);
+  ctx.fill();
   ctx.closePath();
-  ctx.clip();
 
   const avatar = await Canvas.loadImage(
-    person.displayAvatarURL({format: 'jpg'})
+    person.displayAvatarURL({format: 'png'})
   );
+
   ctx.drawImage(avatar, 25, 25, 200, 200);
+
+  ctx.beginPath();
+  ctx.fillStyle = '#e3e3e3';
+  ctx.font = '69px Montserrat';
+  ctx.fillText(`${person.username}#${person.discriminator}`, 270, 80);
+  ctx.closePath();
+
+  ctx.beginPath();
+  const n = `${person.username}#${person.discriminator}`;
+
+  ctx.moveTo(270, 100);
+  ctx.font = '69px Montserrat';
+  ctx.lineWidth = 5;
+  ctx.strokeStyle = color;
+  ctx.lineTo(ctx.measureText(n).width * 1.4, 100);
+  ctx.stroke();
+  ctx.closePath();
+
+  ctx.beginPath();
+  ctx.font = '30px Montserrat';
+  ctx.fillStyle = '#e3e3e3';
+  ctx.fillText(
+    `Level: ${levelN}  XP: ${xp}  Rank: ${lev[0]}/${lev[1]}`,
+    270,
+    145
+  );
+  ctx.closePath();
+
+  ctx.beginPath();
+  ctx.lineWidth = 45;
+  ctx.strokeStyle = 'white';
+  ctx.moveTo(270, 200);
+  ctx.lineTo(950, 200);
+  ctx.stroke();
+  ctx.closePath();
+
+  let percentDoneWithCurrLev =
+    ((xp - xpForLevel(levelN)) / (xpNextLevel(levelN) - xpForLevel(levelN))) *
+    100;
+  let len = (Math.round(percentDoneWithCurrLev) / 100) * 680 + 270;
+  // console.log(
+  //   xp,
+  //   xpForLevel(levelN),
+  //   xpNextLevel(levelN),
+  //   xp - xpForLevel(levelN),
+  //   xpNextLevel(levelN) - xpForLevel(levelN),
+  //   ((xp - xpForLevel(levelN)) / (xpNextLevel(levelN) - xpForLevel(levelN))) *
+  //     100,
+  //   (percentDoneWithCurrLev / 100) * 950
+  // );
+  ctx.beginPath();
+  ctx.lineWidth = 45;
+  ctx.strokeStyle = color;
+  ctx.moveTo(270, 200);
+  ctx.lineTo(len, 200);
+  ctx.stroke();
+  ctx.closePath();
+
+  ctx.beginPath();
+  ctx.font = '35px arial';
+  ctx.fillStyle = 'black';
+  ctx.fillText(
+    `${Math.round(percentDoneWithCurrLev)}%`,
+    len - 80 < 270 ? 290 : len - 80,
+    210
+  );
+  ctx.closePath();
 
   const attachment = new Discord.MessageAttachment(canvas.toBuffer(), 'xp.png');
 
   message.channel.send(attachment);
+  return message.channel.stopTyping();
 
   async function getRankLevels() {
     let r = await GuildMemberConfig.collection
@@ -82,7 +128,7 @@ module.exports.run = async (client, message, args, {GuildMemberConfig}) => {
       })
       .toArray();
     // console.log(r);
-    return r.indexOf(r.find(g => g.id == person.id)) + 1;
+    return [r.indexOf(r.find(g => g.id == person.id)) + 1, r.length];
   }
 };
 

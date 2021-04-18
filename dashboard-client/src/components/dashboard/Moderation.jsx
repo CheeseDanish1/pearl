@@ -3,6 +3,17 @@ import Input from '../Input';
 import Top from './Top';
 import Command from '../Command';
 import {ulc} from '../../utils/update';
+import PunishmentTable from '../PunishmentTable';
+
+const automodOptions = [
+  {label: 'Disabled', value: null},
+  {label: 'Warn Member', value: 'warn'},
+  {label: 'Mute Member', value: 'mute'},
+  {label: 'Delete Message', value: 'delete'},
+  {label: 'Warn & Delete', value: 'warn delete'},
+  {label: 'Warn & Mute', value: 'warn mute'},
+  {label: 'Mute & Delete', value: 'mute delete'},
+];
 
 const Moderation = ({user, guild, guilds}) => {
   const [loggingChannel, setLoggingChannel] = useState(
@@ -17,9 +28,55 @@ const Moderation = ({user, guild, guilds}) => {
       : null
   );
 
+  guild.config.automod.caps = {
+    action: 'warn',
+    time: null,
+    warnings: 1,
+    percent: 80,
+    allowedChannels: [
+      {name: '#spam', id: 893782098432},
+      {name: '#idk', id: 937208732981},
+    ],
+    allowedRoles: [
+      {name: 'Admin', id: 90328409823432},
+      {name: 'Owner', id: 83289749327239},
+    ],
+  };
+
+  let a = guild.config.automod.caps.action;
+  const [capSpam, setCapSpam] = useState({
+    label: !a ? 'Disabled' : a[0].toUpperCase() + a.substring(1),
+    value: a || null,
+  });
+
   return (
     <>
       <Top name="Moderation">
+        <br />
+
+        <Input
+          type="input"
+          guild={guild}
+          guilds={guilds}
+          onFinish={e => console.log(e)}
+          onChange={e => console.log(e)}
+          options={automodOptions}
+          name={`Cap Spam (${guild.config.automod.caps.percent || 70}%)`}
+          state={capSpam}
+          setState={setCapSpam}
+        />
+        <PunishmentTable guilds={guilds} guild={guild} />
+
+        <br />
+        <br />
+        <br />
+        <br />
+        <br />
+        <br />
+        <br />
+        <br />
+        <br />
+        <br />
         <br />
 
         <Input
@@ -71,7 +128,7 @@ const Moderation = ({user, guild, guilds}) => {
           <C
             name="removeinvites"
             styledName="RemoveInvites"
-            info="Automaticlly remove invites to other servers"
+            info="Automatically remove invites to other servers"
           />
           <C name="settings" info="View your servers configurations" />
           <C name="slowmode" info="Set a slowmode for a channel" />

@@ -5,9 +5,9 @@
   "main": "src/bot.js",
   "dependencies": {
     "@discordjs/opus": "^0.3.3",
-    "canvas": "^2.6.1",
+    "canvas": "^2.7.0",
     "discord-tictactoe": "^2.0.6",
-    "discord.js": "^12.4.1",
+    "discord.js": "^12.5.3",
     "dotenv": "^8.2.0",
     "ffmpeg-static": "^4.2.7",
     "figlet": "^1.5.0",

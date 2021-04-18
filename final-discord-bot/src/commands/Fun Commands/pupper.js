@@ -1,6 +1,6 @@
-const fetch = require('node-fetch')
+const fetch = require('node-fetch');
 
-module.exports.run = (client, message, args) => {
+module.exports.run = async (client, message, args) => {
   const subreddit = 'rarepuppers';
   const res = await fetch(`https://reddit.com/r/${subreddit}/top/.json?t=day`);
   const json = await res.json();

@@ -68,7 +68,9 @@ const database = {
     return await GuildConfig.create({id});
   },
   getGuild: async id => {
-    return (await GuildConfig.findOne({id})) || (await this.createGuild(id));
+    return (
+      (await GuildConfig.findOne({id})) || (await GuildConfig.create({id}))
+    );
   },
   getGuildMember: async (id, guild) => {
     return (
@@ -85,7 +87,12 @@ const database = {
           name: `${user.username}#${user.discriminator}`,
         },
         {new: true}
-      )) || (await this.createUser(user))
+      )) ||
+      (await UserConfig.create({
+        id: user.id,
+        avatar: user.avatar,
+        name: `${user.username}#${user.discriminator}`,
+      }))
     );
   },
   createUser: async user => {
@@ -320,7 +327,6 @@ const database = {
       {$inc: {messages: 1}},
       {new: true}
     );
-    await UserConfig.findOneAndUpdate({id}, {$inc: {messages: 1}}, {new: true});
   },
   disableCommand: async (command, guild) => {
     return await GuildConfig.findOneAndUpdate(
@@ -373,6 +379,72 @@ const database = {
   getAfk: async (id, guild) => {
     const member = await GuildMemberConfig.findOne({id, guild});
     return member.afk || null;
+  },
+  setLevelRole: async (guild, level, roles) => {
+    const info = {level, roles};
+    const Guild =
+      (await GuildConfig.findOne({id: guild})) ||
+      (await GuildConfig.create({id: guild}));
+
+    if (level == 'reset') {
+      return await GuildConfig.findOneAndUpdate(
+        {id: guild},
+        {$set: {levelRoles: []}}
+      );
+    }
+
+    if (Guild.levelRoles.find(g => g.level == info.level)) {
+      return await GuildConfig.findOneAndUpdate(
+        {id: guild, 'levelRoles.level': info.level},
+        {
+          $set: {
+            'levelRoles.$.roles': info.roles,
+          },
+        },
+        {new: true}
+      );
+    }
+
+    return await GuildConfig.findOneAndUpdate(
+      {id: guild},
+      {$push: {levelRoles: info}},
+      {new: true}
+    );
+  },
+  setXp: async (guild, id, amount) => {
+    return await GuildMemberConfig.findOneAndUpdate(
+      {guild, id},
+      {xp: amount},
+      {new: true}
+    );
+  },
+  setXpColor: async (id, hex) => {
+    return await UserConfig.findOneAndUpdate({id}, {xpcolor: hex}, {new: true});
+  },
+  setXpInfo: async (props, id) => {
+    const obj = {};
+    if (props.min) obj.minxp = props.min;
+    if (props.max) obj.maxxp = props.max;
+    if (props.cooldown) obj.cooldown = props.cooldown;
+    if (props.multiplier) obj.multiplier = props.multiplier;
+    if (obj == props) return null;
+    const f = await GuildConfig.findOneAndUpdate(
+      {id},
+      {$set: {xp: obj}},
+      {new: true}
+    );
+    return f;
+  },
+  setLevelup: async (ops, id) => {
+    const props = {};
+    if ('message' in ops) props.message = ops.message;
+    if ('channel' in ops) props.channel = ops.channel;
+    if (props == ops) return null;
+    return await GuildConfig.findOneAndUpdate(
+      {id},
+      {$set: {levelup: props}},
+      {new: true}
+    );
   },
 };
 

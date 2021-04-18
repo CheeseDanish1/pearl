@@ -187,6 +187,39 @@ router.put(`/id/:guildId/disableCommand`, async (req, res) => {
     : res.send({msg: 'Could not find that guild', error: true});
 });
 
+router.post(`/id/:guildId/automod/punishments`, async (req, res) => {
+  const {guilds, punishment} = req.body;
+  if (!req.user)
+    return res.status(401).send({msg: 'Unauthorized', error: true});
+
+  if (!punishment)
+    return res.send({msg: 'Punishments are required', error: true});
+
+  const g = guilds.find(g => g.id == req.params.guildId);
+  if (!g) return res.send({msg: 'Could not find that guild', error: true});
+
+  const userPermissions = g.permissions;
+  const canManageGuild = (userPermissions & 0x20) === 0x20;
+  if (!canManageGuild)
+    return res.send({msg: 'Not enough permission', error: true});
+
+  if (punishment.some(pun => !pun.strike && !pun.action))
+    return res.send({msg: 'Bad request', error: true});
+
+  const update = await GuildConfig.findOneAndUpdate(
+    {id: g.id},
+    {'automod.punishments': punishment.sort((a, b) => a.strike - b.strike)},
+    {new: true}
+  );
+
+  return update
+    ? res.send({
+        msg: `Updated automod punishments`,
+        result: update,
+      })
+    : res.send({msg: 'Unknown error', error: true});
+});
+
 router.get('/mutual', async (req, res) => {
   if (!req.user) return res.status(401).send({msg: 'Unauthorized'});
   const user = await UserConfig.findOne({id: req.user.id});
@@ -200,19 +233,21 @@ router.get('/mutual', async (req, res) => {
 router.get('/perms', async (req, res) => {
   console.time('total time');
   console.time('auth');
+
   if (!req.user) return res.status(401).send({msg: 'Unauthorized'});
 
   console.timeEnd('auth');
+  console.time('fetch user guilds');
+
+  const userGuilds = await getUserGuilds(req.user.id);
+  if (userGuilds.code == 0) return res.status(401).send({msg: 'Unauthorized'});
+
+  console.timeEnd('fetch user guilds');
   console.time('fetch bot guilds');
 
   const botGuilds = await guilds();
 
   console.timeEnd('fetch bot guilds');
-  console.time('fetch user guilds');
-
-  const userGuilds = await getUserGuilds(req.user.id);
-
-  console.timeEnd('fetch user guilds');
   console.time('filter guilds');
 
   const sorted = idk(userGuilds, botGuilds);

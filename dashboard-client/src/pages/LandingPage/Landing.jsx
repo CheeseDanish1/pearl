@@ -30,16 +30,17 @@ const Landing = () => {
               <div className="landing-idk">
                 <div className="landing-img">
                   <img
+                    className="expandUp"
                     alt="logo"
                     src="https://cdn.discordapp.com/avatars/732334443196317879/135f558e4b20cd040cd8dd224f6fa688.png?size=256"
                   ></img>
                 </div>
                 <div className="landing-space" />
-                <div className="landing-info">
+                <div className="landing-info slideLeft">
                   <h1>Pearl</h1>
                   <h4>
-                    The Only Discord Bot <br />
-                    Your Server Needs
+                    Premium Features <br />
+                    For No Cost
                   </h4>
                 </div>
               </div>

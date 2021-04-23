@@ -103,6 +103,16 @@ module.exports.run = (client, message, args, {GuildConfig, prefix}) => {
       ? GuildConfig.automod.caps.warnings
       : `None`;
 
+  const WelcomeMessage = GuildConfig.welcome && GuildConfig.welcome.message;
+  const WelcomeChannel = message.guild.channels.cache.get(
+    GuildConfig.welcome && GuildConfig.welcome.channel
+  );
+
+  const LevelMessage = GuildConfig.levelup && GuildConfig.levelup.message;
+  const LevelChannel = message.guild.channels.cache.get(
+    GuildConfig.levelup && GuildConfig.levelup.channel
+  );
+
   const embed = new MessageEmbed()
     .setTitle(`${p(message.guild.name)}'s Settings`)
     .addField(
@@ -117,13 +127,6 @@ module.exports.run = (client, message, args, {GuildConfig, prefix}) => {
        `,
       true
     )
-    // .addField(
-    //   `Logging`,
-    //   `\n\nChannel: ${channel}
-    //   ${loggingEvents}`,
-    //   true
-    // )
-    // .addField(`\u200b`, `\u200b`, true)
     .addField(`Punishments`, Punishments, true)
     .addField(
       `Automod`,
@@ -140,6 +143,16 @@ module.exports.run = (client, message, args, {GuildConfig, prefix}) => {
       Admin Only: \`${AdminOnly}\`
       Invite Removal: \`${Invites}\``,
       true
+    )
+    .addField(
+      `Welcome`,
+      `Channel:\`#${WelcomeChannel ? WelcomeChannel.name : 'Not Set'}\`
+       Message: \n\`${WelcomeMessage || 'None'}\``
+    )
+    .addField(
+      `Level up`,
+      `Channel:\`#${LevelChannel ? LevelChannel.name : 'Not Set'}\`
+       Message: \n\`${LevelMessage || 'None'}\``
     );
 
   message.channel.send(embed);

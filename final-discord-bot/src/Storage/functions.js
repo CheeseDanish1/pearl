@@ -1,16 +1,20 @@
 const colors = require('./colors');
 const {addWarnings, getAfk} = require('./database');
-const {addXp, mes, onMesVars, checkLevelUp} = require('./onMesInfo');
+const {onMesVars, checkLevelUp} = require('./onMesInfo');
+const {addXp, mes} = require('../Storage/database');
 
 module.exports = {
   onMes: async function (GuildMember, Guild, message) {
     const vars = onMesVars(GuildMember, Guild);
     const {timeout, xpTimout, randomXp} = vars;
     const {id, guild} = GuildMember;
-    const shouldAddXp = xpTimout && timeout - (Date.now() - xpTimout) <= 0;
-    checkLevelUp(Guild, GuildMember, randomXp, message, shouldAddXp);
-    addXp(id, guild, timeout, xpTimout, randomXp);
+    const xpt = xpTimout || 0;
+    const shouldAddXp = timeout - (Date.now() - xpt) <= 0;
+
     mes(id, guild);
+    if (!shouldAddXp) return;
+    checkLevelUp(Guild, GuildMember, randomXp, message, shouldAddXp);
+    addXp(id, guild, randomXp);
   },
 
   level: function (xp) {
@@ -23,7 +27,8 @@ module.exports = {
     return Math.pow((level + 1) * 4, 2);
   },
   xpRequiredTillNextLevel: xp => {
-    return Math.pow((Math.floor(0.25 * Math.sqrt(xp)) + 1) * 4, 2) - xp;
+    const level = xp => Math.floor(0.25 * Math.sqrt(xp));
+    return Math.pow((level(xp) + 1) * 4, 2) - xp;
   },
 
   formatDate: function (date) {

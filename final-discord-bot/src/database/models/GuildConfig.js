@@ -72,6 +72,7 @@ const GuildConfig = new mongoose.Schema(
         MessageId: MongString,
         Reaction: MongString,
         Role: MongString,
+        Channel: MongString,
       },
     ],
     disabledCategories: [],
@@ -86,6 +87,10 @@ const GuildConfig = new mongoose.Schema(
         length: MongString,
         guild: MongString,
         ended: MongBool,
+        winner: {
+          username: MongString,
+          id: MongString,
+        },
       },
     ],
     levelRoles: [

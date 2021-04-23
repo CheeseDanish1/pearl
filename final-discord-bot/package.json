@@ -26,6 +26,7 @@
     "request": "^2.88.2",
     "scrambler-util": "^0.2.9",
     "spotify-web-api-node": "^5.0.0",
+    "string-pixel-width": "^1.10.0",
     "yt-search": "^2.4.2",
     "ytdl-core": "^4.4.3"
   },

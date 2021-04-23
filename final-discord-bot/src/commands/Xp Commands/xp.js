@@ -2,6 +2,7 @@ const Canvas = require('canvas');
 const {level, xpForLevel, xpNextLevel} = require('../../Storage/functions');
 const Discord = require('discord.js');
 const {getGuildMember, getUser} = require('../../Storage/database');
+const spw = require('string-pixel-width');
 
 module.exports.run = async (client, message, args, {GuildMemberConfig}) => {
   let person = message.mentions.users.first() || message.author;
@@ -18,10 +19,10 @@ module.exports.run = async (client, message, args, {GuildMemberConfig}) => {
   let mes = config.messages;
   let lev = await getRankLevels();
   const color = userConfig.xpcolor || '#c21135';
-  Canvas.registerFont('./src/Storage/fonts/mont/Montserrat-Medium.ttf', {
-    family: 'Montserrat',
-    weight: 'medium',
-  });
+  // Canvas.registerFont('./src/Storage/fonts/mont/Montserrat-Medium.ttf', {
+  //   family: 'Montserrat',
+  //   weight: 'medium',
+  // });
   const canvas = Canvas.createCanvas(1000, 250);
   const ctx = canvas.getContext('2d');
   let levelN = level(xp);
@@ -50,7 +51,7 @@ module.exports.run = async (client, message, args, {GuildMemberConfig}) => {
 
   ctx.beginPath();
   ctx.fillStyle = '#e3e3e3';
-  ctx.font = '69px Montserrat';
+  ctx.font = '65px Montserrat';
   ctx.fillText(`${person.username}#${person.discriminator}`, 270, 80);
   ctx.closePath();
 
@@ -61,7 +62,7 @@ module.exports.run = async (client, message, args, {GuildMemberConfig}) => {
   ctx.font = '69px Montserrat';
   ctx.lineWidth = 5;
   ctx.strokeStyle = color;
-  ctx.lineTo(ctx.measureText(n).width * 1.4, 100);
+  ctx.lineTo(ctx.measureText(n).width * 140, 100);
   ctx.stroke();
   ctx.closePath();
 

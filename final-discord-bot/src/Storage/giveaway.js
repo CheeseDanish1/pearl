@@ -1,4 +1,4 @@
-module.exports = {startGiveaway, drawWinner, addVars};
+module.exports = {startGiveaway, drawWinner, addVars, endGiveaway};
 const {Timer} = require('goodtimer');
 const {endGiveaway: end} = require('../Storage/database');
 
@@ -24,6 +24,8 @@ function startTimer(giveaway) {
 }
 
 async function endGiveaway(giveaway) {
+  if (!giveaway.message) giveaway = await addVars(giveaway, giveaway.client);
+
   giveaway.message.edit(giveaway.message.embeds[0].setFooter(`Giveaway ended`));
 
   if (giveaway.message.reactions.cache.get('🎉').count <= 1) {
@@ -33,6 +35,8 @@ async function endGiveaway(giveaway) {
   }
 
   let winner = await drawWinner(giveaway);
+
+  giveaway.winner = {username: winner.username, id: winner.id};
   giveaway.message.channel.send(
     `The winner of **${giveaway.prize}** is... ${winner}`
   );

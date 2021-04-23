@@ -1,6 +1,6 @@
 require('dotenv').config();
 require('./database/connection');
-require('./backupDb');
+// require('./backupDb');
 
 const discord = require('discord.js');
 const client = new discord.Client({
@@ -20,5 +20,6 @@ new TicTacToe(
 
 client.queue = new Map();
 client.snipes = new Map();
+client.invites = new Map();
 
 require('./config/registry')(client);

@@ -93,6 +93,10 @@ const GuildConfig = new mongoose.Schema(
         length: MongString,
         guild: MongString,
         ended: MongBool,
+        winner: {
+          username: MongString,
+          id: MongString,
+        },
       },
     ],
   },

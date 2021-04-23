@@ -2,6 +2,7 @@ import {Switch, Route} from 'react-router-dom';
 import {Landing, Menu, Dashboard} from './pages/index';
 import 'antd/dist/antd.css';
 import 'bootstrap/dist/css/bootstrap.min.css';
+import './animations.css';
 
 function App() {
   return (

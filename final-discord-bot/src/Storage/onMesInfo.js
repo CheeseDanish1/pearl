@@ -12,20 +12,19 @@ module.exports = {
     const maxXp = xp.maxxp;
     const timeout = xp.cooldown;
     const multiplier = xp.multiplier;
-
+    // console.log(minXp, maxXp, timeout, multiplier);
     let re = {
       timeout: timeout,
       xpTimout: GuildMember.xptimeout,
       randomXp:
         (Math.floor(Math.random() * (maxXp - minXp + 1)) + minXp) * multiplier,
     };
+    // console.log(re.randomXp);
     return re;
   },
 
-  addXp: async function (userId, guild, timeout, xpTimout, RandomXp) {
-    if (xpTimout && timeout - (Date.now() - xpTimout) <= 0) {
-      addXp(userId, guild, RandomXp);
-    }
+  addXp: async function (userId, guild, RandomXp, shouldAddXp) {
+    addXp(userId, guild, RandomXp);
   },
   mes: async function (userId, guild) {
     mes(userId, guild);

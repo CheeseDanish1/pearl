@@ -7,6 +7,7 @@ const passport = require('passport');
 const session = require('express-session');
 const cors = require('cors');
 const Store = require('connect-mongo')(session);
+const path = require('path');
 
 const app = express();
 const PORT = process.env.PORT || 3000;
@@ -46,6 +47,11 @@ app.use(
 
 app.use(passport.initialize());
 app.use(passport.session());
+app.use(express.static(path.join(__dirname, 'build')));
+
 app.use('/', routes);
+app.get('/*', (req, res) => {
+  res.sendFile(path.join(__dirname, 'build', 'index.html'));
+});
 
 app.listen(PORT, () => console.log(`Running on port ${PORT}`));

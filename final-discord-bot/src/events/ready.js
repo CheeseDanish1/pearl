@@ -9,8 +9,6 @@ module.exports = async client => {
     );
   }, 1000 * 60 * 60);
 
-  console.log(client.user.username + ' has logged in.');
-
   // Resume giveaways or declare ended giveaways
   let giveaways = await getGiveaways();
   giveaways.forEach(async g => {
@@ -23,4 +21,16 @@ module.exports = async client => {
       return endGiveaway(g);
     }
   });
+
+  // Set invite uses
+  client.guilds.cache.forEach(async guild => {
+    const guildInvites = await guild.fetchInvites();
+    const newGuildInvites = new Map();
+    [...guildInvites.entries()].forEach(gi => {
+      newGuildInvites.set(gi[1].code, {uses: gi[1].uses});
+    });
+    client.invites.set(guild.id, newGuildInvites);
+  });
+
+  console.log(client.user.username + ' has logged in.');
 };

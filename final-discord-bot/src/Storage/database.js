@@ -266,7 +266,12 @@ const database = {
   endGiveaway: async giveaway => {
     return await GuildConfig.findOneAndUpdate(
       {id: giveaway.guild},
-      {$set: {'giveaways.$[g].ended': true}},
+      {
+        $set: {
+          'giveaways.$[g].ended': true,
+          'giveaways.$[g].winner': giveaway.winner,
+        },
+      },
       {arrayFilters: [{'g.mes': giveaway.mes}], new: true}
     );
   },
@@ -443,6 +448,13 @@ const database = {
     return await GuildConfig.findOneAndUpdate(
       {id},
       {$set: {levelup: props}},
+      {new: true}
+    );
+  },
+  setWelcome: async (ops, id) => {
+    return await GuildConfig.findOneAndUpdate(
+      {id},
+      {$set: {welcome: ops}},
       {new: true}
     );
   },
